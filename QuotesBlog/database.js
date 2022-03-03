@@ -65,7 +65,9 @@ let database = {
         }
     },
 
-
+    testFunction: function(){
+        console.log('Testing @QuotesBlog/database.js');
+    }
 }
 
 
