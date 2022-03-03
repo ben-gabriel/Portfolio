@@ -35,9 +35,27 @@ app.listen(port);
 //---------------
 // **If post route = /register or /login
 //     ignore {isLoggedIn} flag
-//     set {isLoggedIn} = true
+//     IF: Authentication Succesful
+//         set {isLoggedIn} = true
 //---------------
 // **If post route = /log out
 // Check if {isLoggedIn}
 //     True: set {isLoggedIn} = false
 //     False: redirect to home
+
+//---------------
+// POST Login
+// -Take User info-
+// check info / authenticate against database
+// IF: user does not exist
+//     display error message
+//     -Promt to register-
+// IF: wrong password
+//     display error message
+//     -promt to 'recover' password
+//---------------
+// POST Register
+// -Take User Info-
+// check if username is taken
+// IF: username taken
+//     display error message
