@@ -4,28 +4,12 @@ const port = 2404;
 
 // -------- Database
 const {database} = require('./database');
-
+const db ='QuotesBlog';
 
 // -------- Settings
 app.set('view engine', 'ejs');
 app.set('views', 'QuotesBlog/views');
-
-
-// -------- Routes
-app.get('/', (req, res)=>{
-    res.render('index');
-});
-
-app.get('login', (req, res)=>{
-    res.render('login');
-});
-
-app.get('register', (req, res)=>{
-    res.render('register');
-});
-
-app.listen(port);
-
+app.use(express.urlencoded({extended:true}));
 
 // -------- Session
 const session = require('express-session');
@@ -37,14 +21,72 @@ const store = new MongoDBStore({
     collection: 'Sessions'
 });
 
+// -------- Encryption
+const bcrypt = require('bcrypt');
+const { redirect } = require("express/lib/response");
 
-app.use(session({ 
-    secret: 'SecretWordExample:b94d58g2264d89e54a56s31hg7hky6...', 
-    cookie: { maxAge: 600000 },
-    saveUninitialized: true,
-    resave: false,
-    store: store
-}));
+// -------- Routes
+app.get('/', (req, res)=>{
+    res.render('index');
+});
+
+app.get('/login', (req, res)=>{
+    res.render('login');
+});
+
+app.get('/register', (req, res)=>{
+    res.render('register');
+});
+
+app.post('/register', async (req,res)=>{
+
+    
+    try {
+           //Check if username is free
+        let usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
+        
+        
+        //True : save info
+        if(!usernameCheck){
+            console.log('can create username');
+            
+            let salt = await bcrypt.genSalt();
+            let hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+            let newUserDocument = {
+                username: req.body.username,
+                password: hashedPassword,
+            }
+            await database.createOneDocument(newUserDocument, db, "Users");
+            
+            //check if creation was succesful then return
+            usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
+            if(usernameCheck){
+                //Creation Succesful
+                res.redirect('/login');
+            }else{
+                //Error, Send error message
+                res.redirect('/register');
+            }
+
+        }
+        else{
+            //False: send error message
+            console.log('cannot create username');
+            res.redirect('/register');//placeholder
+        } 
+
+    }catch (e) {
+        
+    }finally{
+        
+    }   
+
+});
+
+app.listen(port);
+
+
 
 // TO DO
 // -------------
@@ -88,3 +130,6 @@ app.use(session({
 // check if username is taken
 // IF: username taken
 //     display error message
+// --------------
+// Register
+// *** Add encryption method
