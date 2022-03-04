@@ -62,26 +62,33 @@ app.post('/register', async (req,res)=>{
             //check if creation was succesful then return
             usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
             if(usernameCheck){
-                //Creation Succesful
+                // *** Creation Succesful, should login automatically
                 res.redirect('/login');
             }else{
-                //Error, Send error message
+                // *** Error, Send error message
                 res.redirect('/register');
             }
 
         }
         else{
-            //False: send error message
+            // *** False: send error message
             console.log('cannot create username');
             res.redirect('/register');//placeholder
         } 
 
     }catch (e) {
-        
-    }finally{
-        
-    }   
+        console.log(e)
+    }  
+});
 
+app.post('/login', async ()=>{
+    //get user info
+    //check if username exist
+    //false: prompt message/prompt register
+    //true: compare password
+    //  if password incorrect, prompt message
+    //  if password correct, authenticate con session cookie
+    //  send response with user info
 });
 
 app.listen(port);
