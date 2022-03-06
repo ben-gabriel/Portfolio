@@ -46,6 +46,7 @@ app.use(session({
 
 // -------- Encryption
 const bcrypt = require('bcrypt');
+const { redirect } = require("express/lib/response");
 
 // -------- Routes
 app.get('/', (req, res)=>{
@@ -57,11 +58,19 @@ app.get('/', (req, res)=>{
 });
 
 app.get('/login', (req, res)=>{
-    res.render('login.ejs');
+    if(!req.session.isLoggedIn){
+        res.render('login');
+    }else{
+        res.redirect('/');
+    }
 });
 
 app.get('/register', (req, res)=>{
-    res.render('register');
+    if(!req.session.isLoggedIn){
+        res.render('register');
+    }else{
+        res.redirect('/');
+    }
 });
 
 app.post('/register', async (req,res)=>{
