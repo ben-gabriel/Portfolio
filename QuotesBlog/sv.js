@@ -23,23 +23,41 @@ const store = new MongoDBStore({
 
 app.use(session({ 
     secret: 'SecretWord', 
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 600000 },
     saveUninitialized: true,
     resave: false,
     store: store
 }));
 
+// -------- Authentication Middleware
+// function checkAuthentication(req, res, next){
+
+//     console.log('log in checkAuthentication');
+//     console.log(req.session);
+//     console.log(req.session.isLoggedIn);
+
+//     if(req.session.isLoggedIn){
+
+//     }
+//     next()
+    
+// }
+// app.use(checkAuthentication);
+
 // -------- Encryption
 const bcrypt = require('bcrypt');
-const { redirect } = require("express/lib/response");
 
 // -------- Routes
 app.get('/', (req, res)=>{
-    res.render('index');
+    let userInfo = {}
+    if(req.session.isLoggedIn){
+        userInfo = {username:req.session.username}
+    }
+    res.render('index',{userInfo});
 });
 
 app.get('/login', (req, res)=>{
-    res.render('login');
+    res.render('login.ejs');
 });
 
 app.get('/register', (req, res)=>{
@@ -50,45 +68,49 @@ app.post('/register', async (req,res)=>{
 
     // *** To Do, check if form is healthy
     //     by checking if req.body.username exist+ as a string
-    
-    try {
-           //Check if username is free
-        let usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
-        
-        
-        //True : save info
-        if(!usernameCheck){
-            console.log('can create username');
+    if(!req.session.isLoggedIn){
+        try {
+            //Check if username is free
+            let usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
             
-            let salt = await bcrypt.genSalt();
-            let hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-            let newUserDocument = {
-                username: req.body.username,
-                password: hashedPassword,
-            }
-            await database.createOneDocument(newUserDocument, db, "Users");
             
-            //check if creation was succesful then return
-            usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
-            if(usernameCheck){
-                // *** Creation Succesful, should login automatically
-                res.redirect('/login');
-            }else{
-                // *** Error, Send error message
-                res.redirect('/register');
+            //True : save info
+            if(!usernameCheck){
+                console.log('can create username');
+                
+                let salt = await bcrypt.genSalt();
+                let hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+                let newUserDocument = {
+                    username: req.body.username,
+                    password: hashedPassword,
+                }
+                await database.createOneDocument(newUserDocument, db, "Users");
+                
+                //check if creation was succesful then return
+                usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
+                if(usernameCheck){
+                    // *** Creation Succesful, should login automatically
+                    res.redirect('/login');
+                }else{
+                    // *** Error, Send error message
+                    res.redirect('/register');
+                }
+
             }
+            else{
+                // *** False: send error message
+                console.log('cannot create username');
+                res.redirect('/register');//placeholder
+            } 
 
-        }
-        else{
-            // *** False: send error message
-            console.log('cannot create username');
-            res.redirect('/register');//placeholder
-        } 
-
-    }catch (e) {
-        console.log(e)
-    }  
+        }catch (e) {
+            console.log(e)
+        }  
+    } 
+    else{
+        res.redirect('/');
+    }
 });
 
 app.post('/login', async (req, res)=>{
@@ -103,36 +125,45 @@ app.post('/login', async (req, res)=>{
     // *** To Do, check if form is healthy
     //     by checking if req.body.username exist+ as a string
     //     -check what happens if you try to access a body.thing that does not exist in the form 
+    if(!req.session.isLoggedIn){
+        try {
+            let userCheck = await database.findOneDocument({username: req.body.username}, db, 'Users');
+            if(userCheck){
+                // Username is correct, compare password
+                let passwordComparison = await bcrypt.compare(req.body.password, userCheck.password);
 
-    try {
-        let userCheck = await database.findOneDocument({username: req.body.username}, db, 'Users');
-        if(userCheck){
-            // Username is correct, compare password
-            let passwordComparison = await bcrypt.compare(req.body.password, userCheck.password);
+                if(passwordComparison){
+                    console.log('password is correct');
+                    req.session.isLoggedIn = true;
+                    req.session.username = userCheck.username;
+                    res.redirect('/');
 
-            if(passwordComparison){
-                console.log('password is correct');
-                req.session.isLoggedIn = true;
-                res.redirect('/');
-
+                }
+                else{
+                    console.log('incorrect password')
+                    // *** Promt user with error
+                    res.redirect('/login');
+                }
             }
             else{
-                console.log('incorrect password')
-                // *** Promt user with error
-                res.redirect('/login');
+                // Wrong username / does not exist
+                // *** Promt user with error / to register 
             }
-        }
-        else{
-            // Wrong username / does not exist
-            // *** Promt user with error / to register 
-        }
 
-    } 
-    catch (e) {
-        console.log(e);
-        res.redirect('/'); //placeholder
+        } 
+        catch (e) {
+            console.log(e);
+            res.redirect('/'); //placeholder
+        }
     }
+    else{
+        res.redirect('/');
+    }
+});
 
+app.post('/logout', (req, res)=>{
+    req.session.isLoggedIn=false;
+    res.redirect('/');
 });
 
 app.listen(port);
