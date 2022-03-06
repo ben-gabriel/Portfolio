@@ -11,6 +11,7 @@ let database = {
         try {
             await client.connect();
             const result = await client.db(db).collection(collection).insertOne(newDocument);
+            console.log('\n[database.js] createOne() =' , result,'\n');
             return result.insertedId;
 
         }catch (e){
@@ -25,7 +26,7 @@ let database = {
             await client.connect();
             const result = await client.db(db).collection(collection).findOne(queryObj);
         
-            console.log('log inside findOne' , result);
+            console.log('\n[database.js] findOne() =' , result,'\n');
             return result;
             
         }catch (e){
@@ -41,7 +42,7 @@ let database = {
             const cursor = await client.db(db).collection(collection).find().limit(limit).sort({_id:-1}).skip(pageNumber*limit);
         
             const result = await cursor.toArray();
-            console.log('log inside findMany()' , result);
+            console.log('\n[database.js] findMany() =' , result,'\n');
             return result;
             
         }catch (e){
@@ -55,9 +56,8 @@ let database = {
         try {
             await client.connect();
             const result = await client.db(db).collection(collection).deleteOne(queryObj);
+            console.log(`\n[database.js] deleteOne() = ${result.deletedCount} Document/s deleted\n`);
 
-            console.log(`${result.deletedCount} Document/s deleted`);
-            
         }catch (e){
             console.error(e);
         }finally{
@@ -66,7 +66,7 @@ let database = {
     },
 
     testFunction: function(){
-        console.log('Testing @QuotesBlog/database.js');
+        console.log('\nTesting @QuotesBlog/database.js\n');
     }
 }
 
