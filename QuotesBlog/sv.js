@@ -21,6 +21,14 @@ const store = new MongoDBStore({
     collection: 'Sessions'
 });
 
+app.use(session({ 
+    secret: 'SecretWord', 
+    cookie: { maxAge: 60000 },
+    saveUninitialized: true,
+    resave: false,
+    store: store
+}));
+
 // -------- Encryption
 const bcrypt = require('bcrypt');
 const { redirect } = require("express/lib/response");
@@ -40,6 +48,8 @@ app.get('/register', (req, res)=>{
 
 app.post('/register', async (req,res)=>{
 
+    // *** To Do, check if form is healthy
+    //     by checking if req.body.username exist+ as a string
     
     try {
            //Check if username is free
@@ -81,14 +91,48 @@ app.post('/register', async (req,res)=>{
     }  
 });
 
-app.post('/login', async ()=>{
+app.post('/login', async (req, res)=>{
     //get user info
     //check if username exist
     //false: prompt message/prompt register
     //true: compare password
     //  if password incorrect, prompt message
-    //  if password correct, authenticate con session cookie
+    //  if password correct, authenticate with session cookie
     //  send response with user info
+
+    // *** To Do, check if form is healthy
+    //     by checking if req.body.username exist+ as a string
+    //     -check what happens if you try to access a body.thing that does not exist in the form 
+
+    try {
+        let userCheck = await database.findOneDocument({username: req.body.username}, db, 'Users');
+        if(userCheck){
+            // Username is correct, compare password
+            let passwordComparison = await bcrypt.compare(req.body.password, userCheck.password);
+
+            if(passwordComparison){
+                console.log('password is correct');
+                req.session.isLoggedIn = true;
+                res.redirect('/');
+
+            }
+            else{
+                console.log('incorrect password')
+                // *** Promt user with error
+                res.redirect('/login');
+            }
+        }
+        else{
+            // Wrong username / does not exist
+            // *** Promt user with error / to register 
+        }
+
+    } 
+    catch (e) {
+        console.log(e);
+        res.redirect('/'); //placeholder
+    }
+
 });
 
 app.listen(port);
