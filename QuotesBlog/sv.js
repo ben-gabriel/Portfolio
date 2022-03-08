@@ -46,7 +46,6 @@ app.use(session({
 
 // -------- Encryption
 const bcrypt = require('bcrypt');
-const { redirect } = require("express/lib/response");
 
 // -------- Routes
 app.get('/', (req, res)=>{
@@ -134,6 +133,7 @@ app.post('/login', async (req, res)=>{
     // *** To Do, check if form is healthy
     //     by checking if req.body.username exist+ as a string
     //     -check what happens if you try to access a body.thing that does not exist in the form 
+    
     if(!req.session.isLoggedIn){
         try {
             let userCheck = await database.findOneDocument({username: req.body.username}, db, 'Users');
@@ -174,6 +174,22 @@ app.post('/logout', (req, res)=>{
     req.session.isLoggedIn=false;
     res.redirect('/');
 });
+
+app.get('/test', (req,res)=>{
+    console.log(req.body);
+    console.log(req);
+    console.log(req.query);
+
+    res.render('test');
+});
+
+
+// -------- Routes-> express.Router()
+//
+// /users
+// /u/someone -> profile of some user 
+// /u/me -> my profile
+
 
 app.listen(port);
 
