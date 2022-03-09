@@ -189,7 +189,14 @@ app.get('/test', (req,res)=>{
 // /users
 // /u/someone -> profile of some user 
 // /u/me -> my profile
+//
+// /posts
+// /#search_query/pageNumber
+// /all/pageNumber
 
+app.get('/results', (req,res)=>{
+   // call to database based on querys and send response 
+});
 
 app.listen(port);
 
