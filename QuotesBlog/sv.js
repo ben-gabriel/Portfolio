@@ -53,6 +53,10 @@ app.get('/', (req, res)=>{
     if(req.session.isLoggedIn){
         userInfo = {username:req.session.username}
     }
+    let test = 'the brown fox jumped';
+    test = test.split(' ')
+    array = test.join('_')
+    console.log(array)
     res.render('index',{userInfo});
 });
 
@@ -183,6 +187,9 @@ app.get('/test', (req,res)=>{
     res.render('test');
 });
 
+app.get('/results', (req,res)=>{
+   // call to database based on querys and send response 
+});
 
 // -------- Routes-> express.Router()
 //
@@ -194,9 +201,8 @@ app.get('/test', (req,res)=>{
 // /#search_query/pageNumber
 // /all/pageNumber
 
-app.get('/results', (req,res)=>{
-   // call to database based on querys and send response 
-});
+const postsRouter = require('./routes/posts.js');
+app.use('/posts', postsRouter);
 
 app.listen(port);
 

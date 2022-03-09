@@ -16,16 +16,31 @@ router.get('/:id', (req,res)=>{
 router.post('/new', (req,res)=>{
 
     if(req.session.isLoggedIn){
+        
+        let postUrl = req.body.postContent.slice(0,30);
+        postUrl = postUrl.replace(/([^a-zA-Z ])/g, ""); //Remove special characters (regex Latin only)
+        postUrl = postUrl.split(' ');
+        postUrl = postUrl.join('_');
+        postUrl = postUrl + '_' + Date.now();
 
         let newPost = {
-            postAuthor: req.session.userName;
+            poster: req.session.username,
+            content: req.body.postContent,
+            tags: req.body.postTags,
+            quoteAuthor: req.body.quoteAuthor,
+            publicID: postUrl,
+            comments: []
         }
         
-        database.createOneDocument({});
+        console.log(newPost)
+        res.redirect('./new')
+        // database.createOneDocument({});
         
     }
     else{
-        // prompt to log in.
+        // *** prompt to log in.
+        console.log('Not logged in')
+        res.redirect('./new')
     }
 });
 
