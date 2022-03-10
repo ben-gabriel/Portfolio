@@ -53,10 +53,6 @@ app.get('/', (req, res)=>{
     if(req.session.isLoggedIn){
         userInfo = {username:req.session.username}
     }
-    let test = 'the brown fox jumped';
-    test = test.split(' ')
-    array = test.join('_')
-    console.log(array)
     res.render('index',{userInfo});
 });
 
@@ -161,6 +157,7 @@ app.post('/login', async (req, res)=>{
             else{
                 // Wrong username / does not exist
                 // *** Promt user with error / to register 
+                res.redirect('/login')
             }
 
         } 
