@@ -176,10 +176,14 @@ app.post('/logout', (req, res)=>{
     res.redirect('/');
 });
 
-app.get('/test', (req,res)=>{
-    console.log(req.body);
-    console.log(req);
-    console.log(req.query);
+app.get('/test', async (req,res)=>{
+    // console.log(req.body);
+    // console.log(req);
+    // console.log(req.query);
+
+    let document = await database.findOneDocument({quoteAuthor: 'se'},db,'Posts');
+    // console.log(document)
+    console.log('\n\n\n',document.comments[1])
 
     res.render('test');
 });

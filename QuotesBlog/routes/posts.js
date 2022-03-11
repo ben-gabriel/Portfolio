@@ -72,9 +72,9 @@ router.post('/newComment', async (req,res)=>{
     if(req.session.isLoggedIn){
         // database.updateOneDocument({}, )   
     
-        await database.updateOneDocument({publicID: req.body.postUrl}, {comments:commentInsert}, db,collection);
+        await database.pushToDocument({publicID: req.body.postUrl}, {comments:commentInsert}, db,collection);
         res.redirect(req.body.postUrl);
-        
+
     }
     else{
         // *** promt to log in
@@ -83,6 +83,31 @@ router.post('/newComment', async (req,res)=>{
     }
 
     
+});
+
+router.get('/comments', async (req,res)=>{
+    let postUrl = '';
+    let document = await database.findOneDocument({quoteAuthor:'se'}, db,collection);
+    res.json(document.comments);
+
+    // *** browser js to fetch comments json
+    // let fetchfun = async function(url){
+    //     try{
+
+    //         let fetcher = await fetch(url);
+            
+    //         if(fetcher.ok === true){
+    //             //checks if the fetching was successful
+    //             console.log('Fetch Done');
+    //             let myJson = await((fetcher).json()); 
+    //             return myJson
+    //         }
+    //     }
+    //     catch(e){
+    //         console.error(e)
+    //     }
+    // }
+
 });
 
 router.get('/:id', async (req,res)=>{
