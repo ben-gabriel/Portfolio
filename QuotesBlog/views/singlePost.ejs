@@ -4,5 +4,15 @@
 
 <p>Tags</p>
 
+<% locals.postInfo.tags.forEach(tag=>{ %>
+    <a href=""> <%= tag %> </a>, 
+<% }) %>
+
 
 <p>Comments</p>
+<form action="./newComment" method="post"> 
+    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+    
+    <input type="text" name="commentContent" id="commentContent">
+    <input type="submit" value="Comment">
+</form>

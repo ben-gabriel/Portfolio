@@ -21,6 +21,19 @@ let database = {
         }   
     },
 
+    updateOneDocument: async function(queryObj={}, insertObj, db, collection){
+        try {
+            await client.connect();
+            let result = await client.db(db).collection(collection).updateOne(queryObj, {$push: insertObj});
+            console.log('\n[database.js] updateOne() =\n');
+
+        }catch (e){
+            console.error(e);
+        }finally{
+            await client.close()
+        }
+    },
+
     findOneDocument: async function(queryObj={}, db, collection){
       try {
             await client.connect();

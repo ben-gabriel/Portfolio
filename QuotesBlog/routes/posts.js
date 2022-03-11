@@ -17,28 +17,6 @@ router.get('/new', (req,res)=>{
     }
 });
 
-router.get('/:id', async (req,res)=>{
-    
-    let postUrl = (req.params.id)
-    try {
-        let postLookout = await database.findOneDocument({publicID: postUrl},db,collection);
-        
-        if(postLookout){
-            let postInfo=postLookout;
-            res.render('singlePost',{postInfo});
-        }
-        else{
-            res.send('not found') //placeholder
-        }
-
-    } 
-    catch (e) {
-        console.log(e);
-        res.redirect('/');
-    }
-
-});
-
 router.post('/new', async (req,res)=>{
 
     if(req.session.isLoggedIn){
@@ -81,5 +59,52 @@ router.post('/new', async (req,res)=>{
     }
 });
 
+router.post('/newComment', async (req,res)=>{
+    console.log(req.body.commentContent);
+    
+    let commentInsert = {
+        commentContent : req.body.commentContent,
+        commentAuthor : req.session.username,
+        commentID :  req.session.username + Date.now(),
+        replyingToID : 0,
+    }
+
+    if(req.session.isLoggedIn){
+        // database.updateOneDocument({}, )   
+    
+        await database.updateOneDocument({publicID: req.body.postUrl}, {comments:commentInsert}, db,collection);
+        res.redirect(req.body.postUrl);
+        
+    }
+    else{
+        // *** promt to log in
+        console.log('not logged in');
+        res.redirect(req.body.postUrl);
+    }
+
+    
+});
+
+router.get('/:id', async (req,res)=>{
+    
+    let postUrl = (req.params.id)
+    try {
+        let postLookout = await database.findOneDocument({publicID: postUrl},db,collection);
+        
+        if(postLookout){
+            let postInfo=postLookout;
+            res.render('singlePost',{postInfo});
+        }
+        else{
+            res.send('not found') //placeholder
+        }
+
+    } 
+    catch (e) {
+        console.log(e);
+        res.redirect('/');
+    }
+
+});
 
 module.exports = router;
