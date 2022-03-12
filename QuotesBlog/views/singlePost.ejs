@@ -10,9 +10,110 @@
 
 
 <p>Comments</p>
+
 <form action="./newComment" method="post"> 
     <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
-    
+    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
+
     <input type="text" name="commentContent" id="commentContent">
     <input type="submit" value="Comment">
+    
 </form>
+
+
+<div class="commentsDiv" id="commentsDiv">
+
+</div>
+
+
+<script>
+    
+let fetchComments = async function(url){
+    try{
+        let fetcher = await fetch(url);
+        
+        if(fetcher.ok === true){
+            //checks if the fetching was successful
+            console.log('Fetch Done');
+            let json = await((fetcher).json()); 
+            return json
+        }
+    }
+    catch(e){console.error(e)}
+}
+
+function loadComments(commentsJson){
+
+    let commentsDiv = document.getElementById('commentsDiv');
+
+    if(commentsJson[0]){
+        let index = 0;
+        let flag = commentsJson[0];
+
+        while(flag){
+
+            if(commentsJson[index].replyingToID === 'originalPost'){
+                // is replying to main post
+                console.log(commentsJson[index]);
+
+                let newDiv = document.createElement('div');
+                newDiv.id = commentsJson[index].commentID;
+                newDiv.className = 'commentTopLevel';
+
+                let commentHtml = `
+                    <h3> user: ${commentsJson[index].commentAuthor} </h3>
+                    <p>  ${commentsJson[index].commentContent} <p>
+                `;
+                
+                newDiv.innerHTML = commentHtml
+                newDiv.style.border = 'black 1px solid' //placeHolder
+
+                let newButton = document.createElement('button');
+                newButton.textContent = 'Reply';
+                newButton.addEventListener('click',()=>{
+                    newDiv.innerHTML = commentHtml + `
+                    <form action="./newComment" method="post"> 
+    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
+
+    <input type="text" name="commentContent" id="commentContent">
+    <input type="submit" value="Comment">
+    
+</form>
+                    `;
+                });
+
+                newDiv.appendChild(newButton);
+                commentsDiv.appendChild(newDiv);
+
+            }
+            else{
+                // is replaying to a comment
+            }
+
+            index = index + 1;
+            flag = commentsJson[index];
+        }
+        
+        console.log(`index = ${index} --- flag = ${flag}`);
+        
+    }
+    else{
+        // Load 'no comments yet' message on post
+        let newDiv = document.createElement('div');
+        newDiv.innerHTML = '<h3>No Comments Yet</H3>'
+
+        commentsDiv.appendChild(newDiv);
+
+    }
+    
+}
+
+let comments = fetchComments('./comments/'+"<%= locals.postInfo.publicID %>");
+
+comments.then( data =>{
+    comments = data;
+    loadComments(comments)
+});
+
+</script>

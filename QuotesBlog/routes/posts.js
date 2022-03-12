@@ -66,7 +66,7 @@ router.post('/newComment', async (req,res)=>{
         commentContent : req.body.commentContent,
         commentAuthor : req.session.username,
         commentID :  req.session.username + Date.now(),
-        replyingToID : 0,
+        replyingToID : req.body.replyingToID,
     }
 
     if(req.session.isLoggedIn){
@@ -85,29 +85,9 @@ router.post('/newComment', async (req,res)=>{
     
 });
 
-router.get('/comments', async (req,res)=>{
-    let postUrl = '';
-    let document = await database.findOneDocument({quoteAuthor:'se'}, db,collection);
+router.get('/comments/:postUrl', async (req,res)=>{
+    let document = await database.findOneDocument({publicID:req.params.postUrl}, db,collection);
     res.json(document.comments);
-
-    // *** browser js to fetch comments json
-    // let fetchfun = async function(url){
-    //     try{
-
-    //         let fetcher = await fetch(url);
-            
-    //         if(fetcher.ok === true){
-    //             //checks if the fetching was successful
-    //             console.log('Fetch Done');
-    //             let myJson = await((fetcher).json()); 
-    //             return myJson
-    //         }
-    //     }
-    //     catch(e){
-    //         console.error(e)
-    //     }
-    // }
-
 });
 
 router.get('/:id', async (req,res)=>{
