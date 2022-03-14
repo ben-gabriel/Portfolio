@@ -56,39 +56,55 @@ function loadComments(commentsJson){
                 // is replying to main post
                 console.log(commentsJson[index]);
 
-                let newDiv = document.createElement('div');
-                newDiv.id = commentsJson[index].commentID;
-                newDiv.className = 'commentTopLevel';
-
                 let commentHtml = `
                     <h3> user: ${commentsJson[index].commentAuthor} </h3>
                     <p>  ${commentsJson[index].commentContent} <p>
                 `;
+                let replyFormHtml = `
+                    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+                    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
+
+                    <input type="text" name="commentContent" id="commentContent">
+                    <input type="submit" value="Comment">
+                `;
+
                 
-                newDiv.innerHTML = commentHtml
-                newDiv.style.border = 'black 1px solid' //placeHolder
+                let newCommentDiv = document.createElement('div');
+                newCommentDiv.id = commentsJson[index].commentID;
+                newCommentDiv.className = 'commentTopLevel';
+                
+                newCommentDiv.innerHTML = commentHtml
+                newCommentDiv.style.border = 'black 1px solid' //placeHolder
 
-                let newButton = document.createElement('button');
-                newButton.textContent = 'Reply';
-                newButton.addEventListener('click',()=>{
-                    newDiv.innerHTML = commentHtml + `
-                    <form action="./newComment" method="post"> 
-    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
-    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
+                let replyButton = document.createElement('button');
+                replyButton.textContent = 'Reply';
 
-    <input type="text" name="commentContent" id="commentContent">
-    <input type="submit" value="Comment">
-    
-</form>
-                    `;
+                let cancelReplyButton = document.createElement('button');
+                cancelReplyButton.textContent = 'Cancel';
+
+                let replyForm = document.createElement('form');
+                replyForm.action = './newComment';
+                replyForm.method = 'post';
+                replyForm.innerHTML = replyFormHtml;
+                replyForm.appendChild(cancelReplyButton);
+                
+
+                replyButton.addEventListener('click',()=>{
+                    newCommentDiv.appendChild(replyForm);
+                    newCommentDiv.removeChild(replyButton);
                 });
 
-                newDiv.appendChild(newButton);
-                commentsDiv.appendChild(newDiv);
+                cancelReplyButton.addEventListener('click', ()=>{
+                    newCommentDiv.removeChild(replyForm);
+                    newCommentDiv.appendChild(replyButton);
+                });
+
+                newCommentDiv.appendChild(replyButton);
+                commentsDiv.appendChild(newCommentDiv);
 
             }
             else{
-                // is replaying to a comment
+                // is replying to a comment
             }
 
             index = index + 1;
@@ -100,10 +116,10 @@ function loadComments(commentsJson){
     }
     else{
         // Load 'no comments yet' message on post
-        let newDiv = document.createElement('div');
-        newDiv.innerHTML = '<h3>No Comments Yet</H3>'
+        let newCommentDiv = document.createElement('div');
+        newCommentDiv.innerHTML = '<h3>No Comments Yet</H3>'
 
-        commentsDiv.appendChild(newDiv);
+        commentsDiv.appendChild(newCommentDiv);
 
     }
     
