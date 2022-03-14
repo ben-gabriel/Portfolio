@@ -54,7 +54,6 @@ function loadComments(commentsJson){
 
             if(commentsJson[index].replyingToID === 'originalPost'){
                 // is replying to main post
-                console.log(commentsJson[index]);
 
                 let commentHtml = `
                     <h3> user: ${commentsJson[index].commentAuthor} </h3>
@@ -90,13 +89,15 @@ function loadComments(commentsJson){
                 
 
                 replyButton.addEventListener('click',()=>{
-                    newCommentDiv.appendChild(replyForm);
+                    // newCommentDiv.appendChild(replyForm);
+                    newCommentDiv.insertBefore(replyForm, newCommentDiv.childNodes[4]);
                     newCommentDiv.removeChild(replyButton);
                 });
 
                 cancelReplyButton.addEventListener('click', ()=>{
                     newCommentDiv.removeChild(replyForm);
-                    newCommentDiv.appendChild(replyButton);
+                    // newCommentDiv.appendChild(replyButton);
+                    newCommentDiv.insertBefore(replyButton, newCommentDiv.childNodes[4]);
                 });
 
                 newCommentDiv.appendChild(replyButton);
@@ -105,6 +106,56 @@ function loadComments(commentsJson){
             }
             else{
                 // is replying to a comment
+                let parentCommentDiv = document.getElementById(`${commentsJson[index].replyingToID}`);
+                
+                let commentHtml = `
+                    <h3> user: ${commentsJson[index].commentAuthor} </h3>
+                    <p>  ${commentsJson[index].commentContent} <p>
+                `;
+                let replyFormHtml = `
+                    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+                    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
+
+                    <input type="text" name="commentContent" id="commentContent">
+                    <input type="submit" value="Comment">
+                `;
+
+                
+                let newCommentDiv = document.createElement('div');
+                newCommentDiv.id = commentsJson[index].commentID;
+                newCommentDiv.className = 'commentReplyLevel';
+                
+                newCommentDiv.innerHTML = commentHtml
+                newCommentDiv.style.border = 'blue 1px solid' //placeHolder
+                newCommentDiv.style.margin= '5px'
+
+                let replyButton = document.createElement('button');
+                replyButton.textContent = 'Reply';
+
+                let cancelReplyButton = document.createElement('button');
+                cancelReplyButton.textContent = 'Cancel';
+
+                let replyForm = document.createElement('form');
+                replyForm.action = './newComment';
+                replyForm.method = 'post';
+                replyForm.innerHTML = replyFormHtml;
+                replyForm.appendChild(cancelReplyButton);
+                
+
+                replyButton.addEventListener('click',()=>{
+                    // newCommentDiv.appendChild(replyForm);
+                    newCommentDiv.insertBefore(replyForm, newCommentDiv.childNodes[4]);
+                    newCommentDiv.removeChild(replyButton);
+                });
+
+                cancelReplyButton.addEventListener('click', ()=>{
+                    newCommentDiv.removeChild(replyForm);
+                    // newCommentDiv.appendChild(replyButton);
+                    newCommentDiv.insertBefore(replyButton, newCommentDiv.childNodes[4]);
+                });
+
+                newCommentDiv.appendChild(replyButton);
+                parentCommentDiv.appendChild(newCommentDiv);
             }
 
             index = index + 1;
