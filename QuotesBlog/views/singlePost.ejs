@@ -1,4 +1,4 @@
-<h3> <%= locals.postInfo.poster || '-' %></h3>
+<h3> <a href="/users/<%= locals.postInfo.poster || '-' %>"><%= locals.postInfo.poster || '-' %></a> </h3>
 <h2> <%= locals.postInfo.content || '-' %> </h2> 
 <h2> - <%= locals.postInfo.quoteAuthor || '-' %></h2>
 
@@ -15,7 +15,7 @@
     <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
     <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
 
-    <input type="text" name="commentContent" id="commentContent">
+    <input type="text" name="commentContent">
     <input type="submit" value="Comment">
     
 </form>
@@ -56,7 +56,7 @@ function loadComments(commentsJson){
                 // is replying to main post
 
                 let commentHtml = `
-                    <h3> user: ${commentsJson[index].commentAuthor} </h3>
+                    <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
                     <p>  ${commentsJson[index].commentContent} <p>
                 `;
                 let replyFormHtml = `
@@ -109,14 +109,14 @@ function loadComments(commentsJson){
                 let parentCommentDiv = document.getElementById(`${commentsJson[index].replyingToID}`);
                 
                 let commentHtml = `
-                    <h3> user: ${commentsJson[index].commentAuthor} </h3>
+                    <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
                     <p>  ${commentsJson[index].commentContent} <p>
                 `;
                 let replyFormHtml = `
                     <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
                     <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
 
-                    <input type="text" name="commentContent" id="commentContent">
+                    <input type="text" name="commentContent">
                     <input type="submit" value="Comment">
                 `;
 
@@ -162,8 +162,6 @@ function loadComments(commentsJson){
             flag = commentsJson[index];
         }
         
-        console.log(`index = ${index} --- flag = ${flag}`);
-        
     }
     else{
         // Load 'no comments yet' message on post
@@ -180,7 +178,7 @@ let comments = fetchComments('./comments/'+"<%= locals.postInfo.publicID %>");
 
 comments.then( data =>{
     comments = data;
-    loadComments(comments)
+    loadComments(comments);
 });
 
 </script>

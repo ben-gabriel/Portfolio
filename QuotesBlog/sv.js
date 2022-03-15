@@ -181,11 +181,16 @@ app.get('/test', async (req,res)=>{
     // console.log(req);
     // console.log(req.query);
 
-    let document = await database.findOneDocument({quoteAuthor: 'se'},db,'Posts');
+    let document = await database.findManyDocuments({$or:[{tags: 'batman'},{tags:'movies'}]},0,5,db,'Posts');
     // console.log(document)
-    console.log('\n\n\n',document.comments[1])
+    console.log('\n\n\n------------------------------------------------------------------', document[0].comments.length);
 
-    res.render('test');
+    res.render('test',{document});
+});
+
+app.get('/users/:username', async (req,res)=>{
+    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
+    res.render('userProfile',{userData});
 });
 
 app.get('/results', (req,res)=>{
