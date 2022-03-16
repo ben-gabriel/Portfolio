@@ -26,7 +26,7 @@
 
     let inputSearch = document.createElement('input');
     inputSearch.type = 'search';
-    inputSearch.style.visibility = 'hidden';
+    // inputSearch.style.visibility = 'hidden';
 
     let searchTagCardsDiv = document.createElement('div');
     searchTagCardsDiv.id = 'searchTagCardsDiv';
@@ -38,25 +38,52 @@
     let submitButton = document.createElement('input');
     submitButton.type = 'submit';
     submitButton.value = 'Search';
+    
+    
+    function deleteTagFromSearch(tagToDelete){
+            console.log(tagToDelete);
+    }   
 
     function addTagToSearch(newTag){
-        let searchTagCard = document.createElement('p');
+
+        let searchTagCard = document.createElement('div');
         searchTagCard.className = 'searchTagCard'
-        searchTagCard.innerText = newTag;
         searchTagCard.style.border = 'black 1px solid'
+        
+        let tagText = document.createElement('p');
+        tagText.innerText = newTag;
+        
+        let deleteTagButton = document.createElement('button');
+        deleteTagButton.innerText = 'x';
+        deleteTagButton.type = 'button';
+        deleteTagButton.addEventListener('click',()=>{deleteTagFromSearch(newTag)});
+
+        searchTagCard.appendChild(tagText);
+        searchTagCard.appendChild(deleteTagButton);
         searchTagCardsDiv.appendChild(searchTagCard);
-        console.log(searchTagCard)
+
+        inputSearch.value = newTag+','+inputSearch.value;
     }
+
 
     inputText.addEventListener('keydown', (key)=>{
         if(key.code === 'Comma'){
-            addTagToSearch(inputText.value);
+            if(inputText.value.replace(/\s+/g,'') !== ''){
+                addTagToSearch(inputText.value);
+            }
             inputText.value = '';
         }
         
     });
     
-    form.append(searchTagCardsDiv)
+    inputText.addEventListener('keyup', (key)=>{
+        if(key.code === 'Comma'){
+            inputText.value = '';
+        }
+    });
+    
+    form.appendChild(inputSearch);
+    form.appendChild(searchTagCardsDiv);
     form.appendChild(inputText);
     searchBarDiv.appendChild(form);
 
