@@ -10,22 +10,16 @@
 </div>
 
 <script>
-    
-    let formHtml = `
-        <form action="/results" method="get">
-            
-            <input type="search" name="search_query" id="search_query" style='visibility:hidden'>
-
-            <input type="hidden" name="s">
-
-        </form>
-    `;
-    
+      
     let searchBarDiv = document.getElementById('searchBarDiv');
+    
     let form = document.createElement('form');
+    form.method = 'get';
+    form.id = 'searchForm';
 
     let inputSearch = document.createElement('input');
     inputSearch.type = 'search';
+    inputSearch.name = 'search_query'
     // inputSearch.style.visibility = 'hidden';
 
     let searchTagCardsDiv = document.createElement('div');
@@ -40,15 +34,22 @@
     submitButton.value = 'Search';
     
     
-    function deleteTagFromSearch(tagToDelete){
-            console.log(tagToDelete);
+    function deleteTagFromSearch(tagToDelete, id){
+        inputSearch.value = inputSearch.value.replace(tagToDelete+',','');
+        inputSearch.value = inputSearch.value.replace(','+tagToDelete,'');
+        inputSearch.value = inputSearch.value.replace(tagToDelete,'');
+        
+        let divToDelete = document.getElementById(id);
+        divToDelete.remove();
+
     }   
 
     function addTagToSearch(newTag){
 
         let searchTagCard = document.createElement('div');
-        searchTagCard.className = 'searchTagCard'
-        searchTagCard.style.border = 'black 1px solid'
+        searchTagCard.className = 'searchTagCard';
+        searchTagCard.style.border = 'black 1px solid';
+        searchTagCard.id = 'tag'+Date.now();
         
         let tagText = document.createElement('p');
         tagText.innerText = newTag;
@@ -56,7 +57,7 @@
         let deleteTagButton = document.createElement('button');
         deleteTagButton.innerText = 'x';
         deleteTagButton.type = 'button';
-        deleteTagButton.addEventListener('click',()=>{deleteTagFromSearch(newTag)});
+        deleteTagButton.addEventListener('click',()=>{deleteTagFromSearch(newTag, searchTagCard.id)});
 
         searchTagCard.appendChild(tagText);
         searchTagCard.appendChild(deleteTagButton);
@@ -74,11 +75,15 @@
     inputText.addEventListener('keydown', (key)=>{
         if(key.code === 'Comma'){
             if(inputText.value.replace(/\s+/g,'') !== ''){
-                addTagToSearch(inputText.value);
+                if(inputSearch.value.includes(inputText.value)){
+                    console.log(inputText.value+' tag is already in search query');
+                }
+                else{
+                    addTagToSearch(inputText.value);
+                }
             }
             inputText.value = '';
         }
-        
     });
     
     inputText.addEventListener('keyup', (key)=>{
@@ -90,6 +95,7 @@
     form.appendChild(inputSearch);
     form.appendChild(searchTagCardsDiv);
     form.appendChild(inputText);
+    form.appendChild(submitButton);
     searchBarDiv.appendChild(form);
 
 </script>

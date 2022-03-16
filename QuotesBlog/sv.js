@@ -176,6 +176,16 @@ app.post('/logout', (req, res)=>{
     res.redirect('/');
 });
 
+app.get('/users/:username', async (req,res)=>{
+    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
+    res.render('userProfile',{userData});
+});
+
+app.get('/results', (req,res)=>{
+   // call to database based on querys and send response 
+   res.render('/');
+});
+
 app.get('/test', async (req,res)=>{
     // console.log(req.body);
     // console.log(req);
@@ -186,15 +196,6 @@ app.get('/test', async (req,res)=>{
     console.log('\n\n\n------------------------------------------------------------------', document[0].comments.length);
 
     res.render('test',{document});
-});
-
-app.get('/users/:username', async (req,res)=>{
-    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
-    res.render('userProfile',{userData});
-});
-
-app.get('/results', (req,res)=>{
-   // call to database based on querys and send response 
 });
 
 // -------- Routes-> express.Router()
