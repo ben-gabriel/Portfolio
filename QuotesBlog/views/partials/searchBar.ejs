@@ -62,7 +62,12 @@
         searchTagCard.appendChild(deleteTagButton);
         searchTagCardsDiv.appendChild(searchTagCard);
 
-        inputSearch.value = newTag+','+inputSearch.value;
+        if(inputSearch.value === ''){
+            inputSearch.value = newTag;    
+        }    
+        else{
+            inputSearch.value = newTag+','+inputSearch.value;
+        }
     }
 
 
