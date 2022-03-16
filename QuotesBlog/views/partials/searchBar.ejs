@@ -1,5 +1,63 @@
-<form action="/results" method="get">
-    <label for="search_query">Search: </label>
-    <input type="search" name="search_query" id="search_query">
+<!-- <form action="/results" method="get" id="searchForm">
+    <label for="search_query">Search tags: </label>
+    <input type="search" name="search_query" id="search_query" >
     <input type="submit" value="Submit">
-</form>
+
+
+</form> -->
+<div id="searchBarDiv">
+
+</div>
+
+<script>
+    
+    let formHtml = `
+        <form action="/results" method="get">
+            
+            <input type="search" name="search_query" id="search_query" style='visibility:hidden'>
+
+            <input type="hidden" name="s">
+
+        </form>
+    `;
+    
+    let searchBarDiv = document.getElementById('searchBarDiv');
+    let form = document.createElement('form');
+
+    let inputSearch = document.createElement('input');
+    inputSearch.type = 'search';
+    inputSearch.style.visibility = 'hidden';
+
+    let searchTagCardsDiv = document.createElement('div');
+    searchTagCardsDiv.id = 'searchTagCardsDiv';
+
+    let inputText = document.createElement('input');
+    inputText.type = 'text';
+    inputText.placeholder = 'Enter tags separated by commas';
+
+    let submitButton = document.createElement('input');
+    submitButton.type = 'submit';
+    submitButton.value = 'Search';
+
+    function addTagToSearch(newTag){
+        let searchTagCard = document.createElement('p');
+        searchTagCard.className = 'searchTagCard'
+        searchTagCard.innerText = newTag;
+        searchTagCard.style.border = 'black 1px solid'
+        searchTagCardsDiv.appendChild(searchTagCard);
+        console.log(searchTagCard)
+    }
+
+    inputText.addEventListener('keydown', (key)=>{
+        if(key.code === 'Comma'){
+            addTagToSearch(inputText.value);
+            inputText.value = '';
+        }
+        
+    });
+    
+    form.append(searchTagCardsDiv)
+    form.appendChild(inputText);
+    searchBarDiv.appendChild(form);
+
+</script>
