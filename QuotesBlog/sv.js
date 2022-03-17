@@ -181,19 +181,17 @@ app.get('/users/:username', async (req,res)=>{
     res.render('userProfile',{userData});
 });
 
-app.get('/results', (req,res)=>{
-    // call to database based on querys and send response 
-    console.log(req.query);
-    console.log(req.query.search_query);
-
+app.get('/results', async (req,res)=>{
     let searchQuery = req.query.search_query.split(',');
-    console.log(searchQuery);
-    searchQuery.forEach(tag => {
-        tag = tag.replace(/\s+/g,'');
-    });
 
+    for (let index = 0; index < searchQuery.length; index++) {
+        searchQuery[index] = {tags:searchQuery[index].replace(/\s+/g,'')}
+    }
 
-    res.render('results');
+    let document = await database.findManyDocuments({$or:searchQuery},0,5,db,'Posts');
+    
+    res.render('test',{document});
+    
 });
 
 app.get('/test', async (req,res)=>{

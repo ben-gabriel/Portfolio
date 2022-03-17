@@ -28,7 +28,7 @@
     let searchTagCardsDiv = document.createElement('div');{
     searchTagCardsDiv.id = 'searchTagCardsDiv';
     }
-    
+
     let inputText = document.createElement('input');{
     inputText.type = 'text';
     inputText.placeholder = 'Enter tags separated by commas';
@@ -39,6 +39,7 @@
     submitButton.value = 'Search';
     }
 
+    
     function addTagToSearch(newTag){
 
         newTag = newTag.replace(/\s+/g,'')
