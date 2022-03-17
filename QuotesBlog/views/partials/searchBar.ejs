@@ -13,27 +13,31 @@
       
     let searchBarDiv = document.getElementById('searchBarDiv');
     
-    let form = document.createElement('form');
+    let form = document.createElement('form');{
     form.method = 'get';
     form.id = 'searchForm';
     form.action = '/results';
+    }
 
-    let inputSearch = document.createElement('input');
+    let inputSearch = document.createElement('input');{
     inputSearch.type = 'search';
     inputSearch.name = 'search_query'
     // inputSearch.style.visibility = 'hidden';
+    }
 
-    let searchTagCardsDiv = document.createElement('div');
+    let searchTagCardsDiv = document.createElement('div');{
     searchTagCardsDiv.id = 'searchTagCardsDiv';
-
-    let inputText = document.createElement('input');
+    }
+    
+    let inputText = document.createElement('input');{
     inputText.type = 'text';
     inputText.placeholder = 'Enter tags separated by commas';
+    }
 
-    let submitButton = document.createElement('input');
+    let submitButton = document.createElement('input');{
     submitButton.type = 'submit';
     submitButton.value = 'Search';
-    
+    }
 
     function addTagToSearch(newTag){
 
