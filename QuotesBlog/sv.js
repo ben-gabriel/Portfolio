@@ -182,8 +182,18 @@ app.get('/users/:username', async (req,res)=>{
 });
 
 app.get('/results', (req,res)=>{
-   // call to database based on querys and send response 
-   res.render('/');
+    // call to database based on querys and send response 
+    console.log(req.query);
+    console.log(req.query.search_query);
+
+    let searchQuery = req.query.search_query.split(',');
+    console.log(searchQuery);
+    searchQuery.forEach(tag => {
+        tag = tag.replace(/\s+/g,'');
+    });
+
+
+    res.render('results');
 });
 
 app.get('/test', async (req,res)=>{
@@ -193,7 +203,11 @@ app.get('/test', async (req,res)=>{
 
     let document = await database.findManyDocuments({$or:[{tags: 'batman'},{tags:'movies'}]},0,5,db,'Posts');
     // console.log(document)
-    console.log('\n\n\n------------------------------------------------------------------', document[0].comments.length);
+    
+    console.log('\n ------------------------------------------------------------------ \n\n');
+    console.log(req.query);
+    console.log(req.query.text)
+    console.log(req.query.search);
 
     res.render('test',{document});
 });

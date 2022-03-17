@@ -16,6 +16,7 @@
     let form = document.createElement('form');
     form.method = 'get';
     form.id = 'searchForm';
+    form.action = '/results';
 
     let inputSearch = document.createElement('input');
     inputSearch.type = 'search';
@@ -33,18 +34,10 @@
     submitButton.type = 'submit';
     submitButton.value = 'Search';
     
-    
-    function deleteTagFromSearch(tagToDelete, id){
-        inputSearch.value = inputSearch.value.replace(tagToDelete+',','');
-        inputSearch.value = inputSearch.value.replace(','+tagToDelete,'');
-        inputSearch.value = inputSearch.value.replace(tagToDelete,'');
-        
-        let divToDelete = document.getElementById(id);
-        divToDelete.remove();
-
-    }   
 
     function addTagToSearch(newTag){
+
+        newTag = newTag.replace(/\s+/g,'')
 
         let searchTagCard = document.createElement('div');
         searchTagCard.className = 'searchTagCard';
@@ -70,6 +63,16 @@
             inputSearch.value = newTag+','+inputSearch.value;
         }
     }
+    
+    function deleteTagFromSearch(tagToDelete, id){
+        inputSearch.value = inputSearch.value.replace(tagToDelete+',','');
+        inputSearch.value = inputSearch.value.replace(','+tagToDelete,'');
+        inputSearch.value = inputSearch.value.replace(tagToDelete,'');
+        
+        let divToDelete = document.getElementById(id);
+        divToDelete.remove();
+
+    }   
 
 
     inputText.addEventListener('keydown', (key)=>{
@@ -91,6 +94,7 @@
             inputText.value = '';
         }
     });
+    
     
     form.appendChild(inputSearch);
     form.appendChild(searchTagCardsDiv);
