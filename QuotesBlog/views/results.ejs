@@ -1,0 +1,10 @@
+<%- include('./partials/searchBar.ejs') %>
+
+<% if(locals.document[0]){ %>
+    <%- include('./partials/postsPreview') %>
+<% } %>
+
+<% if(!locals.document[0]){ %>
+    <h2>No Results found</h2>
+    <h3>Try different keywords</h3>
+<% } %>

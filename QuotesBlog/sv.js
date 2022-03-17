@@ -182,15 +182,22 @@ app.get('/users/:username', async (req,res)=>{
 });
 
 app.get('/results', async (req,res)=>{
-    let searchQuery = req.query.search_query.split(',');
+    if(req.query.search_query){
 
-    for (let index = 0; index < searchQuery.length; index++) {
-        searchQuery[index] = {tags:searchQuery[index].replace(/\s+/g,'')}
+        let searchQuery = req.query.search_query.split(',');
+        
+        for (let index = 0; index < searchQuery.length; index++) {
+            searchQuery[index] = {tags:searchQuery[index].replace(/\s+/g,'')}
+        }
+        
+        let document = await database.findManyDocuments({$or:searchQuery},0,5,db,'Posts');
+        
+        res.render('results',{document});
     }
-
-    let document = await database.findManyDocuments({$or:searchQuery},0,5,db,'Posts');
-    
-    res.render('test',{document});
+    else{
+        let document = await database.findManyDocuments({tags:null},0,5,db,'Posts');
+        res.render('results',{document});
+    }
     
 });
 
@@ -225,9 +232,12 @@ app.use('/posts', postsRouter);
 
 app.listen(port);
 
-
-
-// TO DO
+// TO DO 2
+// ***posts*** Add <a> links in html to tags: must GET /Results as a search query
+// ***searchBar*** Make it impossible to search by pressing key:Enter or click:search button
+// ***Clean up partials and views [posts,search]
+{}
+// TO DO 1
 // -------------
 // -Get request-
 // Check if {isLoggedIn} cookie is true/exist

@@ -22,7 +22,7 @@
     let inputSearch = document.createElement('input');{
     inputSearch.type = 'search';
     inputSearch.name = 'search_query'
-    // inputSearch.style.visibility = 'hidden';
+    inputSearch.style.visibility = 'hidden';
     }
 
     let searchTagCardsDiv = document.createElement('div');{
@@ -39,7 +39,7 @@
     submitButton.value = 'Search';
     }
 
-    
+
     function addTagToSearch(newTag){
 
         newTag = newTag.replace(/\s+/g,'')
