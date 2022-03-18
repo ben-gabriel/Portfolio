@@ -1,11 +1,13 @@
+<%- include('./partials/header.ejs') %> 
+
 <h3> <a href="/users/<%= locals.postInfo.poster || '-' %>"><%= locals.postInfo.poster || '-' %></a> </h3>
 <h2> <%= locals.postInfo.content || '-' %> </h2> 
 <h2> - <%= locals.postInfo.quoteAuthor || '-' %></h2>
 
 <p>Tags</p>
 
-<% locals.postInfo.tags.forEach(tag=>{ %>
-    <a href=""> <%= tag %> </a>, 
+<% locals.postInfo.tags.forEach( tag =>{ %>
+    <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
 <% }) %>
 
 

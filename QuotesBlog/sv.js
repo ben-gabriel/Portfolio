@@ -30,30 +30,30 @@ app.use(session({
 }));
 
 // -------- Authentication Middleware
-// function checkAuthentication(req, res, next){
+function checkAuthentication(req, res, next){
+    if(req.session.isLoggedIn){
+        res.locals.userInfo = {
+            isLoggedIn: true,
+            username: req.session.username
+        }
+    }
+    else{
+        res.locals.userInfo = {
+            isLoggedIn: false,
+            username: null
+        }
+    }
 
-//     console.log('log in checkAuthentication');
-//     console.log(req.session);
-//     console.log(req.session.isLoggedIn);
-
-//     if(req.session.isLoggedIn){
-
-//     }
-//     next()
-    
-// }
-// app.use(checkAuthentication);
+    next()
+}
+app.use(checkAuthentication);
 
 // -------- Encryption
 const bcrypt = require('bcrypt');
 
 // -------- Routes
 app.get('/', (req, res)=>{
-    let userInfo = {}
-    if(req.session.isLoggedIn){
-        userInfo = {username:req.session.username}
-    }
-    res.render('index',{userInfo});
+    res.redirect('/all');
 });
 
 app.get('/login', (req, res)=>{
@@ -173,7 +173,7 @@ app.post('/login', async (req, res)=>{
 
 app.post('/logout', (req, res)=>{
     req.session.isLoggedIn=false;
-    res.redirect('/');
+    res. redirect('/');
 });
 
 app.get('/users/:username', async (req,res)=>{
@@ -182,6 +182,7 @@ app.get('/users/:username', async (req,res)=>{
 });
 
 app.get('/results', async (req,res)=>{
+    let document = {};
     if(req.query.search_query){
 
         let searchQuery = req.query.search_query.split(',');
@@ -190,18 +191,28 @@ app.get('/results', async (req,res)=>{
             searchQuery[index] = {tags:searchQuery[index].replace(/\s+/g,'')}
         }
         
-        let document = await database.findManyDocuments({$or:searchQuery},0,5,db,'Posts');
-        
-        res.render('results',{document});
+        document = await database.findManyDocuments({$or:searchQuery},0,5,db,'Posts');
     }
     else{
-        let document = await database.findManyDocuments({tags:null},0,5,db,'Posts');
-        res.render('results',{document});
+        document = await database.findManyDocuments({tags:null},0,5,db,'Posts');
     }
-    
+    res.render('results',{document});
 });
 
-app.get('/test', async (req,res)=>{
+app.get('/all', async (req,res)=>{
+    let document = await database.findManyDocuments({},0,1000,db,'Posts');
+    res.render('results',{document});
+});
+
+function testMiddleware(req,res,next){
+    console.log('testMiddleware');
+    res.locals.myObj = {myVar: 'something'};
+    next();
+}
+
+// app.use('/test', );
+
+app.get('/test', testMiddleware, async (req,res)=>{
     // console.log(req.body);
     // console.log(req);
     // console.log(req.query);
@@ -210,9 +221,11 @@ app.get('/test', async (req,res)=>{
     // console.log(document)
     
     console.log('\n ------------------------------------------------------------------ \n\n');
-    console.log(req.query);
-    console.log(req.query.text)
-    console.log(req.query.search);
+    // console.log(req.query);
+    // console.log(req.query.text)
+    // console.log(req.query.search);
+
+    console.log(res.locals.myObj);
 
     res.render('test',{document});
 });
@@ -230,12 +243,19 @@ app.get('/test', async (req,res)=>{
 const postsRouter = require('./routes/posts.js');
 app.use('/posts', postsRouter);
 
+// -------- 404
+app.get('/:id', (req,res)=>{
+    res.render('404');
+});
+
 app.listen(port);
 
 // TO DO 2
 // ***posts*** Add <a> links in html to tags: must GET /Results as a search query
 // ***searchBar*** Make it impossible to search by pressing key:Enter or click:search button
 // ***Clean up partials and views [posts,search]
+// ***Remove withe spaces from username when registering
+// ***Clean up new post form
 {}
 // TO DO 1
 // -------------

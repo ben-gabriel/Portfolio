@@ -6,7 +6,12 @@
         <h3> <a href="/users/<%= document.poster %>"> <%= document.poster %> </a></h3>
         <h1> <%= document.content %> </h1>
         <h1> - <%= document.quoteAuthor %> </h1>
-        <a href=""> <%= document.tags %> </a>
+
+        <% document.tags.forEach( tag =>{ %>
+            <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
+        <% }) %>   
+
+        <br>
         <a href=<%= './posts/'+ document.publicID %>> <%= document.comments.length %> comments </a>
 
     </div>

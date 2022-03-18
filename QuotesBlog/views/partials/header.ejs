@@ -1,0 +1,11 @@
+<div id="headerDiv" style="border: 1px black solid; display:flex; flex-direction: row; flex-grow: 1; align-items: center; justify-content: space-evenly; gap: 1.5em;">
+
+    <h3>Hello <%= locals.userInfo.username || 'to QuotesBlog' %>!</h3> 
+    
+    <%- include('./searchBar.ejs') %>
+    
+    <a href="/all">Home</a> 
+    <a href="/posts/new">New Post</a>
+    <%- include('./logoutButton.ejs') %>
+    
+</div>

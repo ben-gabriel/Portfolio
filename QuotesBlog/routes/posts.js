@@ -79,7 +79,7 @@ router.post('/newComment', async (req,res)=>{
     else{
         // *** promt to log in
         console.log('not logged in');
-        res.redirect(req.body.postUrl);
+        res.redirect('/login');
     }
 
     
