@@ -252,9 +252,10 @@ app.listen(port);
 
 // TO DO 2
 // ***posts*** Add <a> links in html to tags: must GET /Results as a search query
-// ***searchBar*** Make it impossible to search by pressing key:Enter or click:search button
+// ***searchBar*** Make it impossible to search by pressing key:Enter or click:search button when there is no parameter
+//                 When there is a parameter in search input it should also enter the query even if it was not pressed by comma 
 // ***Clean up partials and views [posts,search]
-// ***Remove withe spaces from username when registering
+// ***Remove white spaces from username when registering
 // ***Clean up new post form
 {}
 // TO DO 1

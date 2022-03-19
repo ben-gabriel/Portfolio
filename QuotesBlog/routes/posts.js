@@ -29,6 +29,9 @@ router.post('/new', async (req,res)=>{
 
         let postTags = req.body.postTags;
         postTags = postTags.split(',');
+        for (let index = 0; index < postTags.length; index++) {
+            postTags[index] = postTags[index].replace(/\s+/g,'');
+        }
 
         let newPost = {
             poster: req.session.username,

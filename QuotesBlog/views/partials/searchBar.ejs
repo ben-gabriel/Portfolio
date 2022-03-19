@@ -79,6 +79,41 @@
 
     }   
 
+    submitButton.addEventListener('click', (e)=>{
+        e.preventDefault();
+        if( (inputSearch.value.replace(/\s+/g,'') === '') && (inputText.value.replace(/\s+/g,'') === '') ){
+            console.log('Empty query');
+        }
+        else{
+            if(inputSearch.value.includes(inputText.value.replace(/\s+/g,''))){
+                console.log(inputText.value+' tag is already in search query');
+                form.submit();
+            }
+            else{
+                addTagToSearch(inputText.value);
+                form.submit();
+            }
+        }
+    });
+
+    inputText.addEventListener('keydown', (key)=>{
+        if(key.code === 'Enter'){
+            key.preventDefault();
+            if( (inputSearch.value.replace(/\s+/g,'') === '') && (inputText.value.replace(/\s+/g,'') === '') ){
+                console.log('Empty query');
+            }
+            else{
+                if(inputSearch.value.includes(inputText.value.replace(/\s+/g,''))){
+                    console.log(inputText.value+' tag is already in search query');
+                    form.submit();
+                }
+                else{
+                    addTagToSearch(inputText.value);
+                    form.submit();
+                }
+            }
+        } 
+    });
 
     inputText.addEventListener('keydown', (key)=>{
         if(key.code === 'Comma'){
