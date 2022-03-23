@@ -2,6 +2,8 @@
 
 <form action="./login" method="POST">
 
+    <h3 id="errorMessage"><%= locals.errorMessage || '' %></h3>
+
     <div>
         <label for="username">Username</label>
         <input type="text" id="username" name='username' required>    

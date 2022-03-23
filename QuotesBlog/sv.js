@@ -72,8 +72,7 @@ app.get('/register', (req, res)=>{
     }
 });
 
-app.post('/register', async (req,res)=>{
-    
+app.post('/register', async (req,res)=>{  
     // Check if form is healthy by checking if req.body.username exist + as a string
     if(req.body.username){
         req.body.username = req.body.username.toString();
@@ -134,51 +133,53 @@ app.post('/register', async (req,res)=>{
 });
 
 app.post('/login', async (req, res)=>{
-    //get user info
-    //check if username exist
-    //false: prompt message/prompt register
-    //true: compare password
-    //  if password incorrect, prompt message
-    //  if password correct, authenticate with session cookie
-    //  send response with user info
 
-    // *** To Do, check if form is healthy
-    //     by checking if req.body.username exist+ as a string
-    //     -check what happens if you try to access a body.thing that does not exist in the form 
-    
-    if(!req.session.isLoggedIn){
-        try {
-            let userCheck = await database.findOneDocument({username: req.body.username}, db, 'Users');
-            if(userCheck){
-                // Username is correct, compare password
-                let passwordComparison = await bcrypt.compare(req.body.password, userCheck.password);
+    //check if form is healthy by checking if req.body.username exist + as a string
+    if(req.body.username){
+        req.body.username = req.body.username.toString();
 
-                if(passwordComparison){
-                    console.log('password is correct');
-                    req.session.isLoggedIn = true;
-                    req.session.username = userCheck.username;
-                    res.redirect('/');
+        if(!req.session.isLoggedIn){
+            try {
+                let userCheck = await database.findOneDocument({username: req.body.username}, db, 'Users');
+                if(userCheck){
+                    // Username is correct, compare password
+                    let passwordComparison = await bcrypt.compare(req.body.password, userCheck.password);
 
+                    if(passwordComparison){
+                        console.log('password is correct');
+                        req.session.isLoggedIn = true;
+                        req.session.username = userCheck.username;
+                        res.redirect('/');
+
+                    }
+                    else{
+                        // *** Promt user with error
+                        console.log('incorrect password')
+                        res.locals.errorMessage = 'Incorrect Password';    
+                        res.render('login');
+                    }
                 }
                 else{
-                    console.log('incorrect password')
-                    // *** Promt user with error
-                    res.redirect('/login');
+                    // Wrong username / does not exist
+                    // *** Promt user with error / to register 
+                    console.log('incorrect Username')
+                    res.locals.errorMessage = 'Incorrect Username';    
+                    res.render('login')
                 }
-            }
-            else{
-                // Wrong username / does not exist
-                // *** Promt user with error / to register 
-                res.redirect('/login')
-            }
 
-        } 
-        catch (e) {
-            console.log(e);
-            res.redirect('/'); //placeholder
+            } 
+            catch (e) {
+                console.log(e);
+                res.redirect('/'); //placeholder, internal server error
+            }
+        }
+        else{
+            //User is already logged in
+            res.redirect('/');
         }
     }
     else{
+        //Form was not healthy
         res.redirect('/');
     }
 });
@@ -261,7 +262,7 @@ const postsRouter = require('./routes/posts.js');
 app.use('/posts', postsRouter);
 
 // -------- 404
-app.get('/:id', (req,res)=>{
+app.get('*', (req,res)=>{
     res.render('404');
 });
 
@@ -274,6 +275,7 @@ app.listen(port);
 // ***Clean up partials and views [posts,search]
 // ***Remove white spaces from username when registering
 // ***Clean up new post form
+// ***Check what happens if you try to access a body.thing that does not exist in the form 
 {}
 // TO DO 1
 // -------------
