@@ -73,50 +73,62 @@ app.get('/register', (req, res)=>{
 });
 
 app.post('/register', async (req,res)=>{
+    
+    // Check if form is healthy by checking if req.body.username exist + as a string
+    if(req.body.username){
+        req.body.username = req.body.username.toString();
 
-    // *** To Do, check if form is healthy
-    //     by checking if req.body.username exist+ as a string
-    if(!req.session.isLoggedIn){
-        try {
-            //Check if username is free
-            let usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
-            
-            
-            //True : save info
-            if(!usernameCheck){
-                console.log('can create username');
+        if(!req.session.isLoggedIn){
+            try {
+                //Check if username is free
+                let usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
                 
-                let salt = await bcrypt.genSalt();
-                let hashedPassword = await bcrypt.hash(req.body.password, salt);
+                //True : save info
+                if(!usernameCheck){
+                    console.log('can create username');
+                    
+                    let salt = await bcrypt.genSalt();
+                    let hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-                let newUserDocument = {
-                    username: req.body.username,
-                    password: hashedPassword,
+                    let newUserDocument = {
+                        username: req.body.username.replace(/\s+/g,''), //Remove any blank spaces left over
+                        password: hashedPassword,
+                    }
+                    await database.createOneDocument(newUserDocument, db, "Users");
+                    
+                    //check if creation was succesful then return
+                    usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
+                    if(usernameCheck){
+                        //Does 1st login automatically
+                        req.session.isLoggedIn = true;
+                        req.session.username = req.body.username;
+                        res.redirect('/');
+                    }else{
+                        //Error, Send error message
+                        res.locals.usernameError = 'Somethign went wrong creating the user, please try again.'
+                        res.redirect('register');
+                    }
+
                 }
-                await database.createOneDocument(newUserDocument, db, "Users");
-                
-                //check if creation was succesful then return
-                usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
-                if(usernameCheck){
-                    // *** Creation Succesful, should login automatically
-                    res.redirect('/login');
-                }else{
-                    // *** Error, Send error message
-                    res.redirect('/register');
-                }
+                //False : send error message
+                else{
+                    console.log('cannot create username');
+                    res.locals.usernameError = 'Username Already Taken';
+                    res.locals.usernameEntered = req.body.username;
+                    res.render('register');
+                } 
 
-            }
-            else{
-                // *** False: send error message
-                console.log('cannot create username');
-                res.redirect('/register');//placeholder
-            } 
-
-        }catch (e) {
-            console.log(e)
-        }  
-    } 
+            }catch (e) {
+                console.log(e)
+            }  
+        } 
+        else{
+            //User is already Logged In
+            res.redirect('/');
+        }
+    }
     else{
+        //Form was not healthy
         res.redirect('/');
     }
 });
@@ -178,7 +190,12 @@ app.post('/logout', (req, res)=>{
 
 app.get('/users/:username', async (req,res)=>{
     let userData = await database.findOneDocument({username: req.params.username},db,'Users');
-    res.render('userProfile',{userData});
+    if(userData){
+        res.render('userProfile',{userData});
+    }
+    else{
+        res.status(404).render('404')
+    }
 });
 
 app.get('/results', async (req,res)=>{

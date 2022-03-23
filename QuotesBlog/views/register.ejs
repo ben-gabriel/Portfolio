@@ -3,8 +3,10 @@
 <form action="./register" method="POST">
 
     <div>
+        <h3 id="errorMessage" style="visibility: visible; position: relative; "> <%= locals.usernameError || '' %> </h3>
         <label for="username">Username</label>
-        <input type="text" id="username" name='username' required>    
+        <input type="text" id="username" name='username' required value="<%= locals.usernameEntered %>">
+        <label id="usernameStatus"></label>
     </div>
 
     <div>
@@ -17,3 +19,37 @@
 </form>
 
 <a href="/login">Login</a>
+<script>
+
+let usernameInput = document.getElementById('username');
+let errorMessage = document.getElementById('errorMessage');
+
+usernameInput.addEventListener('keydown',(key)=>{
+    if(key.code === 'Space'){
+        key.preventDefault();
+        errorMessage.innerText = 'Username cannot contain blank spaces';
+        errorMessage.style.visibility = 'visible'
+        setTimeout(()=>{
+            errorMessage.style.visibility = 'hidden'
+        }, 2000);
+    }
+});
+
+usernameInput.addEventListener('keyup', async(key)=>{
+    let fetcher = await fetch('/users/'+usernameInput.value);
+    let usernameStatus = document.getElementById('usernameStatus');
+    if(fetcher.ok){
+        console.log('username taken');
+        usernameStatus.innerText = 'Username Taken'
+    }
+    else{
+        usernameStatus.innerText = 'Username Available'
+        console.log('username free');
+    }
+    let inputCheck = usernameInput.value.replace(/\s+/g,'');
+    if(inputCheck === ''){
+        usernameStatus.innerText = '';
+    }
+});
+
+</script>
