@@ -13,7 +13,40 @@
 
         <br>
         <a href=<%= './posts/'+ document.publicID %>> <%= document.comments.length %> comments </a>
-
+        
+        <button class="favoriteButton" id="favorite_<%= document.publicID %>">♥</button>
+        
     </div>
 
 <% }) %>
+
+<script defer>
+    let favoriteButtonCollection = document.getElementsByClassName('favoriteButton');
+    let array = [];
+    // console.log(favoriteButton[8])
+    
+    for (let index = 0; index < favoriteButtonCollection.length; index++) {
+        array[index] = favoriteButtonCollection[index];
+    }   
+
+    array.forEach( button =>{
+        
+        (async()=>{
+            let fetcher = await (await fetch('/users/favorite/'+button.id.slice(9))).json();
+            if(fetcher.favoriteStatus === true){
+                button.className = 'favoriteButton favorited';
+                button.style.border = 'red 2px solid'; // placeholder 
+            }
+        })();
+
+        button.addEventListener('click', async ()=>{
+            let fetcher = await (await fetch('/users/favorite/'+button.id.slice(9))).json();
+            if(fetcher.action === 'removed'){
+                button.className = 'favoriteButton'; // remove favorited class
+                button.style.border = 'red 2px solid'; // placeholder 
+            }
+        });
+
+    });
+
+</script>

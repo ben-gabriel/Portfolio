@@ -39,7 +39,8 @@ router.post('/new', async (req,res)=>{
             tags: postTags,
             quoteAuthor: req.body.quoteAuthor,
             publicID: postUrl,
-            comments: []
+            comments: [],
+            favoritedBy:[]
         }
         
         console.log(newPost)

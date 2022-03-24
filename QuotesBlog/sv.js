@@ -189,16 +189,6 @@ app.post('/logout', (req, res)=>{
     res. redirect('/');
 });
 
-app.get('/users/:username', async (req,res)=>{
-    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
-    if(userData){
-        res.render('userProfile',{userData});
-    }
-    else{
-        res.status(404).render('404')
-    }
-});
-
 app.get('/results', async (req,res)=>{
     let document = {};
     if(req.query.search_query){
@@ -222,12 +212,47 @@ app.get('/all', async (req,res)=>{
     res.render('results',{document});
 });
 
+// -------- Users (*** Make router)
+
+app.get('/users/:username', async (req,res)=>{
+    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
+    if(userData){
+        res.render('userProfile',{userData});
+    }
+    else{
+        res.status(404).render('404')
+    }
+});
+
+app.get('/users/favorite/:postUrl', async (req,res)=>{
+    if(req.session.isLoggedIn){
+        let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts');
+        if(checkPost){
+            let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
+            if(checkFavStatus){
+                // *** Remove username from array in db
+                res.json({favoriteStatus:true, action: 'removed'});
+            }
+            else{
+                await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+                res.json({favoriteStatus:true, action: 'added'});
+            }
+        }
+        else{
+            res.json({error:'Post not found'});
+        }
+    }
+    else{
+        res.json({error:'Not Logged In'});
+    }
+});
+
+// -------- Test Route
 function testMiddleware(req,res,next){
     console.log('testMiddleware');
     res.locals.myObj = {myVar: 'something'};
     next();
 }
-
 // app.use('/test', );
 
 app.get('/test', testMiddleware, async (req,res)=>{
@@ -248,6 +273,7 @@ app.get('/test', testMiddleware, async (req,res)=>{
     res.render('test',{document});
 });
 
+
 // -------- Routes-> express.Router()
 //
 // /users
@@ -257,7 +283,6 @@ app.get('/test', testMiddleware, async (req,res)=>{
 // /posts
 // /#search_query/pageNumber
 // /all/pageNumber
-
 const postsRouter = require('./routes/posts.js');
 app.use('/posts', postsRouter);
 
