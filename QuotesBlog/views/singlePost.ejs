@@ -1,40 +1,43 @@
 <%- include('./partials/header.ejs') %> 
+<div id="div_<%= locals.postInfo.publicID %>">
 
-<h3> <a href="/users/<%= locals.postInfo.poster || '-' %>"><%= locals.postInfo.poster || '-' %></a> </h3>
-<h2> <%= locals.postInfo.content || '-' %> </h2> 
-<h2> - <%= locals.postInfo.quoteAuthor || '-' %></h2>
+    <h3> <a href="/users/<%= locals.postInfo.poster || '-' %>"><%= locals.postInfo.poster || '-' %></a> </h3>
+    <h2> <%= locals.postInfo.content || '-' %> </h2> 
+    <h2> - <%= locals.postInfo.quoteAuthor || '-' %></h2>
+
+    <!-- delete/favorite button -->
+    <% if(locals.userInfo.username === locals.postInfo.poster){ %>
+        <button class="deleteButton" id="delete_<%= locals.postInfo.publicID %>">Delete</button>
+    <% }else{ %>
+        <button class="favoriteButton" id="favorite_<%= locals.postInfo.publicID %>">♥ favorite</button>
+    <% } %>
+
+    <p>Tags</p>
+    <% locals.postInfo.tags.forEach( tag =>{ %>
+        <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
+    <% }) %>
+
+    <form action="/posts/delete/asdasdasd" method="post">
+        <input type="text" name="input1">
+        <button type="submit">submit</button>
+    </form>
+
+    <p>Comments</p>
+    <form action="./newComment" method="post"> 
+        <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+        <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
+
+        <input type="text" name="commentContent">
+        <input type="submit" value="Comment">
+        
+    </form>
 
 
-<% if(locals.userInfo.username === locals.postInfo.poster){ %>
-    <button class="deleteButton" id="delete_<%= locals.postInfo.publicID %>">Delete</button>
-<% } %>
+    <div class="commentsDiv" id="commentsDiv">
 
-
-<p>Tags</p>
-<% locals.postInfo.tags.forEach( tag =>{ %>
-    <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
-<% }) %>
-
-<form action="/posts/delete/asdasdasd" method="post">
-    <input type="text" name="input1">
-    <button type="submit">submit</button>
-</form>
-
-<p>Comments</p>
-<form action="./newComment" method="post"> 
-    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
-    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
-
-    <input type="text" name="commentContent">
-    <input type="submit" value="Comment">
-    
-</form>
-
-
-<div class="commentsDiv" id="commentsDiv">
+    </div>
 
 </div>
-
 
 <script>
     
@@ -202,9 +205,16 @@
 
     array.forEach(deleteButton => {
         deleteButton.addEventListener('click', async()=>{
-            console.log(deleteButton.id.slice(7));
             let fetcher = await (await fetch('./delete/'+deleteButton.id.slice(7),{method:'POST'})).json();
-            console.log(fetcher);
+            if(fetcher.action === 'deleted'){
+                let deleteDiv = document.getElementById('div_'+deleteButton.id.slice(7));
+                deleteDiv.innerHTML = '<h2> Post deleted successfully</h2>'
+            }
+            else{
+                // it should never get to this path if the user does not mess with http request
+                // just as precaution: redirect to GET/all
+                window.location.href = "/all";
+            }
         });
     });
 

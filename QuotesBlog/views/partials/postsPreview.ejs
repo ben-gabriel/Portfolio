@@ -1,7 +1,7 @@
 <% locals.document.forEach( document =>{ %>
 
     <br><br>
-    <div style="border: 1px black solid">
+    <div style="border: 1px black solid" id="div_<%= document.publicID %>">
                 
         <h3> <a href="/users/<%= document.poster %>"> <%= document.poster %> </a></h3>
         <h1> <%= document.content %> </h1>
@@ -13,14 +13,22 @@
 
         <br>
         <a href=<%= './posts/'+ document.publicID %>> <%= document.comments.length %> comments </a>
+    
         
-        <button class="favoriteButton" id="favorite_<%= document.publicID %>">♥</button>
+        <!-- delete/favorite button -->
+        <% if(locals.userInfo.username === document.poster){ %>
+            <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
+        <% }else{ %>
+            <button class="favoriteButton" id="favorite_<%= document.publicID %>">♥ favorite</button>
+        <% } %>
         
     </div>
 
 <% }) %>
 
 <script defer>
+
+//favoriteButton
     let favoriteButtonCollection = document.getElementsByClassName('favoriteButton');
     let array = [];
     // console.log(favoriteButton[8])
@@ -48,5 +56,30 @@
         });
 
     });
+
+//deleteButton
+    let deleteButtonCollection = document.getElementsByClassName('deleteButton');
+    let deleteArray = [];
+
+    for (let index = 0; index < deleteButtonCollection.length; index++) {
+        deleteArray[index] = deleteButtonCollection[index];
+    }
+
+    deleteArray.forEach(deleteButton => {
+        deleteButton.addEventListener('click', async()=>{
+            let fetcher = await (await fetch('/posts/delete/'+deleteButton.id.slice(7),{method:'POST'})).json();
+            if(fetcher.action === 'deleted'){
+                // delete the postsPreview.ejs from DOM 
+                let deleteDiv = document.getElementById('div_'+deleteButton.id.slice(7));
+                deleteDiv.innerHTML = '<h2> Post deleted successfully</h2>'
+            }
+            else{
+                // it should never get to this path if the user does not mess with http request
+                // just as precaution: redirect to GET/all
+                window.location.href = "/all";
+            }
+        });
+    });
+
 
 </script>
