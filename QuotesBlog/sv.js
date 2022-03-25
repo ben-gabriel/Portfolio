@@ -256,6 +256,7 @@ function testMiddleware(req,res,next){
 // app.use('/test', );
 
 app.get('/test', testMiddleware, async (req,res)=>{
+    console.log('\n ------------------------------------------------------------------ \n\n');
     // console.log(req.body);
     // console.log(req);
     // console.log(req.query);
@@ -264,16 +265,19 @@ app.get('/test', testMiddleware, async (req,res)=>{
     // let document = await database.deleteOneDocument({publicID:"I_dont_like_sand_Its_coarse_1646918777586"},db,'Posts');
     // console.log(document)
     
-    console.log('\n ------------------------------------------------------------------ \n\n');
     // console.log(req.query);
     // console.log(req.query.text)
     // console.log(req.query.search);
 
     console.log(res.locals.myObj);
 
-    res.render('test',{document});
+    res.render('test',{});
 });
 
+app.post('/test', (req,res)=>{
+    console.log(req.body);
+    res.render('login.ejs');
+});
 
 // -------- Routes-> express.Router()
 //

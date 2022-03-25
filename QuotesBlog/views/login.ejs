@@ -1,21 +1,25 @@
-<h1>Login</h1>
+<div style="border: 1px solid blue;">
 
-<form action="./login" method="POST">
+    <h1>Login</h1>
+    
+    <form action="./login" method="POST">
+        
+        <h3 id="errorMessage"><%= locals.errorMessage || '' %></h3>
+        
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name='username' required>    
+        </div>
+        
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name='password' required>    
+        </div>
+        
+        <button type="submit">Login</button>
+        
+    </form>
 
-    <h3 id="errorMessage"><%= locals.errorMessage || '' %></h3>
+    <a href="/register">Register</a>
 
-    <div>
-        <label for="username">Username</label>
-        <input type="text" id="username" name='username' required>    
-    </div>
-
-    <div>
-        <label for="password">Password</label>
-        <input type="password" id="password" name='password' required>    
-    </div>
-
-    <button type="submit">Login</button>
-
-</form>
-
-<a href="/register">Register</a>
+</div>
