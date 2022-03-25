@@ -4,15 +4,23 @@
 <h2> <%= locals.postInfo.content || '-' %> </h2> 
 <h2> - <%= locals.postInfo.quoteAuthor || '-' %></h2>
 
-<p>Tags</p>
 
+<% if(locals.userInfo.username === locals.postInfo.poster){ %>
+    <button class="deleteButton" id="delete_<%= locals.postInfo.publicID %>">Delete</button>
+<% } %>
+
+
+<p>Tags</p>
 <% locals.postInfo.tags.forEach( tag =>{ %>
     <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
 <% }) %>
 
+<form action="/posts/delete/asdasdasd" method="post">
+    <input type="text" name="input1">
+    <button type="submit">submit</button>
+</form>
 
 <p>Comments</p>
-
 <form action="./newComment" method="post"> 
     <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
     <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
@@ -30,157 +38,174 @@
 
 <script>
     
-let fetchComments = async function(url){
-    try{
-        let fetcher = await fetch(url);
-        
-        if(fetcher.ok === true){
-            //checks if the fetching was successful
-            console.log('Fetch Done');
-            let json = await((fetcher).json()); 
-            return json
-        }
-    }
-    catch(e){console.error(e)}
-}
-
-function loadComments(commentsJson){
-
-    let commentsDiv = document.getElementById('commentsDiv');
-
-    if(commentsJson[0]){
-        let index = 0;
-        let flag = commentsJson[0];
-
-        while(flag){
-
-            if(commentsJson[index].replyingToID === 'originalPost'){
-                // is replying to main post
-
-                let commentHtml = `
-                    <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
-                    <p>  ${commentsJson[index].commentContent} <p>
-                `;
-                let replyFormHtml = `
-                    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
-                    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
-
-                    <input type="text" name="commentContent" id="commentContent">
-                    <input type="submit" value="Comment">
-                `;
-
-                
-                let newCommentDiv = document.createElement('div');
-                newCommentDiv.id = commentsJson[index].commentID;
-                newCommentDiv.className = 'commentTopLevel';
-                
-                newCommentDiv.innerHTML = commentHtml
-                newCommentDiv.style.border = 'black 1px solid' //placeHolder
-
-                let replyButton = document.createElement('button');
-                replyButton.textContent = 'Reply';
-
-                let cancelReplyButton = document.createElement('button');
-                cancelReplyButton.textContent = 'Cancel';
-
-                let replyForm = document.createElement('form');
-                replyForm.action = './newComment';
-                replyForm.method = 'post';
-                replyForm.innerHTML = replyFormHtml;
-                replyForm.appendChild(cancelReplyButton);
-                
-
-                replyButton.addEventListener('click',()=>{
-                    // newCommentDiv.appendChild(replyForm);
-                    newCommentDiv.insertBefore(replyForm, newCommentDiv.childNodes[4]);
-                    newCommentDiv.removeChild(replyButton);
-                });
-
-                cancelReplyButton.addEventListener('click', ()=>{
-                    newCommentDiv.removeChild(replyForm);
-                    // newCommentDiv.appendChild(replyButton);
-                    newCommentDiv.insertBefore(replyButton, newCommentDiv.childNodes[4]);
-                });
-
-                newCommentDiv.appendChild(replyButton);
-                commentsDiv.appendChild(newCommentDiv);
-
+// fetch comments
+    let fetchComments = async function(url){
+        try{
+            let fetcher = await fetch(url);
+            
+            if(fetcher.ok === true){
+                //checks if the fetching was successful
+                console.log('Fetch Done');
+                let json = await((fetcher).json()); 
+                return json
             }
-            else{
-                // is replying to a comment
-                let parentCommentDiv = document.getElementById(`${commentsJson[index].replyingToID}`);
-                
-                let commentHtml = `
-                    <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
-                    <p>  ${commentsJson[index].commentContent} <p>
-                `;
-                let replyFormHtml = `
-                    <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
-                    <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
+        }
+        catch(e){console.error(e)}
+    }
 
-                    <input type="text" name="commentContent">
-                    <input type="submit" value="Comment">
-                `;
+    function loadComments(commentsJson){
 
-                
-                let newCommentDiv = document.createElement('div');
-                newCommentDiv.id = commentsJson[index].commentID;
-                newCommentDiv.className = 'commentReplyLevel';
-                
-                newCommentDiv.innerHTML = commentHtml
-                newCommentDiv.style.border = 'blue 1px solid' //placeHolder
-                newCommentDiv.style.margin= '5px'
+        let commentsDiv = document.getElementById('commentsDiv');
 
-                let replyButton = document.createElement('button');
-                replyButton.textContent = 'Reply';
+        if(commentsJson[0]){
+            let index = 0;
+            let flag = commentsJson[0];
 
-                let cancelReplyButton = document.createElement('button');
-                cancelReplyButton.textContent = 'Cancel';
+            while(flag){
 
-                let replyForm = document.createElement('form');
-                replyForm.action = './newComment';
-                replyForm.method = 'post';
-                replyForm.innerHTML = replyFormHtml;
-                replyForm.appendChild(cancelReplyButton);
-                
+                if(commentsJson[index].replyingToID === 'originalPost'){
+                    // is replying to main post
 
-                replyButton.addEventListener('click',()=>{
-                    // newCommentDiv.appendChild(replyForm);
-                    newCommentDiv.insertBefore(replyForm, newCommentDiv.childNodes[4]);
-                    newCommentDiv.removeChild(replyButton);
-                });
+                    let commentHtml = `
+                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <p>  ${commentsJson[index].commentContent} <p>
+                    `;
+                    let replyFormHtml = `
+                        <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+                        <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
 
-                cancelReplyButton.addEventListener('click', ()=>{
-                    newCommentDiv.removeChild(replyForm);
-                    // newCommentDiv.appendChild(replyButton);
-                    newCommentDiv.insertBefore(replyButton, newCommentDiv.childNodes[4]);
-                });
+                        <input type="text" name="commentContent" id="commentContent">
+                        <input type="submit" value="Comment">
+                    `;
 
-                newCommentDiv.appendChild(replyButton);
-                parentCommentDiv.appendChild(newCommentDiv);
+                    
+                    let newCommentDiv = document.createElement('div');
+                    newCommentDiv.id = commentsJson[index].commentID;
+                    newCommentDiv.className = 'commentTopLevel';
+                    
+                    newCommentDiv.innerHTML = commentHtml
+                    newCommentDiv.style.border = 'black 1px solid' //placeHolder
+
+                    let replyButton = document.createElement('button');
+                    replyButton.textContent = 'Reply';
+
+                    let cancelReplyButton = document.createElement('button');
+                    cancelReplyButton.textContent = 'Cancel';
+
+                    let replyForm = document.createElement('form');
+                    replyForm.action = './newComment';
+                    replyForm.method = 'post';
+                    replyForm.innerHTML = replyFormHtml;
+                    replyForm.appendChild(cancelReplyButton);
+                    
+
+                    replyButton.addEventListener('click',()=>{
+                        // newCommentDiv.appendChild(replyForm);
+                        newCommentDiv.insertBefore(replyForm, newCommentDiv.childNodes[4]);
+                        newCommentDiv.removeChild(replyButton);
+                    });
+
+                    cancelReplyButton.addEventListener('click', ()=>{
+                        newCommentDiv.removeChild(replyForm);
+                        // newCommentDiv.appendChild(replyButton);
+                        newCommentDiv.insertBefore(replyButton, newCommentDiv.childNodes[4]);
+                    });
+
+                    newCommentDiv.appendChild(replyButton);
+                    commentsDiv.appendChild(newCommentDiv);
+
+                }
+                else{
+                    // is replying to a comment
+                    let parentCommentDiv = document.getElementById(`${commentsJson[index].replyingToID}`);
+                    
+                    let commentHtml = `
+                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <p>  ${commentsJson[index].commentContent} <p>
+                    `;
+                    let replyFormHtml = `
+                        <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+                        <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
+
+                        <input type="text" name="commentContent">
+                        <input type="submit" value="Comment">
+                    `;
+
+                    
+                    let newCommentDiv = document.createElement('div');
+                    newCommentDiv.id = commentsJson[index].commentID;
+                    newCommentDiv.className = 'commentReplyLevel';
+                    
+                    newCommentDiv.innerHTML = commentHtml
+                    newCommentDiv.style.border = 'blue 1px solid' //placeHolder
+                    newCommentDiv.style.margin= '5px'
+
+                    let replyButton = document.createElement('button');
+                    replyButton.textContent = 'Reply';
+
+                    let cancelReplyButton = document.createElement('button');
+                    cancelReplyButton.textContent = 'Cancel';
+
+                    let replyForm = document.createElement('form');
+                    replyForm.action = './newComment';
+                    replyForm.method = 'post';
+                    replyForm.innerHTML = replyFormHtml;
+                    replyForm.appendChild(cancelReplyButton);
+                    
+
+                    replyButton.addEventListener('click',()=>{
+                        // newCommentDiv.appendChild(replyForm);
+                        newCommentDiv.insertBefore(replyForm, newCommentDiv.childNodes[4]);
+                        newCommentDiv.removeChild(replyButton);
+                    });
+
+                    cancelReplyButton.addEventListener('click', ()=>{
+                        newCommentDiv.removeChild(replyForm);
+                        // newCommentDiv.appendChild(replyButton);
+                        newCommentDiv.insertBefore(replyButton, newCommentDiv.childNodes[4]);
+                    });
+
+                    newCommentDiv.appendChild(replyButton);
+                    parentCommentDiv.appendChild(newCommentDiv);
+                }
+
+                index = index + 1;
+                flag = commentsJson[index];
             }
+            
+        }
+        else{
+            // Load 'no comments yet' message on post
+            let newCommentDiv = document.createElement('div');
+            newCommentDiv.innerHTML = '<h3>No Comments Yet</H3>'
 
-            index = index + 1;
-            flag = commentsJson[index];
+            commentsDiv.appendChild(newCommentDiv);
+
         }
         
     }
-    else{
-        // Load 'no comments yet' message on post
-        let newCommentDiv = document.createElement('div');
-        newCommentDiv.innerHTML = '<h3>No Comments Yet</H3>'
 
-        commentsDiv.appendChild(newCommentDiv);
+    let comments = fetchComments('./comments/'+"<%= locals.postInfo.publicID %>");
 
+    comments.then( data =>{
+        comments = data;
+     loadComments(comments);
+    });
+
+//deleteButton
+    let deleteButtonCollection = document.getElementsByClassName('deleteButton');
+    let array = [];
+
+    for (let index = 0; index < deleteButtonCollection.length; index++) {
+        array[index] = deleteButtonCollection[index];
     }
-    
-}
 
-let comments = fetchComments('./comments/'+"<%= locals.postInfo.publicID %>");
-
-comments.then( data =>{
-    comments = data;
-    loadComments(comments);
-});
+    array.forEach(deleteButton => {
+        deleteButton.addEventListener('click', async()=>{
+            console.log(deleteButton.id.slice(7));
+            let fetcher = await (await fetch('./delete/'+deleteButton.id.slice(7),{method:'POST'})).json();
+            console.log(fetcher);
+        });
+    });
 
 </script>

@@ -1,3 +1,4 @@
+const res = require("express/lib/response");
 const { MongoClient } = require("mongodb")
 
 const uri = 'mongodb://localhost:27017';
@@ -70,6 +71,7 @@ let database = {
             await client.connect();
             const result = await client.db(db).collection(collection).deleteOne(queryObj);
             console.log(`\n[database.js] deleteOne() = ${result.deletedCount} Document/s deleted\n`);
+            return result;
 
         }catch (e){
             console.error(e);

@@ -214,16 +214,6 @@ app.get('/all', async (req,res)=>{
 
 // -------- Users (*** Make router)
 
-app.get('/users/:username', async (req,res)=>{
-    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
-    if(userData){
-        res.render('userProfile',{userData});
-    }
-    else{
-        res.status(404).render('404')
-    }
-});
-
 app.get('/users/favorite/:postUrl', async (req,res)=>{
     if(req.session.isLoggedIn){
         let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts');
@@ -247,6 +237,16 @@ app.get('/users/favorite/:postUrl', async (req,res)=>{
     }
 });
 
+app.get('/users/:username', async (req,res)=>{
+    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
+    if(userData){
+        res.render('userProfile',{userData});
+    }
+    else{
+        res.status(404).render('404')
+    }
+});
+
 // -------- Test Route
 function testMiddleware(req,res,next){
     console.log('testMiddleware');
@@ -260,7 +260,8 @@ app.get('/test', testMiddleware, async (req,res)=>{
     // console.log(req);
     // console.log(req.query);
 
-    let document = await database.findManyDocuments({$or:[{tags: 'batman'},{tags:'movies'}]},0,5,db,'Posts');
+    // let document = await database.findManyDocuments({$or:[{tags: 'batman'},{tags:'movies'}]},0,5,db,'Posts');
+    // let document = await database.deleteOneDocument({publicID:"I_dont_like_sand_Its_coarse_1646918777586"},db,'Posts');
     // console.log(document)
     
     console.log('\n ------------------------------------------------------------------ \n\n');

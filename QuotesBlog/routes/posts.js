@@ -1,3 +1,4 @@
+const { localsName } = require('ejs');
 const express = require('express');
 const { redirect } = require('express/lib/response');
 const router = express.Router();
@@ -60,6 +61,32 @@ router.post('/new', async (req,res)=>{
         // *** prompt to log in.
         console.log('Not logged in')
         res.redirect('./new')
+    }
+});
+
+router.post('/delete/:postUrl', async(req,res)=>{
+    console.log('\n\n ------- POST/delete');
+
+    let checkPost = await database.findOneDocument({publicID:req.params.postUrl},db,'Posts');
+    if(checkPost){
+        if(checkPost.poster === req.session.username){
+            console.log('User auth true: Delete post');
+            let checkDelete = await database.deleteOneDocument({publicID:req.params.postUrl},db,'Posts');
+            if(checkDelete.deletedCount !== 0){
+                res.json({action:'deleted'});
+            }
+            else{
+                res.json({error:'Something went wrong, try again'});
+            }
+        }
+        else{
+            console.log('Username Does Not Pass Authentication');
+            res.json({error:'User Does Not Pass Authentication'});
+        }
+    }
+    else{
+        console.log('Post Not Found: checkPost = ',checkPost);
+        res.json({error:'Post Not Found'});
     }
 });
 
