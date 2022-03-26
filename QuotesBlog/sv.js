@@ -276,7 +276,7 @@ app.get('/test', testMiddleware, async (req,res)=>{
 
 app.post('/test', (req,res)=>{
     console.log(req.body);
-    res.render('login.ejs');
+    res.render('loginPopup.ejs');
 });
 
 // -------- Routes-> express.Router()
