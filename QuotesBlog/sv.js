@@ -250,7 +250,7 @@ app.get('/users/:username', async (req,res)=>{
 // -------- Scripts
 app.get('/scripts/:fileName',(req,res)=>{
     console.log('\n\nscroipts --------------------')
-    res.sendFile('./scripts/loginPopup.js',{root:__dirname});
+    res.sendFile('./scripts/'+req.params.fileName,{root:__dirname});
 });
 
 
