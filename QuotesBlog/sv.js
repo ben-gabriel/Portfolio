@@ -287,9 +287,113 @@ app.post('/test', (req,res)=>{
     res.render('loginPopup.ejs');
 });
 
-app.post('/popup_register', (req,res)=>{
-    console.log('popup_register: ',req.body);
-    res.json({ok:true});
+app.post('/popup_register', async(req,res)=>{  
+    // Check if form is healthy by checking if req.body.username exist + as a string
+    if(req.body.username && req.body.password){
+        req.body.username = req.body.username.toString();
+        req.body.password = req.body.password.toString();
+
+        if(!req.session.isLoggedIn){
+            try {
+                //Check if username is free
+                let usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
+                
+                //True : save info
+                if(!usernameCheck){
+                    console.log('can create username');
+                    
+                    let salt = await bcrypt.genSalt();
+                    let hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+                    let newUserDocument = {
+                        username: req.body.username.replace(/\s+/g,''), //Remove any blank spaces left over
+                        password: hashedPassword,
+                    }
+                    await database.createOneDocument(newUserDocument, db, "Users");
+                    
+                    //check if creation was succesful then return
+                    usernameCheck = await database.findOneDocument({username:req.body.username}, db, 'Users');
+                    if(usernameCheck){
+                        //Does 1st login automatically
+                        req.session.isLoggedIn = true;
+                        req.session.username = req.body.username;
+                        res.json({error:null});
+                    }else{
+                        //Error, Send error message
+                        res.json({error:'Something went wrong creating the user, please try again.'});
+                    }
+
+                }
+                //False : send error message
+                else{
+                    console.log('cannot create username');
+                    res.json({error:'Username Already Taken'});
+                } 
+
+            }catch (e) {
+                console.log(e)
+            }  
+        } 
+        else{
+            //User is already Logged In
+            res.json({error:'User is already Logged In'});
+        }
+    }
+    else{
+        //Form was not healthy
+        res.redirect('/');
+    }
+});
+
+app.post('/popup_login', async(req,res)=>{
+    
+    //check if form is healthy by checking if req.body.username exist + as a string
+    if(req.body.username && req.body.password){
+        req.body.username = req.body.username.toString();
+        req.body.password = req.body.password.toString();
+
+        if(!req.session.isLoggedIn){
+            try {
+                let userCheck = await database.findOneDocument({username: req.body.username}, db, 'Users');
+                if(userCheck){
+                    // Username is correct, compare password
+                    let passwordComparison = await bcrypt.compare(req.body.password, userCheck.password);
+
+                    if(passwordComparison){
+                        console.log('password is correct');
+                        req.session.isLoggedIn = true;
+                        req.session.username = userCheck.username;
+                        res.json({error:null});
+
+                    }
+                    else{
+                        // *** Promt user with error
+                        console.log('incorrect password')
+                        res.json({error:'Incorrect Password'});    
+                    }
+                }
+                else{
+                    // Wrong username / does not exist
+                    // *** Promt user with error / to register 
+                    console.log('incorrect Username')
+                    res.json({error:'Incorrect Username'});
+                }
+
+            } 
+            catch (e) {
+                console.log(e);
+                res.redirect('/'); //placeholder, internal server error
+            }
+        }
+        else{
+            //User is already logged in
+            res.json({error:'User Is Already Logged In'});
+        }
+    }
+    else{
+        //Form was not healthy
+        res.redirect('/');
+    }
 });
 
 // -------- Routes-> express.Router()

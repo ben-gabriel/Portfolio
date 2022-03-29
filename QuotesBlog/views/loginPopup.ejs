@@ -7,10 +7,11 @@
         <button id="closeLoginButton">x</button>
     </div>
 
+    <h3 id="errorMessage"></h3>
+
     <!-- Login Form -->
     <form action="./login" method="POST" id="loginForm">
         <H1>Login</H1>    
-        <h3 id="errorMessage"><%= locals.errorMessage || '' %></h3>
         
         <div>
             <label for="logUsername">Username</label>
@@ -30,7 +31,6 @@
     <form action="./register" method="POST" id="registerForm" style="display: none;">
         <h1>Register</h1>
         <div>
-            <h3 id="errorMessage" style="visibility: visible; position: relative; "> <%= locals.usernameError || '' %> </h3>
             <label for="regUsername">Username</label>
             <input type="text" id="regUsername" name='username' required value="<%= locals.usernameEntered %>">
             <label id="usernameStatus"></label>
