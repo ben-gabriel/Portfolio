@@ -21,52 +21,94 @@
     async function renderPopup(){
         if(!isPopupActive){
             
-            let fetcher = await (await fetch('/test',{method:'POST'})).text();
-            console.log('fetch = ', fetcher);
+            // if there is not a popupDiv in DOM first do fetch/create elements
+            // if there is, use the already loaded elements/fetched files
+            if(!document.getElementById('loginDiv')){
+                let fetcher = await (await fetch('/test',{method:'POST'})).text();
+                // console.log(fetcher)
+                
+                let popupDiv = document.createElement('div');
+                popupDiv.innerHTML = fetcher;
+                popupDiv.id = 'popupDiv';
+                
+                let body = document.body;
+                
+                body.append(popupDiv);
+                isPopupActive = true;
             
-            let popupDiv = document.createElement('div');
-            popupDiv.innerHTML = fetcher;
+                let loginPopupScript = document.createElement('script');
+                loginPopupScript.innerHTML = await(await fetch('/scripts/loginPopup.js')).text();
+                body.append(loginPopupScript);
+            }
+
+            else{
+                let popupDiv = document.getElementById('popupDiv');
+                popupDiv.style.display = 'block';
+            }
             
-            let body = document.getElementsByTagName('body');
-            
-            body[0].append(popupDiv);
-            isPopupActive = true;
-            
-            let closeLoginButton = document.getElementById('closeLoginButton');
-            
-            closeLoginButton.addEventListener('click',()=>{
-                console.log('test');
-                body[0].removeChild(popupDiv);
-                isPopupActive = false;
-            });
+
             
         }
     }
 
+// {
+//     // Close Popup
+//     let closeLoginButton = document.getElementById('closeLoginButton');
+//     closeLoginButton.addEventListener('click',()=>{
+//         popupDiv.style.display = 'none';
+//         isPopupActive = false;
+//     });
+
+//     // Change Popup Tab
+//     let registerTab = document.getElementById('registerTab');
+//     let registerForm = document.getElementById('registerForm');
+//     let loginTab = document.getElementById('loginTab');
+//     let loginForm = document.getElementById('loginForm');
+
+//     registerTab.addEventListener('click', ()=>{
+//         loginForm.style.display = 'none';
+//         registerForm.style.display = 'block';
+//     });
+
+//     loginTab.addEventListener('click', ()=>{
+//         registerForm.style.display = 'none';
+//         loginForm.style.display = 'block';
+//     });
+
+
+//     // Register form error check
+//     let usernameInput = document.getElementById('RegUsername');
+//     let errorMessage = document.getElementById('errorMessage');
+
+//     usernameInput.addEventListener('keydown',(key)=>{
+//         if(key.code === 'Space'){
+//             key.preventDefault();
+//             errorMessage.innerText = 'Username cannot contain blank spaces';
+//             errorMessage.style.visibility = 'visible'
+//             setTimeout(()=>{
+//                 errorMessage.style.visibility = 'hidden'
+//             }, 2000);
+//         }
+//     });
+
+//     usernameInput.addEventListener('keyup', async(key)=>{
+//         let fetcher = await fetch('/users/'+usernameInput.value);
+//         let usernameStatus = document.getElementById('usernameStatus');
+//         if(fetcher.ok){
+//             console.log('username taken');
+//             usernameStatus.innerText = 'Username Taken'
+//         }
+//         else{
+//             usernameStatus.innerText = 'Username Available'
+//             console.log('username free');
+//         }
+//         let inputCheck = usernameInput.value.replace(/\s+/g,'');
+//         if(inputCheck === ''){
+//             usernameStatus.innerText = '';
+//         }
+//     });
+// }
 
 </script>
 
-<style>
-    /* Placeholder */
-    *{
-        box-sizing: border-box;
-    }
-    
-    #loginDiv{
-        background-color: rgba(31, 71, 71, 0.925);
-        
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
 
-        position:absolute;
-        top: 0;
-        left: 0;
-    
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-</style>

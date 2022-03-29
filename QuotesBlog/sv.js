@@ -247,6 +247,13 @@ app.get('/users/:username', async (req,res)=>{
     }
 });
 
+// -------- Scripts
+app.get('/scripts/:fileName',(req,res)=>{
+    console.log('\n\nscroipts --------------------')
+    res.sendFile('./scripts/loginPopup.js',{root:__dirname});
+});
+
+
 // -------- Test Route
 function testMiddleware(req,res,next){
     console.log('testMiddleware');

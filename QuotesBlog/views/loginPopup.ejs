@@ -1,25 +1,75 @@
 <div id="loginDiv" style="border: 1px solid blue;">
 
-    <button id="closeLoginButton">x</button>
+    <!-- Nav -->
+    <div>
+        <button id="loginTab">Login</button>
+        <button id="registerTab">Register</button>
+        <button id="closeLoginButton">x</button>
+    </div>
 
-    <h1>Login</h1>
-    
-    <form action="./login" method="POST">
-        
+    <!-- Login Form -->
+    <form action="./login" method="POST" id="loginForm">
+        <H1>Login</H1>    
         <h3 id="errorMessage"><%= locals.errorMessage || '' %></h3>
         
         <div>
-            <label for="username">Username</label>
-            <input type="text" id="username" name='username' required>    
+            <label for="logUsername">Username</label>
+            <input type="text" id="logUsername" name='username' required>    
         </div>
         
         <div>
-            <label for="password">Password</label>
-            <input type="password" id="password" name='password' required>    
+            <label for="logPassword">Password</label>
+            <input type="password" id="logPassword" name='password' required>    
         </div>
         
         <button type="submit">Login</button>
         
     </form>
-
+    
+    <!-- Register Form -->
+    <form action="./register" method="POST" id="registerForm" style="display: none;">
+        <h1>Register</h1>
+        <div>
+            <h3 id="errorMessage" style="visibility: visible; position: relative; "> <%= locals.usernameError || '' %> </h3>
+            <label for="regUsername">Username</label>
+            <input type="text" id="regUsername" name='username' required value="<%= locals.usernameEntered %>">
+            <label id="usernameStatus"></label>
+        </div>
+    
+        <div>
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" name='password' required>    
+        </div>
+    
+        <button type="submit">Register</button>
+    
+    </form>
+    
 </div>
+
+<style>
+    /* Placeholder */
+    *{
+        box-sizing: border-box;
+    }
+    
+    #loginDiv{
+        background-color: rgba(31, 71, 71, 0.925);
+        
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+
+        position:absolute;
+        top: 0;
+        left: 0;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+</style>
+
+<script src="/scripts/loginPopup.js"></script>
