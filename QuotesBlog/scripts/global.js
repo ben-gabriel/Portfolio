@@ -2,7 +2,7 @@
 // Login/Register Popup loader
     let isPopupActive = false;
 
-    //*** only on GET/test, hould be any actoin that requires auth
+    //*** only on GET/test, should be any action that requires auth
     //    every element that requires auth, should get a class of 'authRequired'
     //    but just if '!isloggedIn', then, swap textInput by all the class collection
     let textInput = document.getElementById('text'); 
@@ -37,3 +37,5 @@
 // Put here functions to change the 'favorited' status on buttons
 // Put here functions to add the delete post button.
 // this two should interchange one another based on isLoggedIn status
+
+// Put here navbar menus and animations functions

@@ -277,6 +277,7 @@ app.get('/test', testMiddleware, async (req,res)=>{
     // console.log(req.query.search);
 
     console.log(res.locals.myObj);
+    console.log('url: ',req.url);
 
     res.render('test',{});
 });
@@ -284,6 +285,11 @@ app.get('/test', testMiddleware, async (req,res)=>{
 app.post('/test', (req,res)=>{
     console.log(req.body);
     res.render('loginPopup.ejs');
+});
+
+app.post('/popup_register', (req,res)=>{
+    console.log('popup_register: ',req.body);
+    res.json({ok:true});
 });
 
 // -------- Routes-> express.Router()
@@ -296,6 +302,7 @@ app.post('/test', (req,res)=>{
 // /#search_query/pageNumber
 // /all/pageNumber
 const postsRouter = require('./routes/posts.js');
+const res = require("express/lib/response");
 app.use('/posts', postsRouter);
 
 // -------- 404
