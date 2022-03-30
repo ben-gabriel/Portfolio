@@ -18,18 +18,13 @@
         <!-- delete/favorite button -->
         <% if(locals.userInfo.username === document.poster){ %>
             <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
-            <h1>if 1</h1>
         <% }else{ %>
             <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
                 <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>">♥ favorite</button>
-                <h1>if 2</h1>
             <% }else{ %>
                 <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>">♥ favorite</button>
-                <h1>if 3</h1>
             <% } %>
         <% } %>
-
-        <h1><%= document.favoritedBy %></h1>
 
     </div>
 
@@ -43,7 +38,7 @@
 
 <script>
 
-//favoriteButton
+{//favoriteButton
     let favoriteButtonCollection = document.getElementsByClassName('favoriteButton');
     let array = [];
     // console.log(favoriteButton[8])
@@ -63,8 +58,9 @@
             }
         });
     });
+}
 
-//deletePostButton
+{//deletePostButton
     let deleteButtonCollection = document.getElementsByClassName('deleteButton');
     let deleteArray = [];
 
@@ -74,19 +70,20 @@
 
     deleteArray.forEach(deleteButton => {
         deleteButton.addEventListener('click', async()=>{
+
             let fetcher = await (await fetch('/posts/delete/'+deleteButton.id.slice(7),{method:'POST'})).json();
             if(fetcher.action === 'deleted'){
-                // delete the postsPreview.ejs from DOM 
                 let deleteDiv = document.getElementById('div_'+deleteButton.id.slice(7));
+                // delete the postsPreview.ejs from DOM 
                 deleteDiv.innerHTML = '<h2> Post deleted successfully</h2>'
             }
             else{
                 // it should never get to this path if the user does not mess with http request
-                // just as precaution: redirect to GET/all
+                // just as precaution: redirect = GET/all
                 window.location.href = "/all";
             }
         });
     });
-
+}
 
 </script>

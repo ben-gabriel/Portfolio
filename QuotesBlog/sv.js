@@ -6,10 +6,12 @@ const port = 2404;
 const {database} = require('./database');
 const db ='QuotesBlog';
 
+
 // -------- Settings
 app.set('view engine', 'ejs');
 app.set('views', 'QuotesBlog/views');
 app.use(express.urlencoded({extended:true}));
+
 
 // -------- Session
 const session = require('express-session');
@@ -28,6 +30,7 @@ app.use(session({
     resave: false,
     store: store
 }));
+
 
 // -------- Authentication Middleware
 function checkAuthentication(req, res, next){
@@ -50,8 +53,10 @@ function checkAuthentication(req, res, next){
 }
 app.use(checkAuthentication);
 
+
 // -------- Encryption
 const bcrypt = require('bcrypt');
+
 
 // -------- Routes
 app.get('/', (req, res)=>{
@@ -186,166 +191,6 @@ app.post('/login', async (req, res)=>{
     }
 });
 
-app.post('/logout', (req, res)=>{
-    req.session.isLoggedIn=false;
-    res. redirect('/');
-});
-
-app.get('/results', async (req,res)=>{
-    let document = {};
-    if(req.query.search_query){
-
-        let searchQuery = req.query.search_query.split(',');
-        
-        for (let index = 0; index < searchQuery.length; index++) {
-            searchQuery[index] = {tags:searchQuery[index].replace(/\s+/g,'')}
-        }
-        
-        document = await database.findManyDocuments({$or:searchQuery},0,5,db,'Posts');
-    }
-    else{
-        document = await database.findManyDocuments({tags:null},0,5,db,'Posts');
-    }
-    res.render('results',{document});
-});
-
-app.get('/all', async (req,res)=>{
-    let document = await database.findManyDocuments({},0,1000,db,'Posts');
-    res.render('results',{document});
-});
-
-// -------- Users (*** Make router)
-
-app.get('/users/favorite/:postUrl', async (req,res)=>{
-    
-});
-
-app.post('/users/favorite/:postUrl', async (req,res)=>{
-   if(req.session.isLoggedIn){
-        let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts'); // !undefined = post exist
-        if(checkPost){
-            let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
-            if(checkFavStatus){
-                let result = await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
-                if(result.modifiedCount === 1){
-                    res.json({favoriteStatus:false, action: 'removed'});
-                }
-                else{
-                    res.json({favoriteStatus:true, action: 'error removing'});
-                }
-            }
-            else{
-                let result = await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
-                if(result.modifiedCount === 1){
-                    res.json({favoriteStatus:true, action: 'added'});
-                }
-                else{
-                    res.json({favoriteStatus:false, action: 'error removing'});
-                }
-            }
-        }
-        else{
-            res.json({error:`Post not found: ${req.params.postUrl}`});
-        }
-    }
-    else{
-        res.json({error:'Not Logged In'});
-    } 
-});
-// app.post('/users/favorite/:postUrl', async (req,res)=>{
-//    if(req.session.isLoggedIn){
-//         let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts');
-//         if(checkPost){
-//             let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
-//             if(checkFavStatus){
-//                 // *** Remove username from array in db
-//                 if(req.body.action){
-//                     let result = await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
-//                     if(result.modifiedCount === 1){
-//                         res.json({favoriteStatus:true, action: 'removed'});
-//                     }
-//                     else{
-//                         res.json({favoriteStatus:true, action: 'error'});
-//                     }
-//                 }
-//                 else{
-//                     res.json({favoriteStatus:true, action: 'none'});
-//                 }
-//             }
-//             else{
-//                 if(req.body.action){
-//                     let result = await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
-//                     if(result.modifiedCount === 1){
-//                         res.json({favoriteStatus:true, action: 'added'});
-//                     }
-//                     else{
-//                         res.json({favoriteStatus:false, action: 'error'});
-//                     }
-//                 }
-//                 else{
-//                     res.json({favoriteStatus:false, action: 'none'});
-//                 }
-//             }
-//         }
-//         else{
-//             res.json({error:`Post not found: ${req.params.postUrl}`});
-//         }
-//     }
-//     else{
-//         res.json({error:'Not Logged In'});
-//     } 
-// });
-
-app.get('/users/:username', async (req,res)=>{
-    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
-    if(userData){
-        res.render('userProfile',{userData});
-    }
-    else{
-        res.status(404).render('404')
-    }
-});
-
-// -------- Scripts
-app.get('/scripts/:fileName',(req,res)=>{
-    console.log('\n\nscroipts --------------------')
-    res.sendFile('./scripts/'+req.params.fileName,{root:__dirname});
-});
-
-
-// -------- Test Route
-function testMiddleware(req,res,next){
-    console.log('testMiddleware');
-    res.locals.myObj = {myVar: 'something'};
-    next();
-}
-// app.use('/test', );
-
-app.get('/test', testMiddleware, async (req,res)=>{
-    console.log('\n ------------------------------------------------------------------ \n\n');
-    // console.log(req.body);
-    // console.log(req);
-    // console.log(req.query);
-
-    // let document = await database.findManyDocuments({$or:[{tags: 'batman'},{tags:'movies'}]},0,5,db,'Posts');
-    // let document = await database.deleteOneDocument({publicID:"I_dont_like_sand_Its_coarse_1646918777586"},db,'Posts');
-    // console.log(document)
-    
-    // console.log(req.query);
-    // console.log(req.query.text)
-    // console.log(req.query.search);
-
-    console.log(res.locals.myObj);
-    console.log('url: ',req.url);
-
-    res.render('test',{});
-});
-
-app.post('/test', (req,res)=>{
-    console.log(req.body);
-    res.render('loginPopup.ejs');
-});
-
 app.post('/popup_register', async(req,res)=>{  
     // Check if form is healthy by checking if req.body.username exist + as a string
     if(req.body.username && req.body.password){
@@ -367,6 +212,9 @@ app.post('/popup_register', async(req,res)=>{
                     let newUserDocument = {
                         username: req.body.username.replace(/\s+/g,''), //Remove any blank spaces left over
                         password: hashedPassword,
+                        following: [],
+                        followers: [],
+                        tagsOfInterest: [],
                     }
                     await database.createOneDocument(newUserDocument, db, "Users");
                     
@@ -405,7 +253,6 @@ app.post('/popup_register', async(req,res)=>{
 });
 
 app.post('/popup_login', async(req,res)=>{
-    
     //check if form is healthy by checking if req.body.username exist + as a string
     if(req.body.username && req.body.password){
         req.body.username = req.body.username.toString();
@@ -455,6 +302,126 @@ app.post('/popup_login', async(req,res)=>{
     }
 });
 
+app.post('/logout', (req, res)=>{
+    req.session.isLoggedIn=false;
+    res. redirect('/');
+});
+
+app.get('/results', async (req,res)=>{
+    let document = {};
+    if(req.query.search_query){
+
+        let searchQuery = req.query.search_query.split(',');
+        
+        for (let index = 0; index < searchQuery.length; index++) {
+            searchQuery[index] = {tags:searchQuery[index].replace(/\s+/g,'')}
+        }
+        
+        document = await database.findManyDocuments({$or:searchQuery},0,5,db,'Posts');
+    }
+    else{
+        document = await database.findManyDocuments({tags:null},0,5,db,'Posts');
+    }
+    res.render('results',{document});
+});
+
+app.get('/all', async (req,res)=>{
+    let document = await database.findManyDocuments({},0,1000,db,'Posts');
+    res.render('results',{document});
+});
+
+
+// -------- Users (*** Make router)
+app.get('/users/favorite/:postUrl', async (req,res)=>{
+    //*** use this route to get favorties posts for tab in user profile page
+});
+
+app.post('/users/favorite/:postUrl', async (req,res)=>{
+   if(req.session.isLoggedIn){
+        let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts'); // !undefined = post exist
+        if(checkPost){
+            let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
+            if(checkFavStatus){
+                let result = await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+                if(result.modifiedCount === 1){
+                    res.json({favoriteStatus:false, action: 'removed'});
+                }
+                else{
+                    res.json({favoriteStatus:true, error: 'Error removing post from favorites'});
+                }
+            }
+            else{
+                let result = await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+                if(result.modifiedCount === 1){
+                    res.json({favoriteStatus:true, action: 'added'});
+                }
+                else{
+                    res.json({favoriteStatus:false, error: 'Error adding post to favorites'});
+                }
+            }
+        }
+        else{
+            res.json({error:`Post not found: ${req.params.postUrl}`});
+        }
+    }
+    else{
+        res.json({error:'Not Logged In'});
+    } 
+});
+
+app.get('/users/:username', async (req,res)=>{
+    let userData = await database.findOneDocument({username: req.params.username},db,'Users');
+    if(userData){
+        userData.favoritePosts = await database.findManyDocuments({favoritedBy:req.params.username},0,1000,db,'Posts');
+        userData.ownPosts = await database.findManyDocuments({poster:req.params.username},0,1000,db,'Posts');
+        res.render('userProfile',{userData});
+    }
+    else{
+        res.status(404).render('404')
+    }
+});
+
+
+// -------- Scripts
+app.get('/scripts/:fileName',(req,res)=>{
+    console.log('\n\n/scripts/:filename --------------------')
+    res.sendFile('./scripts/'+req.params.fileName,{root:__dirname});
+});
+
+
+// -------- Test Route
+function testMiddleware(req,res,next){
+    console.log('testMiddleware');
+    res.locals.myObj = {myVar: 'something'};
+    next();
+}
+
+app.get('/test', testMiddleware, async (req,res)=>{
+    console.log('\n/test ----------------------');
+    // console.log(req.body);
+    // console.log(req);
+    // console.log(req.query);
+
+    // let document = await database.findManyDocuments({$or:[{tags: 'batman'},{tags:'movies'}]},0,5,db,'Posts');
+    // let document = await database.deleteOneDocument({publicID:"I_dont_like_sand_Its_coarse_1646918777586"},db,'Posts');
+    // console.log(document)
+    
+    // console.log(req.query);
+    // console.log(req.query.text)
+    // console.log(req.query.search);
+
+    console.log(res.locals.myObj);
+    console.log('url: ',req.url);
+
+    res.render('test',{});
+});
+
+app.post('/test', (req,res)=>{
+    console.log(req.body);
+    res.render('loginPopup.ejs');
+});
+
+
 // -------- Routes-> express.Router()
 //
 // /users
@@ -465,9 +432,8 @@ app.post('/popup_login', async(req,res)=>{
 // /#search_query/pageNumber
 // /all/pageNumber
 const postsRouter = require('./routes/posts.js');
-const res = require("express/lib/response");
-const req = require("express/lib/request");
 app.use('/posts', postsRouter);
+
 
 // -------- 404
 app.get('*', (req,res)=>{
@@ -476,7 +442,7 @@ app.get('*', (req,res)=>{
 
 app.listen(port);
 
-// TO DO 2
+{// TO DO 2
 // ***posts*** Add <a> links in html to tags: must GET /Results as a search query
 // ***searchBar*** Make it impossible to search by pressing key:Enter or click:search button when there is no parameter
 //                 When there is a parameter in search input it should also enter the query even if it was not pressed by comma 
@@ -484,8 +450,8 @@ app.listen(port);
 // ***Remove white spaces from username when registering
 // ***Clean up new post form
 // ***Check what happens if you try to access a body.thing that does not exist in the form 
-{}
-// TO DO 1
+}
+{// TO DO 1
 // -------------
 // -Get request-
 // Check if {isLoggedIn} cookie is true/exist
@@ -530,3 +496,4 @@ app.listen(port);
 // --------------
 // Register
 // *** Add encryption method
+}
