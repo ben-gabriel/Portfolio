@@ -18,13 +18,28 @@
         <!-- delete/favorite button -->
         <% if(locals.userInfo.username === document.poster){ %>
             <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
+            <h1>if 1</h1>
         <% }else{ %>
-            <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>">♥ favorite</button>
+            <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
+                <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                <h1>if 2</h1>
+            <% }else{ %>
+                <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                <h1>if 3</h1>
+            <% } %>
         <% } %>
-        
+
+        <h1><%= document.favoritedBy %></h1>
+
     </div>
 
 <% }) %>
+
+<style>
+    .favorited{
+        border: red 2px solid;
+    }
+</style>
 
 <script>
 
@@ -38,26 +53,18 @@
     }   
 
     array.forEach( button =>{
-        
-        (async()=>{
-            let fetcher = await (await fetch('/users/favorite/'+button.id.slice(9))).json();
-            if(fetcher.favoriteStatus === true){
-                button.className = 'favoriteButton favorited';
-                button.style.border = 'red 2px solid'; // *** placeholder , should suffice by adding favorited class 
-            }
-        })();
-
         button.addEventListener('click', async ()=>{
-            let fetcher = await (await fetch('/users/favorite/'+button.id.slice(9))).json();
+            let fetcher = await (await fetch('/users/favorite/'+button.id.slice(9),{method:'post'})).json();
             if(fetcher.action === 'removed'){
                 button.className = 'favoriteButton'; // remove favorited class
-                button.style.border = ''; // *** placeholder, should suffice by removing favorited class
+            }
+            if(fetcher.action === 'added'){
+                button.className = 'favoriteButton favorited'; // add favorited class
             }
         });
-
     });
 
-//deleteButton
+//deletePostButton
     let deleteButtonCollection = document.getElementsByClassName('deleteButton');
     let deleteArray = [];
 

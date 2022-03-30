@@ -217,28 +217,84 @@ app.get('/all', async (req,res)=>{
 // -------- Users (*** Make router)
 
 app.get('/users/favorite/:postUrl', async (req,res)=>{
-    if(req.session.isLoggedIn){
-        let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts');
+    
+});
+
+app.post('/users/favorite/:postUrl', async (req,res)=>{
+   if(req.session.isLoggedIn){
+        let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts'); // !undefined = post exist
         if(checkPost){
             let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
             if(checkFavStatus){
-                // *** Remove username from array in db
-                await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
-                res.json({favoriteStatus:true, action: 'removed'});
+                let result = await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+                if(result.modifiedCount === 1){
+                    res.json({favoriteStatus:false, action: 'removed'});
+                }
+                else{
+                    res.json({favoriteStatus:true, action: 'error removing'});
+                }
             }
             else{
-                await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
-                res.json({favoriteStatus:true, action: 'added'});
+                let result = await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+                if(result.modifiedCount === 1){
+                    res.json({favoriteStatus:true, action: 'added'});
+                }
+                else{
+                    res.json({favoriteStatus:false, action: 'error removing'});
+                }
             }
         }
         else{
-            res.json({error:'Post not found'});
+            res.json({error:`Post not found: ${req.params.postUrl}`});
         }
     }
     else{
         res.json({error:'Not Logged In'});
-    }
+    } 
 });
+// app.post('/users/favorite/:postUrl', async (req,res)=>{
+//    if(req.session.isLoggedIn){
+//         let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts');
+//         if(checkPost){
+//             let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
+//             if(checkFavStatus){
+//                 // *** Remove username from array in db
+//                 if(req.body.action){
+//                     let result = await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+//                     if(result.modifiedCount === 1){
+//                         res.json({favoriteStatus:true, action: 'removed'});
+//                     }
+//                     else{
+//                         res.json({favoriteStatus:true, action: 'error'});
+//                     }
+//                 }
+//                 else{
+//                     res.json({favoriteStatus:true, action: 'none'});
+//                 }
+//             }
+//             else{
+//                 if(req.body.action){
+//                     let result = await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+//                     if(result.modifiedCount === 1){
+//                         res.json({favoriteStatus:true, action: 'added'});
+//                     }
+//                     else{
+//                         res.json({favoriteStatus:false, action: 'error'});
+//                     }
+//                 }
+//                 else{
+//                     res.json({favoriteStatus:false, action: 'none'});
+//                 }
+//             }
+//         }
+//         else{
+//             res.json({error:`Post not found: ${req.params.postUrl}`});
+//         }
+//     }
+//     else{
+//         res.json({error:'Not Logged In'});
+//     } 
+// });
 
 app.get('/users/:username', async (req,res)=>{
     let userData = await database.findOneDocument({username: req.params.username},db,'Users');
@@ -410,6 +466,7 @@ app.post('/popup_login', async(req,res)=>{
 // /all/pageNumber
 const postsRouter = require('./routes/posts.js');
 const res = require("express/lib/response");
+const req = require("express/lib/request");
 app.use('/posts', postsRouter);
 
 // -------- 404

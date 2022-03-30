@@ -27,6 +27,7 @@ let database = {
             await client.connect();
             let result = await client.db(db).collection(collection).updateOne(queryObj, {$push: insertObj});
             console.log('\n[database.js] pushToDocument() =',result,'\n');
+            return result;
 
         }catch (e){
             console.error(e);
@@ -40,6 +41,7 @@ let database = {
             await client.connect();
             let result = await client.db(db).collection(collection).updateOne(queryObj, {$pull: removeObj});
             console.log('\n[database.js] pullFromDocument() =',result,'\n');
+            return result;
             
         }catch (e){
             console.error(e)
