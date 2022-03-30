@@ -3,7 +3,6 @@
     let closeLoginButton = document.getElementById('closeLoginButton');
     closeLoginButton.addEventListener('click',()=>{
         popupDiv.style.display = 'none';
-        isPopupActive = false;
     });
 }
 

@@ -19,14 +19,14 @@
         <% if(locals.userInfo.username === document.poster){ %>
             <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
         <% }else{ %>
-            <button class="favoriteButton" id="favorite_<%= document.publicID %>">♥ favorite</button>
+            <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>">♥ favorite</button>
         <% } %>
         
     </div>
 
 <% }) %>
 
-<script defer>
+<script>
 
 //favoriteButton
     let favoriteButtonCollection = document.getElementsByClassName('favoriteButton');

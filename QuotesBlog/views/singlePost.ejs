@@ -9,7 +9,7 @@
     <% if(locals.userInfo.username === locals.postInfo.poster){ %>
         <button class="deleteButton" id="delete_<%= locals.postInfo.publicID %>">Delete</button>
     <% }else{ %>
-        <button class="favoriteButton" id="favorite_<%= locals.postInfo.publicID %>">♥ favorite</button>
+        <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= locals.postInfo.publicID %>">♥ favorite</button>
     <% } %>
 
     <p>Tags</p>
@@ -17,13 +17,9 @@
         <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
     <% }) %>
 
-    <form action="/posts/delete/asdasdasd" method="post">
-        <input type="text" name="input1">
-        <button type="submit">submit</button>
-    </form>
 
     <p>Comments</p>
-    <form action="./newComment" method="post"> 
+    <form action="./newComment" method="post" class="<%= locals.authRequired %>"> 
         <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
         <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
 
@@ -39,8 +35,8 @@
 
 </div>
 
+<% if(locals.userInfo.isLoggedIn){%>
 <script>
-    
 // fetch comments
     let fetchComments = async function(url){
         try{
@@ -55,7 +51,6 @@
         }
         catch(e){console.error(e)}
     }
-
     function loadComments(commentsJson){
 
         let commentsDiv = document.getElementById('commentsDiv');
@@ -91,7 +86,8 @@
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
-
+                    replyButton.className = 'replyButton'
+                    
                     let cancelReplyButton = document.createElement('button');
                     cancelReplyButton.textContent = 'Cancel';
 
@@ -145,6 +141,8 @@
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
+                    replyButton.className = 'replyButton'
+
 
                     let cancelReplyButton = document.createElement('button');
                     cancelReplyButton.textContent = 'Cancel';
@@ -218,4 +216,160 @@
         });
     });
 
+
 </script>
+<% } %>
+
+<% if(!locals.userInfo.isLoggedIn){%>
+<script>
+// fetch comments
+    let fetchComments = async function(url){
+        try{
+            let fetcher = await fetch(url);
+            
+            if(fetcher.ok === true){
+                //checks if the fetching was successful
+                console.log('Fetch Done');
+                let json = await((fetcher).json()); 
+                return json
+            }
+        }
+        catch(e){console.error(e)}
+    }
+    function loadComments(commentsJson){
+
+        let commentsDiv = document.getElementById('commentsDiv');
+
+        if(commentsJson[0]){
+            let index = 0;
+            let flag = commentsJson[0];
+
+            while(flag){
+
+                if(commentsJson[index].replyingToID === 'originalPost'){
+                    // is replying to main post
+
+                    let commentHtml = `
+                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <p>  ${commentsJson[index].commentContent} <p>
+                    `;
+
+                    let newCommentDiv = document.createElement('div');
+                    newCommentDiv.id = commentsJson[index].commentID;
+                    newCommentDiv.className = 'commentTopLevel';
+                    
+                    newCommentDiv.innerHTML = commentHtml
+                    newCommentDiv.style.border = 'black 1px solid' //placeHolder
+
+                    let replyButton = document.createElement('button');
+                    replyButton.textContent = 'Reply';
+                    replyButton.className = 'replyButton'
+
+                    replyButton.addEventListener('click', (e)=>{
+                        e.preventDefault();
+                        renderPopup();
+                    });
+
+                    newCommentDiv.appendChild(replyButton);
+                    commentsDiv.appendChild(newCommentDiv);
+
+                }
+                else{
+                    // is replying to a comment
+                    let parentCommentDiv = document.getElementById(`${commentsJson[index].replyingToID}`);
+                    
+                    let commentHtml = `
+                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <p>  ${commentsJson[index].commentContent} <p>
+                    `;
+
+                    
+                    let newCommentDiv = document.createElement('div');
+                    newCommentDiv.id = commentsJson[index].commentID;
+                    newCommentDiv.className = 'commentReplyLevel';
+                    
+                    newCommentDiv.innerHTML = commentHtml
+                    newCommentDiv.style.border = 'blue 1px solid' //placeHolder
+                    newCommentDiv.style.margin= '5px'
+
+                    let replyButton = document.createElement('button');
+                    replyButton.textContent = 'Reply';
+                    replyButton.className = 'replyButton'                   
+
+                    replyButton.addEventListener('click', (e)=>{
+                        e.preventDefault();
+                        renderPopup();
+                    });
+
+                    newCommentDiv.appendChild(replyButton);
+                    parentCommentDiv.appendChild(newCommentDiv);
+                }
+
+                index = index + 1;
+                flag = commentsJson[index];
+            }
+            
+        }
+        else{
+            // Load 'no comments yet' message on post
+            let newCommentDiv = document.createElement('div');
+            newCommentDiv.innerHTML = '<h3>No Comments Yet</H3>'
+
+            commentsDiv.appendChild(newCommentDiv);
+
+        }
+        
+    }
+
+    let comments = fetchComments('./comments/'+"<%= locals.postInfo.publicID %>");
+
+    comments.then( data =>{
+        comments = data;
+     loadComments(comments);
+    });
+
+//deleteButton
+    let deleteButtonCollection = document.getElementsByClassName('deleteButton');
+    let array = [];
+
+    for (let index = 0; index < deleteButtonCollection.length; index++) {
+        array[index] = deleteButtonCollection[index];
+    }
+
+    array.forEach(deleteButton => {
+        deleteButton.addEventListener('click', async()=>{
+            let fetcher = await (await fetch('./delete/'+deleteButton.id.slice(7),{method:'POST'})).json();
+            if(fetcher.action === 'deleted'){
+                let deleteDiv = document.getElementById('div_'+deleteButton.id.slice(7));
+                deleteDiv.innerHTML = '<h2> Post deleted successfully</h2>'
+            }
+            else{
+                // it should never get to this path if the user does not mess with http request
+                // just as precaution: redirect to GET/all
+                window.location.href = "/all";
+            }
+        });
+    });
+
+
+//Log/Reg Popup
+    async function renderPopup(){
+        if(!document.getElementById('loginDiv')){
+            let popupDiv = document.createElement('div');
+            popupDiv.innerHTML = await (await fetch('/test',{method:'POST'})).text();
+            popupDiv.id = 'popupDiv';
+            
+            let loginPopupScript = document.createElement('script');
+            loginPopupScript.innerHTML = await(await fetch('/scripts/loginPopup.js')).text();
+            
+            let body = document.body;
+            body.append(popupDiv);
+            body.append(loginPopupScript);
+        }else{
+            document.getElementById('popupDiv').style.display = 'block';
+        }
+    }
+
+
+</script>
+<% } %>

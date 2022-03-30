@@ -36,12 +36,14 @@ function checkAuthentication(req, res, next){
             isLoggedIn: true,
             username: req.session.username
         }
+        res.locals.authRequired = ''
     }
     else{
         res.locals.userInfo = {
             isLoggedIn: false,
             username: null
         }
+        res.locals.authRequired = 'authRequired'
     }
 
     next()
