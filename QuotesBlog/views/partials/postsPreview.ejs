@@ -43,7 +43,7 @@
             let fetcher = await (await fetch('/users/favorite/'+button.id.slice(9))).json();
             if(fetcher.favoriteStatus === true){
                 button.className = 'favoriteButton favorited';
-                button.style.border = 'red 2px solid'; // placeholder 
+                button.style.border = 'red 2px solid'; // *** placeholder , should suffice by adding favorited class 
             }
         })();
 
@@ -51,7 +51,7 @@
             let fetcher = await (await fetch('/users/favorite/'+button.id.slice(9))).json();
             if(fetcher.action === 'removed'){
                 button.className = 'favoriteButton'; // remove favorited class
-                button.style.border = 'red 2px solid'; // placeholder 
+                button.style.border = ''; // *** placeholder, should suffice by removing favorited class
             }
         });
 

@@ -26,12 +26,25 @@ let database = {
         try {
             await client.connect();
             let result = await client.db(db).collection(collection).updateOne(queryObj, {$push: insertObj});
-            console.log('\n[database.js] updateOne() ='+result+'\n');
+            console.log('\n[database.js] pushToDocument() =',result,'\n');
 
         }catch (e){
             console.error(e);
         }finally{
             await client.close()
+        }
+    },
+
+    pullFromDocument:async function(queryObj={}, removeObj, db, collection){
+        try {
+            await client.connect();
+            let result = await client.db(db).collection(collection).updateOne(queryObj, {$pull: removeObj});
+            console.log('\n[database.js] pullFromDocument() =',result,'\n');
+            
+        }catch (e){
+            console.error(e)
+        }finally{
+            await client.close();
         }
     },
 

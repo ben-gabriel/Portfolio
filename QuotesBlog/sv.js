@@ -223,6 +223,7 @@ app.get('/users/favorite/:postUrl', async (req,res)=>{
             let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
             if(checkFavStatus){
                 // *** Remove username from array in db
+                await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
                 res.json({favoriteStatus:true, action: 'removed'});
             }
             else{
