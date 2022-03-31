@@ -1,16 +1,111 @@
-<h2> <%= locals.userData.username %> </h2>
+<%- include('./partials/header.ejs') %>
 
-<h3>following</h3>
-<%=  locals.userData.following %>
+<div id="profileNav">
 
-<h3>followers</h3>
-<%=  locals.userData.followers %>
+    <div id='userCardDiv'>
+        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+        <h3><%= locals.userData.username %></h3>
+    </div>
+    
+    <div id='profileTabsDiv'>
+        <h3 class="tabButton">ownPosts</h3>
 
-<h3>favoritePosts</h3>
-<%=  locals.userData.favoritePosts %>
+        <h3 class="tabButton">favoritePosts</h3>
+        
+        <h3 class="tabButton">following</h3>
+        
+        <h3 class="tabButton">followers</h3>
+    </div>
 
-<h3>ownPosts</h3>
-<%=  locals.userData.ownPosts %>
+</div>
+        
+<div id='profileContent'>
+    <div id="ownPostsDiv" class="profileTab">
+        <!-- client side js -->
+        <h1>own posts content</h1>
+    </div>
+    
+    <div id="favoritePostsDiv" class="profileTab">
+        <!-- client side js -->
+        <h1>favorite posts content</h1>
+    </div>
+    
+    <div id="followingDiv" class="profileTab">
+        <!-- client side js -->
+        <h1>following content</h1>
+    </div>
+    
+    <div id="followersDiv" class="profileTab">
+        <!-- client side js -->
+        <h1>followers content</h1>
+    </div>
+</div>
 
-<h3>profilePictureUrl</h3>
-<%=  locals.userData.profilePictureUrl %>
+
+
+<style>
+    #profileNav{
+        border: 1px rgb(68, 0, 255) solid;
+        display: flex;
+    }
+    img{
+        width: 5em;
+    }
+    
+    #profileTabsDiv{
+        display: flex;
+        border: 1px rgb(255, 0, 0) solid;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 1.5em;    
+    }
+    
+    .profileTab{
+        border: 1px black solid;
+        display: none;
+    }
+    
+    
+
+</style>
+
+
+
+
+<script>
+
+    let tabsCollection = document.getElementsByClassName('tabButton');
+    let tabsContentCollection = document.getElementsByClassName('profileTab');
+    let currentTab = 0;
+    let path = 'posts';
+
+    for (let index = 0; index < tabsCollection.length; index++) {
+        tabsCollection[index].addEventListener('click',()=>{
+            renderTabContent(index);
+        });
+    }
+
+    async function renderTabContent(tabIndex){
+        tabsContentCollection[currentTab].style.display = 'none';
+
+        if(tabIndex === 0){path = 'posts'}
+        if(tabIndex === 1){path = 'favorites'}
+        if(tabIndex === 2){path = 'following'}
+        if(tabIndex === 3){path = 'followers'}
+
+        // *** call for content to db
+        let fetcher = await (await fetch('/users/'+path+'/<%= locals.userData.username %>')).text(); 
+        
+        tabsContentCollection[currentTab].innerHTML = fetcher;
+        console.log('/users/'+path+'/<%= locals.userData.username %>');
+
+        tabsContentCollection[tabIndex].style.display = 'block';
+        currentTab = tabIndex;
+    }
+
+    renderTabContent(currentTab);
+
+</script>

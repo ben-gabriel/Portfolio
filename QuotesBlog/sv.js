@@ -332,10 +332,6 @@ app.get('/all', async (req,res)=>{
 
 
 // -------- Users (*** Make router)
-app.get('/users/favorite/:postUrl', async (req,res)=>{
-    //*** use this route to get favorties posts for tab in user profile page
-});
-
 app.post('/users/favorite/:postUrl', async (req,res)=>{
    if(req.session.isLoggedIn){
         let checkPost = await database.findOneDocument({publicID: req.params.postUrl},db,'Posts'); // !undefined = post exist
@@ -372,8 +368,6 @@ app.post('/users/favorite/:postUrl', async (req,res)=>{
 app.get('/users/:username', async (req,res)=>{
     let userData = await database.findOneDocument({username: req.params.username},db,'Users');
     if(userData){
-        userData.favoritePosts = await database.findManyDocuments({favoritedBy:req.params.username},0,1000,db,'Posts');
-        userData.ownPosts = await database.findManyDocuments({poster:req.params.username},0,1000,db,'Posts');
         res.render('userProfile',{userData});
     }
     else{
@@ -381,10 +375,21 @@ app.get('/users/:username', async (req,res)=>{
     }
 });
 
+app.get('/users/posts/:username', async (req,res)=>{
+    let document = await database.findManyDocuments({poster:req.params.username},0,1000,db,'Posts');
+    console.log('/users/posts/:username = --------------\n', document);
+    res.render('partials/postsPreview.ejs',{document});
+    // res.json({value:'ok'})
+});
+
+app.get('/users/favorites/:username', async (req,res)=>{
+    //*** use this route to get favorties posts for tab in user profile page
+});
+
 
 // -------- Scripts
 app.get('/scripts/:fileName',(req,res)=>{
-    console.log('\n\n/scripts/:filename --------------------')
+    console.log(`\n\n/scripts/:filename = ${req.params.fileName} --------------------`);
     res.sendFile('./scripts/'+req.params.fileName,{root:__dirname});
 });
 
