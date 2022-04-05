@@ -1,23 +1,27 @@
-<%- include("./partials/header.ejs") %>
-<form action="test" method="post" class="authRequired">
 
-    <input type="text" name="text" id="text"> <br>
-    <input type="submit" value="submit">
 
-</form>
+<% locals.usersDocument.forEach(user => {%>
+    <br>
+    <div id="userCard_<%= user.username %>" class="userMiniCard">
+        <img src="<%= user.profilePictureUrl %>">
+        <a href="users/<%= user.username %>"><%= user.username %></a>
 
-<button class="authRequired"></button>
+        <a href="users/<%= user.username %>"><%= user.followers.length || '0' %> followers</a>
+        <a href="users/<%= user.username %>"><%= user.following.length || '0' %> following</a>
 
-<a href="/" class="authRequired">authreq</a>
+    </div>
+<% }) %>    
 
-<script>
-    let scripttext = `
-    function testf(){
-        console.log('test')
+<style>
+    
+    .userMiniCard{
+        border: 1px solid black;
+        display: flex;
+        gap: 1em;
     }
-    testf();
-    `
-    let newtag = document.createElement('script');
-    newtag.innerHTML = scripttext; 
-    document.body.append(newtag)
-</script>
+
+    img{
+        width: 5em;
+    }
+
+</style>

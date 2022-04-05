@@ -382,7 +382,22 @@ app.get('/users/posts/:username', async (req,res)=>{
 });
 
 app.get('/users/favorites/:username', async (req,res)=>{
-    //*** use this route to get favorties posts for tab in user profile page
+    let document = await database.findManyDocuments({favoritedBy:req.params.username},0,1000,db,'Posts');
+    console.log('/users/favorites/:username = --------------\n', document);
+    res.render('partials/postsPreview.ejs',{document});
+});
+
+app.get('/users/following/:username', async (req,res)=>{
+    let usersDocument = await database.findManyDocuments({followers:req.params.username},0,5,db,'Users');
+    console.log('/users/following/:username = --------------\n',usersDocument);
+    res.render('test',{usersDocument});
+});
+
+app.get('/users/followers/:username', async (req,res)=>{
+    let usersDocument = await database.findManyDocuments({following:req.params.username},0,5,db,'Users');
+    console.log('/users/followers/:username = --------------\n',usersDocument);
+    res.render('test',{usersDocument});
+
 });
 
 
@@ -411,13 +426,12 @@ app.get('/test', testMiddleware, async (req,res)=>{
     // console.log(document)
     
     // console.log(req.query);
-    // console.log(req.query.text)
+    // console.log(req.query.text);
     // console.log(req.query.search);
 
-    console.log(res.locals.myObj);
-    console.log('url: ',req.url);
+    let usersDocument = await database.findManyDocuments({followers:'userTest'},0,5,db,'Users');
 
-    res.render('test',{});
+    res.render('test',{usersDocument});
 });
 
 app.post('/test', (req,res)=>{
