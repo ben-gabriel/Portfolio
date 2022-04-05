@@ -87,6 +87,7 @@
 
     async function renderTabContent(tabIndex){
         tabsContentCollection[currentTab].style.display = 'none';
+        currentTab = tabIndex;
 
         if(tabIndex === 0){path = 'posts'}
         if(tabIndex === 1){path = 'favorites'}
@@ -112,7 +113,6 @@
         
         addPopupEvent();
         tabsContentCollection[tabIndex].style.display = 'block';
-        currentTab = tabIndex;
     }
 
     function addPopupEvent(){
