@@ -379,7 +379,6 @@ app.get('/users/posts/:username', async (req,res)=>{
     let document = await database.findManyDocuments({poster:req.params.username},0,1000,db,'Posts');
     console.log('/users/posts/:username = --------------\n', document);
     res.render('partials/postsPreview.ejs',{document});
-    // res.json({value:'ok'})
 });
 
 app.get('/users/favorites/:username', async (req,res)=>{

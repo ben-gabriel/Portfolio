@@ -72,9 +72,6 @@
 
 </style>
 
-
-
-
 <script>
 
     let tabsCollection = document.getElementsByClassName('tabButton');
@@ -97,13 +94,53 @@
         if(tabIndex === 3){path = 'followers'}
 
         // *** call for content to db
+        // *** split html and script
         let fetcher = await (await fetch('/users/'+path+'/<%= locals.userData.username %>')).text(); 
         
-        tabsContentCollection[currentTab].innerHTML = fetcher;
-        console.log('/users/'+path+'/<%= locals.userData.username %>');
+        fetcher = fetcher.replace("/script","script");
+        fetcher = fetcher.split("<script>");
+        
+        let fetchHtml = fetcher[0];
+        let fetchScript = fetcher[1];
+        let scriptTag = document.createElement('script');
+        scriptTag.innerHTML = `${fetchScript}`;
 
+        tabsContentCollection[currentTab].innerHTML = fetchHtml;
+        if(fetchScript){
+            tabsContentCollection[currentTab].append(scriptTag);
+        }
+        
+        addPopupEvent();
         tabsContentCollection[tabIndex].style.display = 'block';
         currentTab = tabIndex;
+    }
+
+    function addPopupEvent(){
+        let authRequiredCollection = document.getElementsByClassName('authRequired');
+        
+        for (let index = 0; index < authRequiredCollection.length; index++) {
+            authRequiredCollection[index].addEventListener('click', (e)=>{
+                e.preventDefault();
+                renderPopup();
+            });
+        }
+    }
+
+    async function renderPopup(){
+        if(!document.getElementById('loginDiv')){
+            let popupDiv = document.createElement('div');
+            popupDiv.innerHTML = await (await fetch('/test',{method:'POST'})).text();
+            popupDiv.id = 'popupDiv';
+            
+            let loginPopupScript = document.createElement('script');
+            loginPopupScript.innerHTML = await(await fetch('/scripts/loginPopup.js')).text();
+            
+            let body = document.body;
+            body.append(popupDiv);
+            body.append(loginPopupScript);
+        }else{
+            document.getElementById('popupDiv').style.display = 'block';
+        }
     }
 
     renderTabContent(currentTab);

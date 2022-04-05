@@ -9,3 +9,15 @@
 <button class="authRequired"></button>
 
 <a href="/" class="authRequired">authreq</a>
+
+<script>
+    let scripttext = `
+    function testf(){
+        console.log('test')
+    }
+    testf();
+    `
+    let newtag = document.createElement('script');
+    newtag.innerHTML = scripttext; 
+    document.body.append(newtag)
+</script>

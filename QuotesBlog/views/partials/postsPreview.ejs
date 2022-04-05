@@ -36,9 +36,10 @@
     }
 </style>
 
-<script>
+<% if(locals.userInfo.isLoggedIn){ %>
 
-{//favoriteButton
+<script>
+//favoriteButton
     let favoriteButtonCollection = document.getElementsByClassName('favoriteButton');
     let array = [];
     // console.log(favoriteButton[8])
@@ -58,9 +59,9 @@
             }
         });
     });
-}
 
-{//deletePostButton
+
+//deletePostButton
     let deleteButtonCollection = document.getElementsByClassName('deleteButton');
     let deleteArray = [];
 
@@ -84,6 +85,7 @@
             }
         });
     });
-}
 
 </script>
+
+<% } %>
