@@ -365,6 +365,54 @@ app.post('/users/favorite/:postUrl', async (req,res)=>{
     } 
 });
 
+app.post('/users/follow/:username', async(req,res)=>{    
+    console.log('\n/users/follow/:username = --------------');
+    if(req.session.isLoggedIn){
+        // check if session.user is following params.username
+        let userCheck = await database.findOneDocument({username:req.session.username},db,'Users');
+        if(userCheck){
+            // db user found
+            followCheck = userCheck.following.includes(req.params.username);
+            if(followCheck){
+                let following_result = await database.pullFromDocument({username:req.session.username},{following: req.params.username},db,'Users');
+                let followers_result = await database.pullFromDocument({username:req.params.username},{followers: req.session.username},db,'Users');
+                if(followers_result.modifiedCount === 1 && following_result.modifiedCount === 1){
+                    res.json({followStatus:false, action: 'removed'});
+                }
+                else{
+                    res.json({followStatus:true, 
+                        error: 'Error removing follow status',
+                        followers_result: followers_result.modifiedCount,
+                        following_result: following_result.modifiedCount,
+                    });
+                }
+                
+            }
+            else{
+                let following_result = await database.pushToDocument({username:req.session.username},{following: req.params.username},db,'Users');
+                let followers_result = await database.pushToDocument({username:req.params.username},{followers: req.session.username},db,'Users');
+                if(followers_result.modifiedCount === 1 && following_result.modifiedCount === 1){
+                    res.json({followStatus:true, action: 'added'});
+                }
+                else{
+                    res.json({followStatus:false, 
+                        error: 'Error adding follow status',
+                        followers_result: followers_result.modifiedCount,
+                        following_result: following_result.modifiedCount,
+                    });
+                }
+            }
+        }
+        else{
+            // db user not found
+            res.json({error:'Database Error'});
+        }
+    }
+    else{
+        res.json({error:'Not Logged In'});
+    }
+});
+
 app.get('/users/:username', async (req,res)=>{
     let userData = await database.findOneDocument({username: req.params.username},db,'Users');
     if(userData){

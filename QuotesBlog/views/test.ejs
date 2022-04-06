@@ -12,6 +12,9 @@
     </div>
 <% }) %>    
 
+<br><br>
+<button id="testButton">TestButton</button>
+
 <style>
     
     .userMiniCard{
@@ -25,3 +28,12 @@
     }
 
 </style>
+
+<script>
+    let testButton = document.getElementById('testButton');
+    testButton.addEventListener('click', async()=>{
+        let options = {method:'post'}
+        let fetcher = await (await fetch('/users/follow/123123123',options)).json();
+        console.log(fetcher)
+    });
+</script>
