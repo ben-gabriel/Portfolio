@@ -87,6 +87,7 @@
 
     async function renderTabContent(tabIndex){
         tabsContentCollection[currentTab].style.display = 'none';
+        tabsContentCollection[currentTab].innerHTML = '';
         currentTab = tabIndex;
 
         if(tabIndex === 0){path = 'posts'}
