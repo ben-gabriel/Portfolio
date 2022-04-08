@@ -39,7 +39,7 @@
 <% if(locals.userInfo.isLoggedIn){ %>
 
 <script>
-//favoriteButton
+(()=>{//favoriteButton
     let favoriteButtonCollection = document.getElementsByClassName('favoriteButton');
     let array = [];
     // console.log(favoriteButton[8])
@@ -85,7 +85,7 @@
             }
         });
     });
-
+})();
 </script>
 
 <% } %>

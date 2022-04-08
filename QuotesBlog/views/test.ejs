@@ -1,66 +1,65 @@
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-<% locals.usersDocument.forEach(user => {%>
-    <br>
-    <div id="userCard_<%= user.username %>" class="userMiniCard">
-        <img src="<%= user.profilePictureUrl %>">
-        <a href="/users/<%= user.username %>"><%= user.username %></a>
-        
-        <% if(user.followers.includes(locals.userInfo.username)){ %>
-            <button id="followBtn_<%= user.username %>" class="followBtn following_true">follow</button>
-        <% } %>
-        <% if(!(user.followers.includes(locals.userInfo.username))){ %>
-            <button id="followBtn_<%= user.username %>" class="followBtn">follow</button>
-        <% } %>
+<div class="postPreview" id="div_I_dont_like_sand_Its_coarse_1648676032820">
+    
+    <div class="userPopupContainer">
 
-        <a href="/users/<%= user.username %>"><%= user.followers.length || '0' %> followers</a>
-        <a href="/users/<%= user.username %>"><%= user.following.length || '0' %> following</a>
+        <div class="profilePopup" id="profilePopup_userTest">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+            <a href="/users/sergio27998">sergio27998</a>
+            <button id="followBtn_sergio27998" class="followBtn">follow</button>
+            <a href="/users/sergio27998">1 followers</a>
+            <a href="/users/sergio27998">1 following</a>
+        </div>
 
+        <h3> <a href="/users/userTest" id="profileLink_userTest"> userTest </a></h3>
     </div>
-<% }) %>    
+
+
+    <h1> I don't like sand. It's coarse and rough and irritating and it gets everywhere. </h1>
+    <h1> - sdasdasd </h1>
+    <a href="/results?search_query=">#&nbsp;</a>
+    <br>
+    <a href="/posts/I_dont_like_sand_Its_coarse_1648676032820"> 0 comments </a>
+    <!-- delete/favorite button -->
+    <button class="favoriteButton authRequired" id="favorite_I_dont_like_sand_Its_coarse_1648676032820">♥ favorite</button>
+    
+</div>
+
 
 
 <style>
-    
-    .userMiniCard{
-        border: 1px solid black;
-        display: flex;
-        gap: 1em;
+    .postPreview{
+        border: solid black 2px;
+    }
+
+    .userPopupContainer{
+        border: solid rgb(0, 255, 0) 2px;
+        position: relative;
+        height: 5.5em;
+    }
+
+    .profilePopup{
+        display: none;
+        z-index: 5;
+        border: solid blue 2px;
+        height: 5.5em;
+        position: absolute;
+    }
+
+    .userPopupContainer:hover div{
+        display: block;
     }
 
     img{
         width: 5em;
     }
-
-    .following_true{
-        border: rgb(0, 255, 0) 2px solid;
-    }
-
 </style>
+
+
 <script>
-
-    (()=>{
-        let followBtnCollection = document.getElementsByClassName('followBtn');
-
-        for (let index = 0; index < followBtnCollection.length; index++) {
-            followBtnCollection[index].addEventListener('click', async()=>{
-                let options = {method:'post'}
-                let follow_username = followBtnCollection[index].id.slice(10);
-                let fetcher = await (await fetch(`/users/follow/${follow_username}`,options)).json();
-                
-                console.log('[test.ejs] \n',fetcher);
-                if(fetcher.error === 'Not Logged In'){
-                    renderPopup();
-                }
-
-                if(fetcher.followStatus){
-                    followBtnCollection[index].className = 'followBtn following_true';
-                }
-                else{
-                    followBtnCollection[index].className = 'followBtn';
-                }
-            });
-        }
-    })();
+    
+    let profileLink = document.getElementById('pofileLink_userTest');
 
 </script>
