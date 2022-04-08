@@ -1,0 +1,68 @@
+
+
+<% locals.usersDocument.forEach(user => {%>
+    <br>
+    <div id="userCard_<%= user.username %>" class="userMiniCard">
+        <img src="<%= user.profilePictureUrl %>">
+        <a href="/users/<%= user.username %>"><%= user.username %></a>
+        
+        <% if(user.followers.includes(locals.userInfo.username)){ %>
+            <button id="followBtn_<%= user.username %>" class="followBtn following_true">follow</button>
+        <% } %>
+        <% if(!(user.followers.includes(locals.userInfo.username))){ %>
+            <button id="followBtn_<%= user.username %>" class="followBtn">follow</button>
+        <% } %>
+
+        <a href="/users/<%= user.username %>"><%= user.followers.length || '0' %> followers</a>
+        <a href="/users/<%= user.username %>"><%= user.following.length || '0' %> following</a>
+
+    </div>
+<% }) %>    
+
+
+<style>
+    
+    .userMiniCard{
+        border: 1px solid black;
+        display: flex;
+        gap: 1em;
+    }
+
+    img{
+        width: 5em;
+    }
+
+    .following_true{
+        border: rgb(0, 255, 0) 2px solid;
+    }
+
+</style>
+
+
+<script>
+
+    (()=>{
+        let followBtnCollection = document.getElementsByClassName('followBtn');
+
+        for (let index = 0; index < followBtnCollection.length; index++) {
+            followBtnCollection[index].addEventListener('click', async()=>{
+                let options = {method:'post'}
+                let follow_username = followBtnCollection[index].id.slice(10);
+                let fetcher = await (await fetch(`/users/follow/${follow_username}`,options)).json();
+                
+                console.log('[test.ejs] \n',fetcher);
+                if(fetcher.error === 'Not Logged In'){
+                    renderPopup();
+                }
+
+                if(fetcher.followStatus){
+                    followBtnCollection[index].className = 'followBtn following_true';
+                }
+                else{
+                    followBtnCollection[index].className = 'followBtn';
+                }
+            });
+        }
+    })();
+
+</script>

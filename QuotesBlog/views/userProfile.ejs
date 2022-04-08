@@ -5,6 +5,14 @@
     <div id='userCardDiv'>
         <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
         <h3><%= locals.userData.username %></h3>
+
+        <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
+            <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">follow</button>
+        <% } %>
+        <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
+            <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">follow</button>
+        <% } %>
+
     </div>
     
     <div id='profileTabsDiv'>
@@ -145,5 +153,27 @@
     }
 
     renderTabContent(currentTab);
+
+
+    //Main Follow Button
+    let mainFollowBtn = document.getElementById('mainFollowBtn_<%= locals.userData.username %>');
+
+    mainFollowBtn.addEventListener('click', async()=>{
+        let options = {method:'post'}
+        let follow_username = mainFollowBtn.id.slice(14);
+        let fetcher = await (await fetch(`/users/follow/${follow_username}`,options)).json();
+        
+        console.log('[test.ejs] \n',fetcher);
+        if(fetcher.error === 'Not Logged In'){
+            renderPopup();
+        }
+
+        if(fetcher.followStatus){
+            mainFollowBtn.className = 'followBtn following_true';
+        }
+        else{
+            mainFollowBtn.className = 'followBtn';
+        }
+    });
 
 </script>
