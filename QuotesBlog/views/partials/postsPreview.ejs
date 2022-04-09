@@ -1,9 +1,20 @@
 <% locals.document.forEach( document =>{ %>
 
     <br><br>
-    <div style="border: 1px black solid" id="div_<%= document.publicID %>">
+    <div class="postPreview" id="div_<%= document.publicID %>">
                 
-        <h3> <a href="/users/<%= document.poster %>"> <%= document.poster %> </a></h3>
+        <div id="profilePopup_<%= document.poster %>" class="userPopupContainer">
+            <div id="profilePopup_<%= document.poster %>" class="profilePopup">
+                <img id="profileImg_<%= document.poster %>" src="calltodb">
+                <a href="/users/<%= document.poster %>"><%= document.poster %></a>
+                <button id="followBtn_<%= document.poster %>" class="followBtn <%= locals.authRequired %> calltobdforStatus">follow</button>
+                <a id="following_<%= document.poster %>" href="/users/<%= document.poster %>">Loading</a>
+                <a id="followers_<%= document.poster %>" href="/users/<%= document.poster %>">Loading</a>
+            </div>
+    
+            <h3> <a href="/users/<%= document.poster %>"> <%= document.poster %> </a></h3>
+        </div>
+
         <h1> <%= document.content %> </h1>
         <h1> - <%= document.quoteAuthor %> </h1>
 
@@ -34,10 +45,46 @@
     .favorited{
         border: red 2px solid;
     }
+
+    .postPreview{
+        border: solid black 2px;
+    }
+
+    .userPopupContainer:hover div{
+        display: block;
+    }
+
+    .userPopupContainer{
+        border: solid rgb(0, 255, 0) 2px;
+        position: relative;
+        width:fit-content;
+    }
+    .userPopupContainer h3{
+        margin: 0;
+    }
+
+    .profilePopup{
+        border: solid blue 2px;
+        display: none;
+        
+        position: absolute;
+        z-index: 5;
+        
+        bottom: 100%;
+        left: -0.5em;
+
+        height: 5.5em;
+        width: 25em;
+
+        background-color: aliceblue;
+    }
+
+    img{
+        width: 5em;
+    }
 </style>
 
 <% if(locals.userInfo.isLoggedIn){ %>
-
 <script>
 (()=>{//favoriteButton
     let favoriteButtonCollection = document.getElementsByClassName('favoriteButton');
@@ -85,7 +132,34 @@
             }
         });
     });
+
 })();
 </script>
-
 <% } %>
+
+<script>
+(()=>{
+//profilePopup
+    // profilePopup_
+    // profileImg_
+    // followBtn_
+    // following_
+    // followers_
+    let userPopupCollection = document.getElementsByClassName('userPopupContainer');
+
+    for (let index = 0; index < userPopupCollection.length; index++) {
+        userPopupCollection[index].addEventListener('mouseover',async()=>{
+            let username = userPopupCollection[index].id.slice(13);
+            let fetcher = await (await fetch('/users/popup/'+username)).json();
+
+            console.log(fetcher);
+
+            // console.log((document.getElementById('followBtn_'+username).className)+' smhtnelse');
+            document.getElementById('profileImg_'+username).src  = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+        });
+        
+    }
+
+})();
+
+</script>

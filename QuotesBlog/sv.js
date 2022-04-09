@@ -449,6 +449,28 @@ app.get('/users/followers/:username', async (req,res)=>{
 
 });
 
+app.get('/users/popup/:username', async(req,res)=>{
+    let userDataPrivate = await database.findOneDocument({username:req.params.username},db,"Users");
+    let userData = {
+        profileImg: userDataPrivate.profilePictureUrl,
+        followers: userDataPrivate.followers.length,
+        following: userDataPrivate.following.length
+    }
+    
+    if(req.session.isLoggedIn){
+        if(userDataPrivate.followers.includes(req.session.username)){
+            userData.followStatus = true;
+        }
+        else{
+            userData.followStatus = false;
+        }
+    }
+    else{
+        userData.followStatus = false;
+    }
+
+    res.json(userData);
+});
 
 // -------- Scripts
 app.get('/scripts/:fileName',(req,res)=>{

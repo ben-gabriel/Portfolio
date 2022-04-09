@@ -30,36 +30,47 @@
 
 
 <style>
+
     .postPreview{
         border: solid black 2px;
-    }
-
-    .userPopupContainer{
-        border: solid rgb(0, 255, 0) 2px;
-        position: relative;
-        height: 5.5em;
-    }
-
-    .profilePopup{
-        display: none;
-        z-index: 5;
-        border: solid blue 2px;
-        height: 5.5em;
-        position: absolute;
     }
 
     .userPopupContainer:hover div{
         display: block;
     }
 
+    .userPopupContainer{
+        border: solid rgb(0, 255, 0) 2px;
+        position: relative;
+        width:fit-content;
+    }
+    .userPopupContainer h3{
+        margin: 0;
+    }
+
+    .profilePopup{
+        border: solid blue 2px;
+        display: none;
+        
+        position: absolute;
+        z-index: 5;
+        
+        bottom: 100%;
+        left: -0.5em;
+
+        height: 5.5em;
+        width: 25em;
+
+        background-color: aliceblue;
+    }
+
     img{
         width: 5em;
     }
+    
 </style>
 
 
 <script>
     
-    let profileLink = document.getElementById('pofileLink_userTest');
-
 </script>
