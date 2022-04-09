@@ -1,7 +1,20 @@
 <%- include('./partials/header.ejs') %> 
+
 <div id="div_<%= locals.postInfo.publicID %>">
 
-    <h3> <a href="/users/<%= locals.postInfo.poster || '-' %>"><%= locals.postInfo.poster || '-' %></a> </h3>
+    <div class="userPopupContainer">
+        <div class="profilePopup">
+            <img src="calltodb">
+            <a href="/users/<%= locals.postInfo.poster %>"><%= locals.postInfo.poster %></a>
+            <button class="followBtn <%= locals.authRequired %>">follow</button>
+            <a href="/users/<%= locals.postInfo.poster %>">Loading</a>
+            <a href="/users/<%= locals.postInfo.poster %>">Loading</a>
+        </div>
+
+        <a class="userProfileLink name_<%= locals.postInfo.poster %>" href="/users/<%= locals.postInfo.poster %>"> <%= locals.postInfo.poster %> </a>
+    </div>
+
+
     <h2> <%= locals.postInfo.content || '-' %> </h2> 
     <h2> - <%= locals.postInfo.quoteAuthor || '-' %></h2>
 
@@ -65,7 +78,18 @@
                     // is replying to main post
 
                     let commentHtml = `
-                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <div class="userPopupContainer">
+                            <div class="profilePopup">
+                                <img src="calltodb">
+                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                <button class="followBtn ">follow</button>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                            </div>
+                    
+                            <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
+                        </div>
+
                         <p>  ${commentsJson[index].commentContent} <p>
                     `;
                     let replyFormHtml = `
@@ -119,7 +143,18 @@
                     let parentCommentDiv = document.getElementById(`${commentsJson[index].replyingToID}`);
                     
                     let commentHtml = `
-                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <div class="userPopupContainer">
+                            <div class="profilePopup">
+                                <img src="calltodb">
+                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                <button class="followBtn ">follow</button>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                            </div>
+                    
+                            <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
+                        </div>
+
                         <p>  ${commentsJson[index].commentContent} <p>
                     `;
                     let replyFormHtml = `
@@ -250,7 +285,18 @@
                     // is replying to main post
 
                     let commentHtml = `
-                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <div class="userPopupContainer">
+                            <div class="profilePopup">
+                                <img src="calltodb">
+                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                <button class="followBtn ">follow</button>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                            </div>
+                    
+                            <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
+                        </div>
+
                         <p>  ${commentsJson[index].commentContent} <p>
                     `;
 
@@ -279,7 +325,18 @@
                     let parentCommentDiv = document.getElementById(`${commentsJson[index].replyingToID}`);
                     
                     let commentHtml = `
-                        <h3> <a href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a></h3>
+                        <div class="userPopupContainer">
+                            <div class="profilePopup">
+                                <img src="calltodb">
+                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                <button class="followBtn ">follow</button>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                                <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+                            </div>
+                    
+                            <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
+                        </div>
+
                         <p>  ${commentsJson[index].commentContent} <p>
                     `;
 
@@ -373,3 +430,75 @@
 
 </script>
 <% } %>
+
+<script>
+    (()=>{
+        let userCollection = document.getElementsByClassName('userProfileLink');
+    
+        for (let index = 0; index < userCollection.length; index++) {
+            userCollection[index].addEventListener('mouseover',async()=>{
+                let username = userCollection[index].className.slice(21);
+                let fetcher = await (await fetch('/users/popup/'+username)).json();
+    
+                let popupDiv = userCollection[index].parentNode.children[0];
+                            
+                popupDiv.children[0].src = fetcher.profileImg;
+                
+                if(fetcher.followStatus){
+                    popupDiv.children[2].className = popupDiv.children[2].className+' following_true';
+                }
+                
+                popupDiv.children[3].innerText = 'Followers '+fetcher.followers;
+                popupDiv.children[4].innerText = 'Following '+fetcher.following;
+            });
+            
+        }
+    
+    })();
+    
+</script>
+
+
+
+<style>
+    .favorited{
+        border: red 2px solid;
+    }
+
+    .postPreview{
+        border: solid black 2px;
+    }
+
+    .userPopupContainer:hover div{
+        display: block;
+    }
+
+    .userPopupContainer{
+        border: solid rgb(0, 255, 0) 2px;
+        position: relative;
+        width:fit-content;
+    }
+    .userPopupContainer h3{
+        margin: 0;
+    }
+
+    .profilePopup{
+        border: solid blue 2px;
+        display: none;
+        
+        position: absolute;
+        z-index: 5;
+        
+        bottom: 100%;
+        left: -0.5em;
+
+        height: 5.5em;
+        width: 25em;
+
+        background-color: aliceblue;
+    }
+
+    img{
+        width: 5em;
+    }
+</style>

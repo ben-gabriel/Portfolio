@@ -151,8 +151,7 @@
             popupDiv.children[0].src = fetcher.profileImg;
             
             if(fetcher.followStatus){
-                let followBtn = document.getElementById('followBtn_'+username);
-                popupDiv.children[2].className = followBtn.className+' following_true';
+                popupDiv.children[2].className = popupDiv.children[2].className+' following_true';
             }
             
             popupDiv.children[3].innerText = 'Followers '+fetcher.followers;
