@@ -3,16 +3,16 @@
     <br><br>
     <div class="postPreview" id="div_<%= document.publicID %>">
                 
-        <div id="profilePopup_<%= document.poster %>" class="userPopupContainer">
-            <div id="profilePopup_<%= document.poster %>" class="profilePopup">
-                <img id="profileImg_<%= document.poster %>" src="calltodb">
+        <div class="userPopupContainer">
+            <div class="profilePopup">
+                <img src="calltodb">
                 <a href="/users/<%= document.poster %>"><%= document.poster %></a>
-                <button id="followBtn_<%= document.poster %>" class="followBtn <%= locals.authRequired %> calltobdforStatus">follow</button>
-                <a id="following_<%= document.poster %>" href="/users/<%= document.poster %>">Loading</a>
-                <a id="followers_<%= document.poster %>" href="/users/<%= document.poster %>">Loading</a>
+                <button class="followBtn <%= locals.authRequired %>">follow</button>
+                <a href="/users/<%= document.poster %>">Loading</a>
+                <a href="/users/<%= document.poster %>">Loading</a>
             </div>
     
-            <h3> <a href="/users/<%= document.poster %>"> <%= document.poster %> </a></h3>
+            <a class="userProfileLink name_<%= document.poster %>" href="/users/<%= document.poster %>"> <%= document.poster %> </a>
         </div>
 
         <h1> <%= document.content %> </h1>
@@ -139,23 +139,24 @@
 
 <script>
 (()=>{
-//profilePopup
-    // profilePopup_
-    // profileImg_
-    // followBtn_
-    // following_
-    // followers_
-    let userPopupCollection = document.getElementsByClassName('userPopupContainer');
+    let userCollection = document.getElementsByClassName('userProfileLink');
 
-    for (let index = 0; index < userPopupCollection.length; index++) {
-        userPopupCollection[index].addEventListener('mouseover',async()=>{
-            let username = userPopupCollection[index].id.slice(13);
+    for (let index = 0; index < userCollection.length; index++) {
+        userCollection[index].addEventListener('mouseover',async()=>{
+            let username = userCollection[index].className.slice(21);
             let fetcher = await (await fetch('/users/popup/'+username)).json();
 
-            console.log(fetcher);
-
-            // console.log((document.getElementById('followBtn_'+username).className)+' smhtnelse');
-            document.getElementById('profileImg_'+username).src  = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+            let popupDiv = userCollection[index].parentNode.children[0];
+                        
+            popupDiv.children[0].src = fetcher.profileImg;
+            
+            if(fetcher.followStatus){
+                let followBtn = document.getElementById('followBtn_'+username);
+                popupDiv.children[2].className = followBtn.className+' following_true';
+            }
+            
+            popupDiv.children[3].innerText = 'Followers '+fetcher.followers;
+            popupDiv.children[4].innerText = 'Following '+fetcher.following;
         });
         
     }
