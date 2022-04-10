@@ -1,0 +1,123 @@
+/* General */
+    img{
+        /* Place holder profile pic size */
+        width: 5em;
+    }
+
+    *{
+        box-sizing: content-box;
+    }
+
+
+
+/* header.ejs */
+    #headerDiv{
+        border: 1px black solid;
+        display:flex; 
+        flex-direction: row; 
+        flex-grow: 1; 
+        align-items: center; 
+        justify-content: space-evenly; 
+        gap: 1.5em;
+    }
+
+
+
+/* userProfile.ejs */
+    #profileNav{
+        border: 1px rgb(68, 0, 255) solid;
+        display: flex;
+    }
+    
+    #profileTabsDiv{
+        display: flex;
+        border: 1px rgb(255, 0, 0) solid;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 1.5em;    
+    }
+    
+    .profileTab{
+        border: 1px black solid;
+        display: none;
+    }
+
+    .userMiniCard{
+        /* Follow tabs (change class name) */
+        border: 1px solid black;
+        display: flex;
+        gap: 1em;
+    }
+
+
+
+/* Buttons */
+    .favorited{
+        border: red 2px solid;
+    }
+
+    .following_true{
+        border: rgb(0, 255, 0) 2px solid;
+    }
+
+
+
+/* User Profile Popup */
+    .userPopupContainer:hover div{
+        display: block;
+    }
+
+    .userPopupContainer{
+        border: solid rgb(0, 255, 0) 2px;
+        position: relative;
+        width:fit-content;
+    }
+    .userPopupContainer h3{
+        margin: 0;
+    }
+
+    .profilePopup{
+        border: solid blue 2px;
+        display: none;
+        
+        position: absolute;
+        z-index: 5;
+        
+        bottom: 100%;
+        left: -0.5em;
+
+        height: 5.5em;
+        width: 25em;
+
+        background-color: aliceblue;
+    }
+
+
+
+/* loginPopup.ejs */
+    #loginDiv{
+        background-color: rgba(31, 71, 71, 0.925);
+        
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+
+        position:absolute;
+        top: 0;
+        left: 0;
+    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+
+/* Post Preview */
+    .postPreview{
+        border: solid black 2px;
+    }

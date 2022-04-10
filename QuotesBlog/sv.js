@@ -525,7 +525,7 @@ app.use('/posts', postsRouter);
 
 // -------- Style
 app.get('/style.css',(req,res)=>{
-    res.sendFile('./style.css',{root:__dirname})
+    res.sendFile('./style_ProtoV2.css',{root:__dirname})
 });
 
 // -------- 404
