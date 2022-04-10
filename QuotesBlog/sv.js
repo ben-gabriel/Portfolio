@@ -523,6 +523,10 @@ app.post('/test', (req,res)=>{
 const postsRouter = require('./routes/posts.js');
 app.use('/posts', postsRouter);
 
+// -------- Style
+app.get('/style.css',(req,res)=>{
+    res.sendFile('./style.css',{root:__dirname})
+});
 
 // -------- 404
 app.get('*', (req,res)=>{

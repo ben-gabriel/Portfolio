@@ -1,7 +1,8 @@
 <head>
     <script src="/scripts/global.js" defer></script>
+    <link rel="stylesheet" href="/style.css">
 </head>
-<div id="headerDiv" style="border: 1px black solid; display:flex; flex-direction: row; flex-grow: 1; align-items: center; justify-content: space-evenly; gap: 1.5em;">
+<div id="headerDiv" >
 
     <h3>Hello <%= locals.userInfo.username || 'to QuotesBlog' %>!</h3> 
     
@@ -12,3 +13,16 @@
     <%- include('./logoutButton.ejs') %>
     
 </div>
+
+<style>
+    #headerDiv{
+        border: 1px black solid;
+        display:flex; 
+        flex-direction: row; 
+        flex-grow: 1; 
+        align-items: center; 
+        justify-content: space-evenly; 
+        gap: 1.5em;
+    }
+
+</style>
