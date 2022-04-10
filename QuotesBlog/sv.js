@@ -327,7 +327,7 @@ app.get('/results', async (req,res)=>{
 
 app.get('/all', async (req,res)=>{
     let document = await database.findManyDocuments({},0,1000,db,'Posts');
-    res.render('results',{document});
+    res.render('home',{document});
 });
 
 

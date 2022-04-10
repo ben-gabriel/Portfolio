@@ -117,6 +117,28 @@
 
 
 
+/* Home Page */
+    #homePageBody{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #homePageBody *{
+        max-width: 850px;
+    }
+
+    #homePageNav{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid black;
+        width: 850px;
+        gap: 2em;
+    }
+
+
+
 /* Post Preview */
     .postPreview{
         border: solid black 2px;

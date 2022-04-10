@@ -1,6 +1,5 @@
+<br>
 <% locals.document.forEach( document =>{ %>
-
-    <br><br>
     <div class="postPreview" id="div_<%= document.publicID %>">
                 
         <div class="userPopupContainer">
@@ -38,7 +37,7 @@
         <% } %>
 
     </div>
-
+    <br><br>
 <% }) %>
 
 <% if(locals.userInfo.isLoggedIn){ %>
