@@ -7,17 +7,13 @@
     *{
         margin: 0;
         padding: 0;
-        box-sizing: content-box;
+        box-sizing: border-box;
         font-family: 'Spartan', sans-serif;
     }
 
 
 
 /* header.ejs */
-    :root{
-        
-    }
-
     #headerDiv{
         display:flex; 
         flex-direction: row; 
@@ -40,33 +36,49 @@
 
     #searchBarDiv{
         width: 50%;
+        display: flex;
+        justify-content: center;
     }
-
+    
     #searchForm{
-        max-width: 750px;
+        flex-grow: 1;
+        max-width: 500px;
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     #searchForm *{
         outline: none;
+        height: 2em;
     }
     
     #search_input{
-        height: 2em;
+        flex-grow: 1;
     }
     #search_input:focus{
-    
+        outline: none;
+        border: 1px solid rgb(160, 160, 248);
     }
     
-    #search_submit{        
-        height: 2em;
+    #search_submit{    
+        width: 3em;    
     }
     .submit_span{
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .submit_span::before{
         content: "\f002";
         position: absolute;
         pointer-events: none;
+        color: rgba(0, 0, 0, 0.562)
+    }
+
+    #searchTagCardsDiv{
+        position: absolute;
     }
 
     .fa-icon::before{
