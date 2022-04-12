@@ -19,7 +19,7 @@
     }
 
     let searchTagCardsDiv = document.createElement('div');{
-        searchTagCardsDiv.id = 'searchTagCardsDiv';
+        searchTagCardsDiv.id = 'search_tags_div';
     }
 
     let inputText = document.createElement('input');{
@@ -45,16 +45,15 @@
         newTag = newTag.replace(/\s+/g,'')
 
         let searchTagCard = document.createElement('div');
-        searchTagCard.className = 'searchTagCard';
-        searchTagCard.style.border = 'black 1px solid';
+        searchTagCard.className = 'search_tag';
         searchTagCard.id = 'tag'+Date.now();
         
         let tagText = document.createElement('p');
         tagText.innerText = newTag;
         
-        let deleteTagButton = document.createElement('button');
-        deleteTagButton.innerText = 'x';
-        deleteTagButton.type = 'button';
+        let deleteTagButton = document.createElement('i');
+        deleteTagButton.innerText = '';
+        deleteTagButton.className = 'fa-icon';
         deleteTagButton.addEventListener('click',()=>{deleteTagFromSearch(newTag, searchTagCard.id)});
 
         searchTagCard.appendChild(tagText);
@@ -138,7 +137,7 @@
     form.appendChild(inputSearch);
     form.appendChild(inputText);
     form.appendChild(spanElement);
-    form.appendChild(searchTagCardsDiv);
     searchBarDiv.appendChild(form);
+    searchBarDiv.appendChild(searchTagCardsDiv);
 
 </script>
