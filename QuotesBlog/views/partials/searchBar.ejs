@@ -7,29 +7,36 @@
     let searchBarDiv = document.getElementById('searchBarDiv');
     
     let form = document.createElement('form');{
-    form.method = 'get';
-    form.id = 'searchForm';
-    form.action = '/results';
+        form.method = 'get';
+        form.id = 'searchForm';
+        form.action = '/results';
     }
 
     let inputSearch = document.createElement('input');{
-    inputSearch.type = 'search';
-    inputSearch.name = 'search_query'
-    inputSearch.style.visibility = 'hidden';
+        inputSearch.type = 'search';
+        inputSearch.name = 'search_query'
+        inputSearch.style.display = 'none';
     }
 
     let searchTagCardsDiv = document.createElement('div');{
-    searchTagCardsDiv.id = 'searchTagCardsDiv';
+        searchTagCardsDiv.id = 'searchTagCardsDiv';
     }
 
     let inputText = document.createElement('input');{
-    inputText.type = 'text';
-    inputText.placeholder = 'Enter tags separated by commas';
+        inputText.type = 'text';
+        inputText.id = 'search_input';
+        inputText.placeholder = 'Enter tags separated by commas';
+    }
+
+    let spanElement = document.createElement('span');{
+        spanElement.className = 'fa-icon submit_span'
     }
 
     let submitButton = document.createElement('input');{
-    submitButton.type = 'submit';
-    submitButton.value = 'Search';
+        submitButton.type = 'submit';
+        submitButton.id = 'search_submit';
+        submitButton.value = ' ';
+        spanElement.appendChild(submitButton);
     }
 
 
@@ -128,11 +135,10 @@
         }
     });
     
-    
     form.appendChild(inputSearch);
-    form.appendChild(searchTagCardsDiv);
     form.appendChild(inputText);
-    form.appendChild(submitButton);
+    form.appendChild(spanElement);
+    form.appendChild(searchTagCardsDiv);
     searchBarDiv.appendChild(form);
 
 </script>

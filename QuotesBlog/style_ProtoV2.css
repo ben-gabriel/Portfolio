@@ -14,30 +14,73 @@
 
 
 /* header.ejs */
+    :root{
+        
+    }
+
     #headerDiv{
         display:flex; 
         flex-direction: row; 
         flex-grow: 1; 
         align-items: center; 
-        justify-content: space-evenly; 
-        gap: 1.5em;
+        justify-content: space-around; 
 
-        background:
-            linear-gradient(
-                20deg,
-                hsl(243, 89%, 75%) 10%,
-                hsl(243, 94%, 81%)
-            );
+        min-height: 3.5em;
+        padding: 0em 1em;
+
+        background:hsl(243, 75%, 89%);
 
         box-shadow: 0 0 1px 1px hsl(243, 100%, 15%, 100%);
 
     }
 
+    .phraseitLogo{
+        width: 10em;
+    }
 
+    #searchBarDiv{
+        width: 50%;
+    }
+
+    #searchForm{
+        max-width: 750px;
+        position: relative;
+    }
+    #searchForm *{
+        outline: none;
+    }
+    
+    #search_input{
+        height: 2em;
+    }
+    #search_input:focus{
+    
+    }
+    
+    #search_submit{        
+        height: 2em;
+    }
+    .submit_span{
+        position: relative;
+    }
+    .submit_span::before{
+        content: "\f002";
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .fa-icon::before{
+        font-weight: 900;
+        font-family: "Font Awesome 6 Free";
+        display: inline-block;
+        text-rendering: auto;
+        display: inline-block;
+        -webkit-font-smoothing: antialiased;
+    }
 
 /* userProfile.ejs */
     #profileNav{
-        border: 1px rgb(68, 0, 255) solid;
+        border: 1px #ff8800 solid;
         display: flex;
     }
     
@@ -75,7 +118,7 @@
         border: rgb(0, 255, 0) 2px solid;
     }
 
-
+    
 
 /* User Profile Popup */
     .userPopupContainer:hover div{

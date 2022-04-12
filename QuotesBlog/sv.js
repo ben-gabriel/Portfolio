@@ -330,6 +330,9 @@ app.get('/all', async (req,res)=>{
     res.render('home',{document});
 });
 
+app.get('/assets/:filename', testMiddleware, async (req,res)=>{
+    res.sendFile('./assets/'+req.params.filename,{root:__dirname})
+});
 
 // -------- Users (*** Make router)
 app.post('/users/favorite/:postUrl', async (req,res)=>{
@@ -487,22 +490,7 @@ function testMiddleware(req,res,next){
 }
 
 app.get('/test', testMiddleware, async (req,res)=>{
-    console.log('\n/test ----------------------');
-    // console.log(req.body);
-    // console.log(req);
-    // console.log(req.query);
-
-    // let document = await database.findManyDocuments({$or:[{tags: 'batman'},{tags:'movies'}]},0,5,db,'Posts');
-    // let document = await database.deleteOneDocument({publicID:"I_dont_like_sand_Its_coarse_1646918777586"},db,'Posts');
-    // console.log(document)
-    
-    // console.log(req.query);
-    // console.log(req.query.text);
-    // console.log(req.query.search);
-
-    let usersDocument = await database.findManyDocuments({followers:'userTest'},0,5,db,'Users');
-
-    res.render('test',{usersDocument});
+    res.sendFile('./assets/logo3.svg',{root:__dirname})
 });
 
 app.post('/test', (req,res)=>{

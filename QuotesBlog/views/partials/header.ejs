@@ -6,16 +6,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@300&display=swap" rel="stylesheet">
 
+    <script src="https://kit.fontawesome.com/bae7e54b88.js" crossorigin="anonymous"></script>
+
 </head>
 
 <div id="headerDiv" >
-
-    <h3>Hello <%= locals.userInfo.username || 'to QuotesBlog' %>!</h3> 
+    <a href="/">
+        <img src="/assets/logo7.svg" alt="Phrase it Logo" id="phraseitLogo" class="phraseitLogo">
+    </a>
     
     <%- include('./searchBar.ejs') %>
     
-    <a href="/all">Home</a> 
-    <a href="/posts/new">New Post</a>
-    <%- include('./logoutButton.ejs') %>
+    <div>
+        <a href="/posts/new">New Quote</a>
+        <%- include('./logoutButton.ejs') %>
+    </div>
     
 </div>
