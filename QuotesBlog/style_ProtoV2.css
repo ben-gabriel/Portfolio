@@ -15,8 +15,14 @@
         --tag-color-2: rgb(177, 177, 236);
         --tag-color-3: rgb(160, 160, 248);
 
+        --homepage-width: 850px; /* Make relative unit */
+
         --post-color-1: rgb(255, 255, 255); 
         --post-color-2: rgb(160, 160, 248); 
+        --post-color-2: rgb(207, 207, 243);
+
+        --quote-color-1: rgba(0, 0, 0, 0.774);
+        --quote-color-2: rgba(0, 0, 0, 0.349);
 
         --button-color-1: rgb(207, 207, 243);
         --button-color-2: rgb(224, 162, 162);
@@ -54,9 +60,13 @@
     .btn{
         text-decoration: none;
         font-weight: 1000;
-        color: var(--icon-color-1);
+        font-size:medium;
+
         padding: 0.5em;
+
+        color: var(--icon-color-1);
         background-color: var(--button-color-1);
+        border: none;
     }
     button{
         background-color: var(--button-color-1);
@@ -87,6 +97,7 @@
         box-shadow: 0 0 1px 1px hsl(243, 100%, 15%, 100%);
     }
 
+    /* Top Left Logo */
     .phraseitLogo{
         width: 10em;
     }
@@ -153,10 +164,14 @@
         z-index: 4;
 
         background-color: var(--tag-color-1);
-        border: 1px solid var(--search-bar-color-1);
+        border-color: var(--search-bar-color-1);
+        border-style: solid;
+        border-width: 0;
 
         display: flex;
         flex-wrap: wrap;
+
+        visibility: hidden;
     }
 
     #search_tags_div div{
@@ -165,6 +180,9 @@
     }
     #searchBarDiv:hover #search_tags_div div{
         position: relative;
+        visibility: visible;
+    }
+    #searchBarDiv:hover #search_tags_div{
         visibility: visible;
     }
 
@@ -234,32 +252,30 @@
 
 
 /* User Profile Popup */
+    .userPopupContainer {
+        position: relative;
+        width: fit-content;
+    }
+    .userPopupContainer:hover{
+        width: 100%;
+    }
     .userPopupContainer:hover div{
         display: block;
     }
-
-    .userPopupContainer{
-        position: relative;
-        width:fit-content;
-    }
-    .userPopupContainer h3{
-        margin: 0;
-    }
-
+    
     .profilePopup{
-        border: solid blue 2px;
         display: none;
         
         position: absolute;
-        z-index: 5;
         
         bottom: 100%;
         left: -0.5em;
-
+        
         height: 5.5em;
-        width: 25em;
-
+        width: fit-content;
+        
         background-color: aliceblue;
+        z-index: 5;
     }
 
 
@@ -269,7 +285,7 @@
         background-color: rgba(31, 71, 71, 0.925);
         
         height: 100vh;
-        width: 100vw;
+        width: 100%;
         overflow: hidden;
 
         position:absolute;
@@ -280,6 +296,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        z-index: 10;    
     }
 
 
@@ -291,7 +308,7 @@
         align-items: center;
     }
     #homePageBody *{
-        max-width: 850px;
+        max-width: var(--homepage-width);
     }
 
     #homePageNav{
@@ -299,7 +316,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 850px;
+        max-width: var(--homepage-width);
+        width: 100%;
         
         gap: 2em;
         margin-top: 1.5em;
@@ -307,6 +325,10 @@
 
         border: solid 1px var(--post-color-2);
         background-color: var(--post-color-1);
+    }
+
+    #homePageNav > *{
+        margin: 0.5em;
     }
 
 
@@ -329,9 +351,22 @@
         padding: 0.1em;
     }
 
-    .userProfileLink{
+    .post_preview_content{
+        padding: 1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
     }
-
+    .post_preview_content > *{
+        display: inline;
+        color: var(--quote-color-2);
+    }
+    .post_preview_quote{
+        color: var(--quote-color-1);
+    }
+    .post_preview_author{
+        display: inline-block;
+    }
+    
     .post_preview_footer{
         display: flex;
         flex-direction: column;
@@ -340,6 +375,9 @@
     .post_preview_buttons{
         display: flex;
         align-items: center;
+    }
+    .post_preview_buttons > *{
+        margin-right: 0.5em;
     }
 
     .favoriteButton{

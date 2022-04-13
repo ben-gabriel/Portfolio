@@ -59,6 +59,8 @@
         searchTagCard.appendChild(tagText);
         searchTagCard.appendChild(deleteTagButton);
         searchTagCardsDiv.appendChild(searchTagCard);
+        searchTagCardsDiv.style.borderWidth = '1px';
+
 
         if(inputSearch.value === ''){
             inputSearch.value = newTag;    
@@ -75,6 +77,10 @@
         
         let divToDelete = document.getElementById(id);
         divToDelete.remove();
+
+        if(!document.getElementById('search_tags_div').hasChildNodes()){
+            document.getElementById('search_tags_div').style.borderWidth = '0px';
+        }
 
     }   
 

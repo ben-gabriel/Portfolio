@@ -15,8 +15,10 @@
 
 
         <div class="post_preview_content">
-            <h2> <%= document.content %> </h2>
-            <h3> - <%= document.quoteAuthor %> </h3>
+            <i class="fa-solid fa-quote-left"></i>
+            <h2 class="post_preview_quote"> <%= document.content %> </h2>
+            <i class="fa-solid fa-quote-right"></i>
+            <h4 class="post_preview_author"> - <%= document.quoteAuthor %> </h4>
         </div>
 
 
@@ -33,15 +35,15 @@
                     <!-- delete/favorite button -->
                 <% if(locals.userInfo.username === document.poster){ %>
                     <span class="fa-icon delete_btn_span">
-                        <button class="deleteButton" id="delete_<%= document.publicID %>"></button>
+                        <button class="deleteButton" id="delete_<%= document.publicID %>" aria-label="Delete"></button>
                     </span>
                 <% }else{ %>
                     <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
-                        <span class="fa-icon favorite_btn_span">
-                            <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>"></button>
+                        <span class="fa-icon favorite_btn_span" aria-label="Favorite">
+                            <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>" ></button>
                         </span>
                     <% }else{ %>
-                        <span class="fa-icon favorite_btn_span">
+                        <span class="fa-icon favorite_btn_span" aria-label="Favorite">
                             <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>"></button>
                         </span>
                     <% } %>
