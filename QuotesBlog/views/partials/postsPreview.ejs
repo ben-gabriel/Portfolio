@@ -32,10 +32,14 @@
                     
                     <!-- delete/favorite button -->
                 <% if(locals.userInfo.username === document.poster){ %>
-                    <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
+                    <span class="fa-icon delete_btn_span">
+                        <button class="deleteButton" id="delete_<%= document.publicID %>"></button>
+                    </span>
                 <% }else{ %>
                     <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
-                        <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                        <span class="fa-icon favorite_btn_span">
+                            <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>"></button>
+                        </span>
                     <% }else{ %>
                         <span class="fa-icon favorite_btn_span">
                             <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>"></button>

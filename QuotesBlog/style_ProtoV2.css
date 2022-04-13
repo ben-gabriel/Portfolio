@@ -1,4 +1,31 @@
 /* General */
+    :root{
+        --body-color: rgb(218, 224, 230);
+
+        --header-color-1: rgb(208, 206, 248);
+
+        --search-bar-height: 2.5em;
+        --search-bar-width: 500px;
+        --search-bar-color-1: rgb(160, 160, 248);
+        --search-bar-color-2: rgb(163, 163, 221);
+
+        --icon-color-1: rgba(0, 0, 0, 0.562);
+
+        --tag-color-1: rgb(255, 255, 255);
+        --tag-color-2: rgb(177, 177, 236);
+        --tag-color-3: rgb(160, 160, 248);
+
+        --post-color-1: rgb(255, 255, 255); 
+        --post-color-2: rgb(160, 160, 248); 
+
+        --button-color-1: rgb(207, 207, 243);
+        --button-color-2: rgb(224, 162, 162);
+
+        /* alternate style */
+        --header-color-1: rgb(255, 255, 255);
+        --search-bar-color-1: rgb(207, 207, 243);
+    }
+
     img{
         /* Place holder profile pic size */
         width: 5em;
@@ -29,47 +56,19 @@
         font-weight: 1000;
         color: var(--icon-color-1);
         padding: 0.5em;
-        background-color: var(--search-bar-color-1);
+        background-color: var(--button-color-1);
     }
     button{
-        background-color: var(--search-bar-color-1);
-        border: 1px solid var(--search-bar-color-1);
+        background-color: var(--button-color-1);
+        border: 1px solid var(--button-color-1);
         cursor: pointer;
-    }
-
-    .favorited{
-        border: red 2px solid;
     }
 
     .following_true{
         border: rgb(0, 255, 0) 2px solid;
     }
 
-    :root{
-        --body-color: rgb(218, 224, 230);
-
-        --header-color-1: rgb(208, 206, 248);
-
-        --search-bar-height: 2.5em;
-        --search-bar-width: 500px;
-        --search-bar-color-1: rgb(160, 160, 248);
-        --search-bar-color-2: rgb(163, 163, 221);
-
-        --icon-color-1: rgba(0, 0, 0, 0.562);
-
-        --tag-color-1: rgb(255, 255, 255);
-        --tag-color-2: rgb(177, 177, 236);
-        --tag-color-3: rgb(160, 160, 248);
-
-        --post-color-1: rgb(255, 255, 255); 
-        --post-color-2: rgb(160, 160, 248); 
-
-
-        /* alternate style */
-        --header-color-1: rgb(255, 255, 255);
-        --search-bar-color-1: rgb(207, 207, 243);
-    }
-
+    
 
 
 /* header.ejs */
@@ -322,6 +321,8 @@
         margin: 0.5em 0;
         padding: 0.5em;
 
+        width: 100%;
+
     }
     .postPreview *{
         text-decoration: none;
@@ -354,10 +355,34 @@
         align-items: center;
     }
     .favorite_btn_span::before{
+        /* f004 empty heart > font weight*/
         content: '\f004';
         position: absolute;
         top: 25%;
         pointer-events: none;
         color: var(--icon-color-1);
     }
-    /* f004 empty heart*/
+
+    .favorited{
+        background-color: var(--button-color-2);
+    }
+    
+    .deleteButton{
+        width: 2em;
+        height: 2em;
+        border-radius: 100%;
+    }
+
+    .delete_btn_span{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .delete_btn_span::before{
+        content: '\f1f8';
+        position: absolute;
+        top: 25%;
+        pointer-events: none;
+        color: var(--icon-color-1);
+    }
