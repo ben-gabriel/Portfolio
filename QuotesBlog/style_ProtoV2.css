@@ -31,6 +31,11 @@
         padding: 0.5em;
         background-color: var(--search-bar-color-1);
     }
+    button{
+        background-color: var(--search-bar-color-1);
+        border: 1px solid var(--search-bar-color-1);
+        cursor: pointer;
+    }
 
     .favorited{
         border: red 2px solid;
@@ -298,7 +303,8 @@
         width: 850px;
         
         gap: 2em;
-        margin: 0.5em 0;
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
 
         border: solid 1px var(--post-color-2);
         background-color: var(--post-color-1);
@@ -324,3 +330,34 @@
 
     .userProfileLink{
     }
+
+    .post_preview_footer{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .post_preview_buttons{
+        display: flex;
+        align-items: center;
+    }
+
+    .favoriteButton{
+        width: 2em;
+        height: 2em;
+        border-radius: 100%;
+    }
+
+    .favorite_btn_span{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .favorite_btn_span::before{
+        content: '\f004';
+        position: absolute;
+        top: 25%;
+        pointer-events: none;
+        color: var(--icon-color-1);
+    }
+    /* f004 empty heart*/

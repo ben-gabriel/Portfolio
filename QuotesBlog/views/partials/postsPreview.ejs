@@ -26,19 +26,24 @@
                     <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
                 <% }) %>   
             </div>
-                
-            <a href=<%= '/posts/'+ document.publicID %>> <%= document.comments.length %> comments </a>
-                
-                <!-- delete/favorite button -->
-            <% if(locals.userInfo.username === document.poster){ %>
-                <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
-            <% }else{ %>
-                <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
-                    <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>">♥ favorite</button>
+               
+            <div class="post_preview_buttons">
+                <a href=<%= '/posts/'+ document.publicID %>> <%= document.comments.length %> comments </a>
+                    
+                    <!-- delete/favorite button -->
+                <% if(locals.userInfo.username === document.poster){ %>
+                    <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
                 <% }else{ %>
-                    <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                    <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
+                        <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                    <% }else{ %>
+                        <span class="fa-icon favorite_btn_span">
+                            <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>"></button>
+                        </span>
+                    <% } %>
                 <% } %>
-            <% } %>
+            </div>
+
         </div>
   
     </div>
