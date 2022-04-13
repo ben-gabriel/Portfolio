@@ -1,4 +1,3 @@
-<br>
 <% locals.document.forEach( document =>{ %>
     <div class="postPreview" id="div_<%= document.publicID %>">
                 
@@ -14,32 +13,38 @@
             <a class="userProfileLink name_<%= document.poster %>" href="/users/<%= document.poster %>"> <%= document.poster %> </a>
         </div>
 
-        <h1> <%= document.content %> </h1>
-        <h1> - <%= document.quoteAuthor %> </h1>
 
-        <% document.tags.forEach( tag =>{ %>
-            <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
-        <% }) %>   
+        <div class="post_preview_content">
+            <h2> <%= document.content %> </h2>
+            <h3> - <%= document.quoteAuthor %> </h3>
+        </div>
 
-        <br>
-        <a href=<%= '/posts/'+ document.publicID %>> <%= document.comments.length %> comments </a>
-    
-        
-        <!-- delete/favorite button -->
-        <% if(locals.userInfo.username === document.poster){ %>
-            <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
-        <% }else{ %>
-            <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
-                <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>">♥ favorite</button>
+
+        <div class="post_preview_footer">
+            <div class="post_preview_tags">
+                <% document.tags.forEach( tag =>{ %>
+                    <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
+                <% }) %>   
+            </div>
+                
+            <a href=<%= '/posts/'+ document.publicID %>> <%= document.comments.length %> comments </a>
+                
+                <!-- delete/favorite button -->
+            <% if(locals.userInfo.username === document.poster){ %>
+                <button class="deleteButton" id="delete_<%= document.publicID %>">Delete</button>
             <% }else{ %>
-                <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                <% if(document.favoritedBy.includes(locals.userInfo.username)){ %>
+                    <button class="favoriteButton favorited" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                <% }else{ %>
+                    <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= document.publicID %>">♥ favorite</button>
+                <% } %>
             <% } %>
-        <% } %>
-
+        </div>
+  
     </div>
-    <br><br>
 <% }) %>
-
+                            
+    
 <% if(locals.userInfo.isLoggedIn){ %>
 <script>
 (()=>{//favoriteButton

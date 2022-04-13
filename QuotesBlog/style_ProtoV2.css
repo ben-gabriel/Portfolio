@@ -11,6 +11,10 @@
         font-family: 'Spartan', sans-serif;
     }
 
+    body{
+        background-color: var(--body-color);
+    }
+
     .fa-icon::before{
         font-weight: 900;
         font-family: "Font Awesome 6 Free";
@@ -36,25 +40,34 @@
         border: rgb(0, 255, 0) 2px solid;
     }
 
-    
-
-/* header.ejs */
     :root{
+        --body-color: rgb(218, 224, 230);
+
         --header-color-1: rgb(208, 206, 248);
+
         --search-bar-height: 2.5em;
         --search-bar-width: 500px;
         --search-bar-color-1: rgb(160, 160, 248);
         --search-bar-color-2: rgb(163, 163, 221);
+
         --icon-color-1: rgba(0, 0, 0, 0.562);
+
         --tag-color-1: rgb(255, 255, 255);
         --tag-color-2: rgb(177, 177, 236);
         --tag-color-3: rgb(160, 160, 248);
 
+        --post-color-1: rgb(255, 255, 255); 
+        --post-color-2: rgb(160, 160, 248); 
+
+
         /* alternate style */
-        /* --header-color-1: rgb(255, 255, 255);
-        --search-bar-color-1: rgb(207, 207, 243); */
+        --header-color-1: rgb(255, 255, 255);
+        --search-bar-color-1: rgb(207, 207, 243);
     }
 
+
+
+/* header.ejs */
     #headerDiv{
         display:flex; 
         flex-direction: row; 
@@ -222,7 +235,6 @@
     }
 
     .userPopupContainer{
-        border: solid rgb(0, 255, 0) 2px;
         position: relative;
         width:fit-content;
     }
@@ -283,15 +295,32 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 2px solid black;
         width: 850px;
+        
         gap: 2em;
+        margin: 0.5em 0;
+
+        border: solid 1px var(--post-color-2);
+        background-color: var(--post-color-1);
     }
 
 
 
 
 /* Post Preview */
+
     .postPreview{
-        border: solid black 2px;
+        border: solid 1px var(--post-color-2);
+        background-color: var(--post-color-1);
+        
+        margin: 0.5em 0;
+        padding: 0.5em;
+
+    }
+    .postPreview *{
+        text-decoration: none;
+        padding: 0.1em;
+    }
+
+    .userProfileLink{
     }
