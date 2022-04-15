@@ -3,26 +3,29 @@
 <div id="profileNav">
 
     <div id='userCardDiv'>
-        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
-        <h3><%= locals.userData.username %></h3>
-
-        <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
-            <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">follow</button>
-        <% } %>
-        <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
-            <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">follow</button>
-        <% } %>
+        <img class="profile_picture" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png">
+        
+        <div id="user_card_subcontainer">
+            <h4><%= locals.userData.username %></h4>
+    
+            <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
+                <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">follow</button>
+            <% } %>
+            <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
+                <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn btn">follow</button>
+            <% } %>
+        </div>
 
     </div>
     
     <div id='profileTabsDiv'>
-        <h3 class="tabButton">ownPosts</h3>
+        <h3 class="tabButton">Posts</h3>
 
-        <h3 class="tabButton">favoritePosts</h3>
+        <h3 class="tabButton">Favorites</h3>
         
-        <h3 class="tabButton"><%= locals.userData.following.length %> following</h3>
+        <h3 class="tabButton"><%= locals.userData.following.length %> Following</h3>
         
-        <h3 class="tabButton"><%= locals.userData.followers.length %> followers</h3>
+        <h3 class="tabButton"><%= locals.userData.followers.length %> Followers</h3>
     </div>
 
 </div>

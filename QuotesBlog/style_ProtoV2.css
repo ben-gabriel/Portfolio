@@ -15,7 +15,8 @@
         --tag-color-2: rgb(177, 177, 236);
         --tag-color-3: rgb(160, 160, 248);
 
-        --homepage-width: 850px; /* Make relative unit */
+        --post-container-width:  53em; /* Make relative unit */
+        --nav-bar-width:  60em;
 
         --post-color-1: rgb(255, 255, 255); 
         --post-color-2: rgb(160, 160, 248); 
@@ -26,6 +27,8 @@
 
         --button-color-1: rgb(207, 207, 243);
         --button-color-2: rgb(224, 162, 162);
+
+        --font-color-1: rgb(91, 91, 107);
 
         /* alternate style */
         --header-color-1: rgb(255, 255, 255);
@@ -222,13 +225,42 @@
 
 /* userProfile.ejs */
     #profileNav{
-        border: 1px #ff8800 solid;
+        margin: 0.5em 0;
+        border: 1px solid var(--post-color-2);
         display: flex;
+
+        max-width: var(--nav-bar-width);
+        position: relative;
+        left: 50%;
+        transform: translate(-50%);
+
+        background-color: var(--post-color-1);
     }
-    
-    #profileTabsDiv{
+    #profileNav *{
+        color: var(--font-color-1);
+        font-size: medium;
+    }
+
+    #userCardDiv{
+        min-width: 30%;
         display: flex;
-        border: 1px rgb(255, 0, 0) solid;
+        align-items: center;
+
+        border-right: 1px solid var(--post-color-2);
+        /* border-radius: 5em; */
+        
+        margin: 0.5em;
+    }
+    #userCardDiv div{
+        margin-left:0.75em ;
+    }
+
+    .profile_picture{
+        width: 5em;
+        border-radius: 5em;
+    }
+
+    #profileTabsDiv{
         display: flex;
         flex-direction: row;
         flex-grow: 1;
@@ -236,9 +268,15 @@
         justify-content: space-evenly;
         gap: 1.5em;    
     }
-    
+
+    #profileContent {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+    }
+
     .profileTab{
-        border: 1px black solid;
+        max-width: var(--post-container-width);
         display: none;
     }
 
@@ -308,7 +346,7 @@
         align-items: center;
     }
     #homePageBody *{
-        max-width: var(--homepage-width);
+        max-width: var(--post-container-width);
     }
 
     #homePageNav{
@@ -316,7 +354,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        max-width: var(--homepage-width);
         width: 100%;
         
         gap: 2em;
