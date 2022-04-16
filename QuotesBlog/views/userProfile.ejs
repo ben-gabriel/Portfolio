@@ -9,10 +9,14 @@
             <h4><%= locals.userData.username %></h4>
     
             <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
-                <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">follow</button>
+                <span class="follow_btn_span fa-icon follow_btn_span_following">
+                    <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">Follow</button>
+                </span>
             <% } %>
             <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
-                <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn btn">follow</button>
+                <span class="follow_btn_span fa-icon">    
+                    <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">Follow</button>
+                </span>
             <% } %>
         </div>
 
@@ -23,9 +27,9 @@
 
         <h3 class="tabButton">Favorites</h3>
         
-        <h3 class="tabButton"><%= locals.userData.following.length %> Following</h3>
-        
         <h3 class="tabButton"><%= locals.userData.followers.length %> Followers</h3>
+        
+        <h3 class="tabButton"><%= locals.userData.following.length %> Following</h3>
     </div>
 
 </div>
@@ -141,10 +145,10 @@
         }
 
         if(fetcher.followStatus){
-            mainFollowBtn.className = 'followBtn following_true';
+            mainFollowBtn.parentElement.className = 'follow_btn_span fa-icon follow_btn_span_following'; 
         }
         else{
-            mainFollowBtn.className = 'followBtn';
+            mainFollowBtn.parentElement.className = 'follow_btn_span fa-icon'; 
         }
     });
 

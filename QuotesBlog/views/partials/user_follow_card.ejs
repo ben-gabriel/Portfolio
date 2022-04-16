@@ -1,0 +1,60 @@
+
+
+<% locals.usersDocument.forEach(user => {%>
+    <div id="userCard_<%= user.username %>" class="follow_card">
+
+        <div class="follow_card_div">
+            <img class="profile_picture" src="<%= user.profilePictureUrl %>">
+            
+            <div class="follow_card_subcontainer">
+                <a href="/users/<%= user.username %>"><%= user.username %></a>
+                
+                <% if(user.followers.includes(locals.userInfo.username)){ %>
+                    <span class="follow_btn_span fa-icon follow_btn_span_following">
+                        <button id="followBtn_<%= user.username %>" class="followBtn following_true">Follow</button>
+                    </span>
+                <% } %>
+                <% if(!(user.followers.includes(locals.userInfo.username))){ %>
+                    <span class="follow_btn_span fa-icon">
+                        <button id="followBtn_<%= user.username %>" class="followBtn">Follow</button>
+                    </span>
+                <% } %>
+            </div>
+
+        </div>
+
+        <a href="/users/<%= user.username %>"><%= user.followers.length || '0' %> Followers</a>
+        <a href="/users/<%= user.username %>"><%= user.following.length || '0' %> Following</a>
+
+    </div>
+<% }) %>    
+
+
+
+<script>
+
+    (()=>{
+        let followBtnCollection = document.getElementsByClassName('followBtn');
+
+        for (let index = 0; index < followBtnCollection.length; index++) {
+            followBtnCollection[index].addEventListener('click', async()=>{
+                let options = {method:'post'}
+                let follow_username = followBtnCollection[index].id.slice(10);
+                let fetcher = await (await fetch(`/users/follow/${follow_username}`,options)).json();
+                
+                console.log('[test.ejs] \n',fetcher);
+                if(fetcher.error === 'Not Logged In'){
+                    renderPopup();
+                }
+
+                if(fetcher.followStatus){
+                    followBtnCollection[index].parentElement.className = 'follow_btn_span fa-icon follow_btn_span_following';
+                }
+                else{
+                    followBtnCollection[index].parentElement.className = 'follow_btn_span fa-icon';
+                }
+            });
+        }
+    })();
+
+</script>

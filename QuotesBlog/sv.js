@@ -442,13 +442,13 @@ app.get('/users/favorites/:username', async (req,res)=>{
 app.get('/users/following/:username', async (req,res)=>{
     let usersDocument = await database.findManyDocuments({followers:req.params.username},0,5,db,'Users');
     console.log('/users/following/:username = --------------\n',usersDocument);
-    res.render('partials/userCard.ejs',{usersDocument});
+    res.render('partials/user_follow_card.ejs',{usersDocument});
 });
 
 app.get('/users/followers/:username', async (req,res)=>{
     let usersDocument = await database.findManyDocuments({following:req.params.username},0,5,db,'Users');
     console.log('/users/followers/:username = --------------\n',usersDocument);
-    res.render('partials/userCard.ejs',{usersDocument});
+    res.render('partials/user_follow_card.ejs',{usersDocument});
 
 });
 

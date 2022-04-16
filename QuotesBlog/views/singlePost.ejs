@@ -4,7 +4,7 @@
 
     <div class="userPopupContainer">
         <div class="profilePopup">
-            <img src="calltodb">
+            <img class="profile_picture" src="calltodb">
             <a href="/users/<%= locals.postInfo.poster %>"><%= locals.postInfo.poster %></a>
             <button class="followBtn <%= locals.authRequired %>">follow</button>
             <a href="/users/<%= locals.postInfo.poster %>">Loading</a>
@@ -80,7 +80,7 @@
                     let commentHtml = `
                         <div class="userPopupContainer">
                             <div class="profilePopup">
-                                <img src="calltodb">
+                                <img class="profile_picture" src="calltodb">
                                 <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
                                 <button class="followBtn ">follow</button>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
@@ -145,7 +145,7 @@
                     let commentHtml = `
                         <div class="userPopupContainer">
                             <div class="profilePopup">
-                                <img src="calltodb">
+                                <img class="profile_picture" src="calltodb">
                                 <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
                                 <button class="followBtn ">follow</button>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
@@ -287,7 +287,7 @@
                     let commentHtml = `
                         <div class="userPopupContainer">
                             <div class="profilePopup">
-                                <img src="calltodb">
+                                <img class="profile_picture" src="calltodb">
                                 <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
                                 <button class="followBtn ">follow</button>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
@@ -327,7 +327,7 @@
                     let commentHtml = `
                         <div class="userPopupContainer">
                             <div class="profilePopup">
-                                <img src="calltodb">
+                                <img class="profile_picture" src="calltodb">
                                 <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
                                 <button class="followBtn ">follow</button>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>

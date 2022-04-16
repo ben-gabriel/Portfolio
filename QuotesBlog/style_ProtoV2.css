@@ -17,6 +17,7 @@
 
         --post-container-width:  53em; /* Make relative unit */
         --nav-bar-width:  60em;
+        --follow-card-width: 30em;
 
         --post-color-1: rgb(255, 255, 255); 
         --post-color-2: rgb(160, 160, 248); 
@@ -27,17 +28,16 @@
 
         --button-color-1: rgb(207, 207, 243);
         --button-color-2: rgb(224, 162, 162);
+        --button-color-3: rgb(154, 154, 255);
 
         --font-color-1: rgb(91, 91, 107);
+
+        --profile-color-1: rgb(255, 255, 255);
+        --profile-color-2: rgb(207, 207, 243);
 
         /* alternate style */
         --header-color-1: rgb(255, 255, 255);
         --search-bar-color-1: rgb(207, 207, 243);
-    }
-
-    img{
-        /* Place holder profile pic size */
-        width: 5em;
     }
 
     *{
@@ -77,8 +77,95 @@
         cursor: pointer;
     }
 
-    .following_true{
-        border: rgb(0, 255, 0) 2px solid;
+    .favoriteButton{
+        width: 2em;
+        height: 2em;
+        border-radius: 100%;
+    }
+
+    .favorite_btn_span{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .favorite_btn_span::before{
+        /* f004 empty heart > font weight*/
+        content: '\f004';
+        position: absolute;
+        top: 25%;
+        pointer-events: none;
+        color: var(--icon-color-1);
+    }
+
+    .favorited{
+        background-color: var(--button-color-2);
+    }
+    
+    .deleteButton{
+        width: 2em;
+        height: 2em;
+        border-radius: 100%;
+    }
+
+    .delete_btn_span{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .delete_btn_span::before{
+        content: '\f1f8';
+        position: absolute;
+        top: 25%;
+        pointer-events: none;
+        color: var(--icon-color-1);
+    }
+
+    .follow_btn_span{
+        position: relative;
+        width: fit-content;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        
+        text-decoration: none;
+
+        padding: 0.3em;
+        margin-top: 0.3em;
+        
+        border: none;
+    }
+    .follow_btn_span_following::before{
+        content: '\f00c';
+        margin-left: 0.3em;
+        transform: scale(90%);
+        
+        display: flex;
+        align-items: center;
+
+        position: absolute;
+        right: -25%;
+        
+        height: 100%;
+
+    }
+    .follow_btn_span_following {
+        background-color: rgba(0, 0, 0, 0);
+        color: var(--tag-color-3);
+    }
+
+    .followBtn{
+        background-color: rgba(0, 0, 0, 0);
+        border: none;
+        font-weight: 1000;        
+    }
+    .follow_btn_span button{
+        color: var(--tag-color-3);
+
+    }
+    .follow_btn_span_following button{
+        color: var(--font-color-1);
     }
 
     
@@ -236,10 +323,6 @@
 
         background-color: var(--post-color-1);
     }
-    #profileNav *{
-        color: var(--font-color-1);
-        font-size: medium;
-    }
 
     #userCardDiv{
         min-width: 30%;
@@ -253,6 +336,8 @@
     }
     #userCardDiv div{
         margin-left:0.75em ;
+        font-size: medium;
+        color: var(--font-color-1) ;
     }
 
     .profile_picture{
@@ -269,6 +354,26 @@
         gap: 1.5em;    
     }
 
+    .tabButton{
+        font-size: medium;
+        color: var(--font-color-1);
+        position: relative;
+        cursor: pointer;
+    }
+    .tabButton:hover::before{
+        /* *** make animation: grows from center to sides */
+        /* *** make it stay on as status: indicative of current tab */
+        content: '';
+        position: absolute;
+        width: 110%;
+        left: -5%;
+        bottom: 0;
+
+        border-radius: 1em;
+        border: solid 1px var(--post-color-2);
+        
+    }
+
     #profileContent {
         display: flex;
         justify-content: center;
@@ -280,12 +385,34 @@
         display: none;
     }
 
-    .userMiniCard{
-        /* Follow tabs (change class name) */
-        border: 1px solid black;
+    .follow_card{
+        background-color: var(--profile-color-1);
+        border: 1px solid var(--profile-color-2);
+        
         display: flex;
+        align-items: center;
+
+        width: var(--follow-card-width);
+
         gap: 1em;
+        margin: 0.5em 0;
+        padding: 0.5em;
     }
+    .follow_card *{
+        text-decoration: none;
+    }
+
+    .follow_card_div{
+        min-width: 50%;
+        display: flex;
+        align-items: center;
+        border-right: 1px solid var(--profile-color-2);
+    }
+
+    .follow_card_subcontainer{
+        margin-left: 0.75em;
+    }
+    
 
 
 
@@ -417,47 +544,4 @@
         margin-right: 0.5em;
     }
 
-    .favoriteButton{
-        width: 2em;
-        height: 2em;
-        border-radius: 100%;
-    }
-
-    .favorite_btn_span{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .favorite_btn_span::before{
-        /* f004 empty heart > font weight*/
-        content: '\f004';
-        position: absolute;
-        top: 25%;
-        pointer-events: none;
-        color: var(--icon-color-1);
-    }
-
-    .favorited{
-        background-color: var(--button-color-2);
-    }
     
-    .deleteButton{
-        width: 2em;
-        height: 2em;
-        border-radius: 100%;
-    }
-
-    .delete_btn_span{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .delete_btn_span::before{
-        content: '\f1f8';
-        position: absolute;
-        top: 25%;
-        pointer-events: none;
-        color: var(--icon-color-1);
-    }
