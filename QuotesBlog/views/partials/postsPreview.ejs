@@ -2,14 +2,24 @@
     <div class="postPreview" id="div_<%= document.publicID %>">
                 
         <div class="userPopupContainer">
+
+            
             <div class="profilePopup">
                 <img class="profile_picture" src="calltodb">
-                <a href="/users/<%= document.poster %>"><%= document.poster %></a>
-                <button class="followBtn <%= locals.authRequired %>">follow</button>
+
+                <div class="profile_popup_subcontainer">
+                    <a href="/users/<%= document.poster %>"><%= document.poster %></a>
+                    <span class="follow_btn_span fa-icon">
+                        <button id="followBtn_<%= document.poster %>" class="followBtn">Follow</button>
+                    </span>
+                </div>
+                
                 <a href="/users/<%= document.poster %>">Loading</a>
                 <a href="/users/<%= document.poster %>">Loading</a>
+
             </div>
     
+
             <a class="userProfileLink name_<%= document.poster %>" href="/users/<%= document.poster %>"> <%= document.poster %> </a>
         </div>
 
@@ -123,11 +133,11 @@
             popupDiv.children[0].src = fetcher.profileImg;
             
             if(fetcher.followStatus){
-                popupDiv.children[2].className = popupDiv.children[2].className+' following_true';
+                popupDiv.children[1].children[1].className = popupDiv.children[1].children[1].className+' follow_btn_span_following';
             }
             
-            popupDiv.children[3].innerText = 'Followers '+fetcher.followers;
-            popupDiv.children[4].innerText = 'Following '+fetcher.following;
+            popupDiv.children[2].innerText = fetcher.followers+' Followers';
+            popupDiv.children[3].innerText = fetcher.following+' Following';
         });
         
     }

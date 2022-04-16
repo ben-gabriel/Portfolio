@@ -132,6 +132,7 @@
         text-decoration: none;
 
         padding: 0.3em;
+        padding-left: 0;
         margin-top: 0.3em;
         
         border: none;
@@ -425,7 +426,7 @@
         width: 100%;
     }
     .userPopupContainer:hover div{
-        display: block;
+        display: flex;
     }
     
     .profilePopup{
@@ -433,14 +434,30 @@
         
         position: absolute;
         
-        bottom: 100%;
-        left: -0.5em;
+        /* bottom: 120%; */
+        /* top: 110%; */
+        /* left: -0.5em; */
         
-        height: 5.5em;
-        width: fit-content;
+        background-color: var(--post-color-1);
+        border: 1px solid var(--post-color-2);
         
-        background-color: aliceblue;
+        align-items: center;
+
+        padding: 0.5em;
         z-index: 5;
+    }
+    .profilePopup > *{
+        margin: 0.5em;
+    }
+
+    .profile_popup_subcontainer{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        border-right: 1px solid var(--post-color-2);
+        padding-right: 1em;
     }
 
 
@@ -512,7 +529,6 @@
     }
     .postPreview *{
         text-decoration: none;
-        padding: 0.1em;
     }
 
     .post_preview_content{
@@ -545,3 +561,12 @@
     }
 
     
+    .post_preview_footer *{
+        padding: 0.1em;
+    }   
+    .post_preview_content *{
+        padding: 0.1em;
+    }
+    .userProfileLink{
+        padding: 0.1em;
+    }
