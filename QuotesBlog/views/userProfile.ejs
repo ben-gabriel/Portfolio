@@ -45,14 +45,14 @@
         <h1>favorite posts content</h1>
     </div>
     
-    <div id="followingDiv" class="profileTab">
-        <!-- client side js -->
-        <h1>following content</h1>
-    </div>
-    
     <div id="followersDiv" class="profileTab">
         <!-- client side js -->
         <h1>followers content</h1>
+    </div>
+
+    <div id="followingDiv" class="profileTab">
+        <!-- client side js -->
+        <h1>following content</h1>
     </div>
 </div>
 
@@ -76,8 +76,8 @@
 
         if(tabIndex === 0){path = 'posts'}
         if(tabIndex === 1){path = 'favorites'}
-        if(tabIndex === 2){path = 'following'}
-        if(tabIndex === 3){path = 'followers'}
+        if(tabIndex === 2){path = 'followers'}
+        if(tabIndex === 3){path = 'following'}
 
         // *** call for content to db
         // *** split html and script

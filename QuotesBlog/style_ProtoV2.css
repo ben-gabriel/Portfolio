@@ -311,6 +311,7 @@
     }
 
 
+
 /* userProfile.ejs */
     #profileNav{
         margin: 0.5em 0;
@@ -435,7 +436,7 @@
         position: absolute;
         
         /* bottom: 120%; */
-        /* top: 110%; */
+        top: 110%;
         /* left: -0.5em; */
         
         background-color: var(--post-color-1);
@@ -542,6 +543,7 @@
     }
     .post_preview_quote{
         color: var(--quote-color-1);
+        white-space: pre-line;
     }
     .post_preview_author{
         display: inline-block;
@@ -560,7 +562,6 @@
         margin-right: 0.5em;
     }
 
-    
     .post_preview_footer *{
         padding: 0.1em;
     }   
@@ -570,3 +571,91 @@
     .userProfileLink{
         padding: 0.1em;
     }
+
+
+
+/* New Post */
+
+    .new_post_div{
+        width: var(--post-container-width);
+        
+        border: 1px solid var(--post-color-2);
+        background-color: var(--post-color-1);
+        
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+
+        margin-top: 2em;
+        padding: 2em;
+        padding-top: 0;
+
+    }
+
+    #new_post_form > div{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #new_post_form  *{
+        outline: none;
+        font-size: medium;
+        color: var(--font-color-1);
+    }
+    
+    #new_post_form label{
+        font-weight: 1000;
+        padding-top: 2em; 
+        padding-bottom: 0.3em;        
+        color: var(--font-color-1);
+        transform: translateX(-0.75em);
+    }
+
+
+    #new_post_quote_div textarea{
+        height: 5em;
+        width: 100%;
+    }
+
+    .newPostInput{  
+        padding: 0.5em;
+        border: 1px solid var(--search-bar-color-1);
+        width: 50%;
+    }
+    .newPostInput:focus{
+        border: 2px solid var(--search-bar-color-1);
+        outline: none;
+    }
+
+    .new_post_submit_btn{
+        cursor: pointer;
+        margin-top: 2em;
+    }
+
+    #newTagCardsDiv{
+        min-width: 50%;
+        border: 1px solid var(--post-color-2);
+        display: flex;
+        margin-top: 0.5em;
+    }
+
+    .searchTagCard{
+        background-color: var(--tag-color-2);
+        border: var(--tag-color-3);
+        width: fit-content;
+        margin: 0.5em;
+        padding: 0.5em;
+        display: flex;
+        color: black;
+    }
+    .searchTagCard i::before{
+        font-style: normal;
+        content: '\f057';
+        margin-left: 0.5em;
+        cursor: pointer;
+        color: var(--icon-color-1);
+    }
+
+
+    

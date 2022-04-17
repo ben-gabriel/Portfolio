@@ -126,18 +126,21 @@
     for (let index = 0; index < userCollection.length; index++) {
         userCollection[index].addEventListener('mouseover',async()=>{
             let username = userCollection[index].className.slice(21);
-            let fetcher = await (await fetch('/users/popup/'+username)).json();
-
             let popupDiv = userCollection[index].parentNode.children[0];
-                        
-            popupDiv.children[0].src = fetcher.profileImg;
             
-            if(fetcher.followStatus){
-                popupDiv.children[1].children[1].className = popupDiv.children[1].children[1].className+' follow_btn_span_following';
+            if(popupDiv.children[2].innerText === 'Loading'){
+
+                let fetcher = await (await fetch('/users/popup/'+username)).json();
+                
+                popupDiv.children[0].src = fetcher.profileImg;
+                
+                if(fetcher.followStatus){
+                    popupDiv.children[1].children[1].className = popupDiv.children[1].children[1].className+' follow_btn_span_following';
+                }
+                
+                popupDiv.children[2].innerText = fetcher.followers+' Followers';
+                popupDiv.children[3].innerText = fetcher.following+' Following';
             }
-            
-            popupDiv.children[2].innerText = fetcher.followers+' Followers';
-            popupDiv.children[3].innerText = fetcher.following+' Following';
         });
         
     }

@@ -25,7 +25,7 @@ const store = new MongoDBStore({
 
 app.use(session({ 
     secret: 'SecretWord', 
-    cookie: { maxAge: 600000 },
+    cookie: { maxAge: 60000000000 },
     saveUninitialized: true,
     resave: false,
     store: store

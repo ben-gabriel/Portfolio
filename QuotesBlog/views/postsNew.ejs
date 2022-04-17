@@ -1,24 +1,29 @@
 <%- include('./partials/header.ejs') %>
 
-<br>
-<form action="/posts/new" method="post">
+<div class="new_post_div">
 
-    <label for="postContent">Content</label>
-    <input type="text" name="postContent" id="postContent">
-    <br>
+    <form id="new_post_form" action="/posts/new" method="post">
 
-    <label for="quoteAuthor">Author</label>
-    <input type="text" name="quoteAuthor" id="quoteAuthor">
-    <br>
+        <div id="new_post_quote_div">
+            <label for="postContent"><i class="fa-solid fa-quote-left"></i>Quote</label>
+            <textarea class="newPostInput" name="postContent" id="postContent" maxlength="600" minlength="2" autofocus sentences required placeholder='Share your phrase'></textarea >
+        </div>
+                
+        <div id="new_post_author_div">
+            <label for="quoteAuthor"><i class="fa-brands fa-creative-commons-by"></i>Author</label>
+            <input class="newPostInput" type="text" name="quoteAuthor" id="quoteAuthor" maxlength="30" placeholder="The author's name, if you know it">
+        </div>
+            
+        <div id="postTagsDiv">
+            <label for="postTagsVisible"><i class="fa-solid fa-hashtag"></i>Tags</label>
+        </div>
+        
+        <input class="btn new_post_submit_btn" type="submit" value="Submit">
+        
+    </form>
+    
+</div>
 
-    <div id="postTagsDiv">
-        <label for="postTagsVisible">Tags</label>
-    </div>
-    <br>
-
-    <input type="submit" value="Submit">
-
-</form>
 
 <script>
 
@@ -27,7 +32,9 @@
     let inputTextHidden = document.createElement('input');{
     inputTextHidden.type = 'text';
     inputTextHidden.name = 'postTags'
-    // inputTextHidden.style.visibility = 'hidden';
+    inputTextHidden.style.visibility = 'hidden';
+    inputTextHidden.style.display = 'none';
+    inputTextHidden.setAttribute('required','');
     }
 
     let newTagCardsDiv = document.createElement('div');{
@@ -39,6 +46,8 @@
     inputTextVisible.id = 'postTagsVisible'
     inputTextVisible.name = 'postTagsVisible'
     inputTextVisible.placeholder = 'Enter tags separated by commas';
+    inputTextVisible.className = 'newPostInput';
+    inputTextVisible.setAttribute('required','');
     }
 
     function addTagToPost(newTag){
@@ -46,17 +55,15 @@
         newTag = newTag.replace(/\s+/g,'')
 
         let newTagCard = document.createElement('div');
-        newTagCard.className = 'searchTagCard';
-        newTagCard.style.border = 'black 1px solid';
+        newTagCard.className = 'searchTagCard fa-icon';
         newTagCard.id = 'tag'+Date.now();
         
         let tagText = document.createElement('p');
         tagText.innerText = newTag;
         
-        let deleteTagButton = document.createElement('button');
-        deleteTagButton.innerText = 'x';
-        deleteTagButton.type = 'button';
+        let deleteTagButton = document.createElement('i');
         deleteTagButton.addEventListener('click',()=>{deleteTagFromPost(newTag, newTagCard.id)});
+        deleteTagButton.className = 'fa-icon'
 
         newTagCard.appendChild(tagText);
         newTagCard.appendChild(deleteTagButton);
@@ -102,8 +109,8 @@
     });
     
     
-    postTagsDiv.appendChild(newTagCardsDiv);
-    postTagsDiv.appendChild(inputTextVisible);
     postTagsDiv.appendChild(inputTextHidden);
+    postTagsDiv.appendChild(inputTextVisible);
+    postTagsDiv.appendChild(newTagCardsDiv);
 
 </script>

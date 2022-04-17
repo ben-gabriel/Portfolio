@@ -21,40 +21,69 @@ router.get('/new', (req,res)=>{
 router.post('/new', async (req,res)=>{
 
     if(req.session.isLoggedIn){
-        
-        let postUrl = req.body.postContent.slice(0,30);
-        postUrl = postUrl.replace(/([^a-zA-Z ])/g, ""); // Removes special characters (regex Latin only)
-        postUrl = postUrl.split(' ');
-        postUrl = postUrl.join('_');
-        postUrl = postUrl + '_' + Date.now();
+        // Form Check health
+        let fc_1 = req.body.postContent.length;
+        let fc_2 = req.body.quoteAuthor.length;
+        let fc_3 = req.body.postTags.length;
 
-        let postTags = req.body.postTags;
-        postTags = postTags.split(',');
-        for (let index = 0; index < postTags.length; index++) {
-            postTags[index] = postTags[index].replace(/\s+/g,'');
-        }
+        if((fc_1>2&&fc_1<600) && (fc_2<30) && (fc_3>0)){
+            let postUrl = req.body.postContent.slice(0,30);
+            postUrl = postUrl.replace(/([^a-zA-Z ])/g, ""); // Removes special characters (regex Latin only)
+            postUrl = postUrl.split(' ');
+            postUrl = postUrl.join('_');
+            postUrl = postUrl + '_' + Date.now();
 
-        let newPost = {
-            poster: req.session.username,
-            content: req.body.postContent,
-            tags: postTags,
-            quoteAuthor: req.body.quoteAuthor,
-            publicID: postUrl,
-            comments: [],
-            favoritedBy:[]
-        }
-        
-        console.log(newPost)
-        await database.createOneDocument(newPost,db,collection);
-        let postCheck = await database.findOneDocument({publicID:postUrl},db,collection);
+            let postTags = req.body.postTags;
+            postTags = postTags.split(',');
+            for (let index = 0; index < postTags.length; index++) {
+                postTags[index] = postTags[index].replace(/\s+/g,'');
+            }
 
-        if(postCheck){
-            console.log('Post creation successful');
-            res.redirect('./'+postUrl); 
+            let contentBreakSpamRemoved = '';
+            let contentSplit = req.body.postContent.replace(/\r\n/g,'{\100f}{CTB--07}'); 
+            contentSplit = contentSplit.split('{\100f}{CTB--07}');
+            contentSplit.forEach(element => {
+                if(element === ''){
+                }
+                else if(contentBreakSpamRemoved === ''){
+                    contentBreakSpamRemoved = element; 
+                }
+                else{
+                    contentBreakSpamRemoved = contentBreakSpamRemoved +'\r\n' + element; 
+                }
+            });
+
+            if(req.body.quoteAuthor === ''){
+                req.body.quoteAuthor = 'Suggest';
+            }
+
+            let newPost = {
+                poster: req.session.username,
+                content: contentBreakSpamRemoved,
+                tags: postTags,
+                quoteAuthor: req.body.quoteAuthor,
+                publicID: postUrl,
+                comments: [],
+                favoritedBy:[]
+            }
+            
+            console.log(newPost)
+            await database.createOneDocument(newPost,db,collection);
+            let postCheck = await database.findOneDocument({publicID:postUrl},db,collection);
+
+            if(postCheck){
+                console.log('Post creation successful');
+                res.redirect('./'+postUrl); 
+            }
+            else{
+                console.log('error creating post');
+                res.redirect('./new');
+            }
         }
         else{
-            console.log('error creating post');
-            res.redirect('./new');
+            //Form was not healthy
+            res.redirect('./new')
+            console.log('\n[POST/posts/new] Form was not healthy: ', req.body);
         }
     }
     else{
