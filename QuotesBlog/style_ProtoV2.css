@@ -707,3 +707,135 @@
     #no_results_div *{
         margin-top: 0.1em;
     }
+
+/* Single post */
+    .post_single_body{
+        background-color: var(--post-color-1);
+        border: 1px solid var(--post-color-2);
+        
+        max-width: var(--post-container-width);
+        
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 2.5em;
+        margin-bottom: 2.5em;
+
+        padding: 0.5em;
+    }
+
+    .post_single_body > *{
+        margin-bottom: 1em;
+    }
+
+
+/*--------------------*/
+    .postSingle{
+        border-bottom: solid 1px var(--post-color-2);
+        background-color: var(--post-color-1);
+        
+        margin: 0.5em 0;
+        padding: 0.5em;
+
+        width: 100%;
+
+    }
+    .postSingle *{
+        text-decoration: none;
+    }
+
+    .post_single_content{
+        padding: 1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    .post_single_content > *{
+        display: inline;
+        color: var(--quote-color-2);
+    }
+    .post_single_quote{
+        color: var(--quote-color-1);
+        font-size: large;
+        /* white-space: pre-line; */
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+    .post_single_author{
+        display: inline-block;
+    }
+
+    .post_single_footer{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .post_single_buttons{
+        display: flex;
+        align-items: center;
+    }
+    .post_single_buttons > *{
+        margin-right: 0.5em;
+    }
+
+    .post_single_footer *{
+        padding: 0.1em;
+    }   
+    .post_single_content *{
+        padding: 0.1em;
+    }
+    .userProfileLink{
+        padding: 0.1em;
+    }
+
+/*------- Comments --------*/
+
+    #commentsDiv *{
+        text-decoration: none;
+    }
+    
+    .comments_subcontainer{
+        border-bottom: solid 1px var(--post-color-2);
+        padding: 1em;
+    }
+
+    .comment{
+        border: solid 1px var(--placeholder);/* placeholder */
+        border-left: solid 1px var(--post-color-2);
+        position: relative;
+    }
+    .comment::before{
+        content: '';
+        background-image: url('/assets/profile1.png');
+        background-size: 100%;
+        width: 1.6em;
+        height: 1.6em;
+        border-radius: 2em;
+        position: absolute;
+        left: -0.8em;    
+    }
+
+    .comment >*{
+        margin-top: 0.4em;
+        margin-left: 1em;
+    }
+
+    .commentTopLevel{
+        margin: 1em;
+        margin-bottom: 0;
+    }
+
+    .commentReplyLevel{      
+        margin-left: 1em;
+        margin-top: 0.5em;
+    }
+
+    .replyButton{
+        border: solid 1px var(--placeholder);
+    }
+
+    
+
+    :root{
+        --placeholder: rgba(0, 0, 0, 01.0);
+        --placeholder: rgba(0, 0, 0, 0.0);
+    }

@@ -1,52 +1,95 @@
 <%- include('./partials/header.ejs') %> 
 
-<div id="div_<%= locals.postInfo.publicID %>">
+<div class="post_single_body" id="div_<%= locals.postInfo.publicID %>">
 
-    <div class="userPopupContainer">
-        <div class="profilePopup">
-            <img class="profile_picture" src="calltodb">
-            <a href="/users/<%= locals.postInfo.poster %>"><%= locals.postInfo.poster %></a>
-            <button class="followBtn <%= locals.authRequired %>">follow</button>
-            <a href="/users/<%= locals.postInfo.poster %>">Loading</a>
-            <a href="/users/<%= locals.postInfo.poster %>">Loading</a>
+    <div class="postSingle" id="div_<%= locals.postInfo.publicID %>">
+                
+        <div class="userPopupContainer">
+
+            
+            <div class="profilePopup">
+                <img class="profile_picture" src="calltodb">
+
+                <div class="profile_popup_subcontainer">
+                    <a href="/users/<%= locals.postInfo.poster %>"><%= locals.postInfo.poster %></a>
+                    <span class="follow_btn_span fa-icon">
+                        <button id="followBtn_<%=locals.postInfo.poster %>" class="followBtn">Follow</button>
+                    </span>
+                </div>
+                
+                <a href="/users/<%= locals.postInfo.poster %>">Loading</a>
+                <a href="/users/<%= locals.postInfo.poster %>">Loading</a>
+
+            </div>
+    
+
+            <a class="userProfileLink name_<%= locals.postInfo.poster %>" href="/users/<%=locals.postInfo.poster %>"> <%= locals.postInfo.poster %> </a>
         </div>
 
-        <a class="userProfileLink name_<%= locals.postInfo.poster %>" href="/users/<%= locals.postInfo.poster %>"> <%= locals.postInfo.poster %> </a>
+
+        <div class="post_single_content">
+            <i class="fa-solid fa-quote-left"></i>
+            <h2 class="post_single_quote"> <%= locals.postInfo.content %> </h2>
+            <i class="fa-solid fa-quote-right"></i>
+            <h4 class="post_single_author"> - <%= locals.postInfo.quoteAuthor %> </h4>
+        </div>
+
+
+        <div class="post_single_footer">
+            <div class="post_single_tags">
+                <% locals.postInfo.tags.forEach( tag =>{ %>
+                    <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
+                <% }) %>   
+            </div>
+                
+            <div class="post_single_buttons">
+                <!-- delete/favorite button -->
+                <% if(locals.userInfo.username === locals.postInfo.poster){ %>
+                    <span class="fa-icon delete_btn_span">
+                        <button class="deleteButton" id="delete_<%= locals.postInfo.publicID %>" aria-label="Delete"></button>
+                    </span>
+                <% }else{ %>
+                    <% if(locals.postInfo.favoritedBy.includes(locals.userInfo.username)){ %>
+                        <span class="fa-icon favorite_btn_span" aria-label="Favorite">
+                            <button class="favoriteButton favorited" id="favorite_<%= locals.postInfo.publicID %>" ></button>
+                        </span>
+                    <% }else{ %>
+                        <span class="fa-icon favorite_btn_span" aria-label="Favorite">
+                            <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= locals.postInfo.publicID %>"></button>
+                        </span>
+                    <% } %>
+                <% } %>
+            </div>
+
+        </div>
+    
     </div>
 
-
-    <h2> <%= locals.postInfo.content || '-' %> </h2> 
-    <h2> - <%= locals.postInfo.quoteAuthor || '-' %></h2>
-
-    <!-- delete/favorite button -->
-    <% if(locals.userInfo.username === locals.postInfo.poster){ %>
-        <button class="deleteButton" id="delete_<%= locals.postInfo.publicID %>">Delete</button>
-    <% }else{ %>
-        <button class="favoriteButton <%= locals.authRequired %>" id="favorite_<%= locals.postInfo.publicID %>">♥ favorite</button>
-    <% } %>
-
-    <p>Tags</p>
-    <% locals.postInfo.tags.forEach( tag =>{ %>
-        <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp</a>
-    <% }) %>
-
-
-    <p>Comments</p>
-    <form action="./newComment" method="post" class="<%= locals.authRequired %>"> 
-        <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
-        <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
-
-        <input type="text" name="commentContent">
-        <input type="submit" value="Comment">
-        
-    </form>
-
-
+    <!-- Comments -->
     <div class="commentsDiv" id="commentsDiv">
+
+        <div class="comments_subcontainer">
+            <a  href=<%= '/posts/'+ locals.postInfo.publicID %>> <%= locals.postInfo.comments.length %> comments </a>
+    
+            <form action="./newComment" method="post" class="<%= locals.authRequired %>"> 
+                <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+                <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
+    
+                <input type="text" name="commentContent">
+                <input type="submit" value="Comment">
+                
+            </form>
+        </div>
 
     </div>
 
 </div>
+
+
+
+
+
+
 
 <% if(locals.userInfo.isLoggedIn){%>
 <script>
@@ -64,6 +107,8 @@
         }
         catch(e){console.error(e)}
     }
+
+
     function loadComments(commentsJson){
 
         let commentsDiv = document.getElementById('commentsDiv');
@@ -78,20 +123,30 @@
                     // is replying to main post
 
                     let commentHtml = `
+
                         <div class="userPopupContainer">
                             <div class="profilePopup">
                                 <img class="profile_picture" src="calltodb">
-                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
-                                <button class="followBtn ">follow</button>
+
+                                <div class="profile_popup_subcontainer">
+                                    <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                    <span class="follow_btn_span fa-icon">
+                                        <button id="followBtn_${commentsJson[index].commentAuthor}" class="followBtn">Follow</button>
+                                    </span>
+                                </div>
+                                
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+
                             </div>
+
                     
                             <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
                         </div>
 
-                        <p>  ${commentsJson[index].commentContent} <p>
+                        <p>  ${commentsJson[index].commentContent} </p>
                     `;
+
                     let replyFormHtml = `
                         <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
                         <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
@@ -103,10 +158,9 @@
                     
                     let newCommentDiv = document.createElement('div');
                     newCommentDiv.id = commentsJson[index].commentID;
-                    newCommentDiv.className = 'commentTopLevel';
+                    newCommentDiv.className = 'commentTopLevel comment';
                     
                     newCommentDiv.innerHTML = commentHtml
-                    newCommentDiv.style.border = 'black 1px solid' //placeHolder
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
@@ -146,16 +200,23 @@
                         <div class="userPopupContainer">
                             <div class="profilePopup">
                                 <img class="profile_picture" src="calltodb">
-                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
-                                <button class="followBtn ">follow</button>
+
+                                <div class="profile_popup_subcontainer">
+                                    <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                    <span class="follow_btn_span fa-icon">
+                                        <button id="followBtn_${commentsJson[index].commentAuthor}" class="followBtn">Follow</button>
+                                    </span>
+                                </div>
+                                
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+
                             </div>
                     
                             <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
                         </div>
 
-                        <p>  ${commentsJson[index].commentContent} <p>
+                        <p>  ${commentsJson[index].commentContent} </p>
                     `;
                     let replyFormHtml = `
                         <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
@@ -168,11 +229,9 @@
                     
                     let newCommentDiv = document.createElement('div');
                     newCommentDiv.id = commentsJson[index].commentID;
-                    newCommentDiv.className = 'commentReplyLevel';
+                    newCommentDiv.className = 'commentReplyLevel comment';
                     
                     newCommentDiv.innerHTML = commentHtml
-                    newCommentDiv.style.border = 'blue 1px solid' //placeHolder
-                    newCommentDiv.style.margin= '5px'
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
@@ -225,7 +284,31 @@
 
     comments.then( data =>{
         comments = data;
-     loadComments(comments);
+        loadComments(comments);
+
+        let userCollection = document.getElementsByClassName('userProfileLink');
+
+        for (let index = 0; index < userCollection.length; index++) {
+            userCollection[index].addEventListener('mouseover',async()=>{
+                let username = userCollection[index].className.slice(21);
+                let popupDiv = userCollection[index].parentNode.children[0];
+                
+                if(popupDiv.children[2].innerText === 'Loading'){
+
+                    let fetcher = await (await fetch('/users/popup/'+username)).json();
+                    
+                    popupDiv.children[0].src = fetcher.profileImg;
+                    
+                    if(fetcher.followStatus){
+                        popupDiv.children[1].children[1].className = popupDiv.children[1].children[1].className+' follow_btn_span_following';
+                    }
+                    
+                    popupDiv.children[2].innerText = fetcher.followers+' Followers';
+                    popupDiv.children[3].innerText = fetcher.following+' Following';
+                }
+            });
+            
+        }
     });
 
 //deleteButton
@@ -271,6 +354,7 @@
         }
         catch(e){console.error(e)}
     }
+
     function loadComments(commentsJson){
 
         let commentsDiv = document.getElementById('commentsDiv');
@@ -288,24 +372,30 @@
                         <div class="userPopupContainer">
                             <div class="profilePopup">
                                 <img class="profile_picture" src="calltodb">
-                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
-                                <button class="followBtn ">follow</button>
+
+                                <div class="profile_popup_subcontainer">
+                                    <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                    <span class="follow_btn_span fa-icon">
+                                        <button id="followBtn_${commentsJson[index].commentAuthor}" class="followBtn">Follow</button>
+                                    </span>
+                                </div>
+                                
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+
                             </div>
                     
                             <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
                         </div>
 
-                        <p>  ${commentsJson[index].commentContent} <p>
+                        <p>  ${commentsJson[index].commentContent} </p>
                     `;
 
                     let newCommentDiv = document.createElement('div');
                     newCommentDiv.id = commentsJson[index].commentID;
-                    newCommentDiv.className = 'commentTopLevel';
+                    newCommentDiv.className = 'commentTopLevel comment';
                     
                     newCommentDiv.innerHTML = commentHtml
-                    newCommentDiv.style.border = 'black 1px solid' //placeHolder
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
@@ -328,26 +418,31 @@
                         <div class="userPopupContainer">
                             <div class="profilePopup">
                                 <img class="profile_picture" src="calltodb">
-                                <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
-                                <button class="followBtn ">follow</button>
+
+                                <div class="profile_popup_subcontainer">
+                                    <a href="/users/${commentsJson[index].commentAuthor}">${commentsJson[index].commentAuthor}</a>
+                                    <span class="follow_btn_span fa-icon">
+                                        <button id="followBtn_${commentsJson[index].commentAuthor}" class="followBtn">Follow</button>
+                                    </span>
+                                </div>
+                                
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
                                 <a href="/users/${commentsJson[index].commentAuthor}">Loading</a>
+
                             </div>
                     
                             <a class="userProfileLink name_${commentsJson[index].commentAuthor}" href="/users/${commentsJson[index].commentAuthor}"> ${commentsJson[index].commentAuthor} </a>
                         </div>
 
-                        <p>  ${commentsJson[index].commentContent} <p>
+                        <p>  ${commentsJson[index].commentContent} </p>
                     `;
 
                     
                     let newCommentDiv = document.createElement('div');
                     newCommentDiv.id = commentsJson[index].commentID;
-                    newCommentDiv.className = 'commentReplyLevel';
+                    newCommentDiv.className = 'commentReplyLevel comment';
                     
                     newCommentDiv.innerHTML = commentHtml
-                    newCommentDiv.style.border = 'blue 1px solid' //placeHolder
-                    newCommentDiv.style.margin= '5px'
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
@@ -382,30 +477,31 @@
 
     comments.then( data =>{
         comments = data;
-     loadComments(comments);
-    });
+        loadComments(comments);
+        
+        let userCollection = document.getElementsByClassName('userProfileLink');
 
-//deleteButton
-    let deleteButtonCollection = document.getElementsByClassName('deleteButton');
-    let array = [];
+        for (let index = 0; index < userCollection.length; index++) {
+            userCollection[index].addEventListener('mouseover',async()=>{
+                let username = userCollection[index].className.slice(21);
+                let popupDiv = userCollection[index].parentNode.children[0];
+                
+                if(popupDiv.children[2].innerText === 'Loading'){
 
-    for (let index = 0; index < deleteButtonCollection.length; index++) {
-        array[index] = deleteButtonCollection[index];
-    }
-
-    array.forEach(deleteButton => {
-        deleteButton.addEventListener('click', async()=>{
-            let fetcher = await (await fetch('./delete/'+deleteButton.id.slice(7),{method:'POST'})).json();
-            if(fetcher.action === 'deleted'){
-                let deleteDiv = document.getElementById('div_'+deleteButton.id.slice(7));
-                deleteDiv.innerHTML = '<h2> Post deleted successfully</h2>'
-            }
-            else{
-                // it should never get to this path if the user does not mess with http request
-                // just as precaution: redirect to GET/all
-                window.location.href = "/all";
-            }
-        });
+                    let fetcher = await (await fetch('/users/popup/'+username)).json();
+                    
+                    popupDiv.children[0].src = fetcher.profileImg;
+                    
+                    if(fetcher.followStatus){
+                        popupDiv.children[1].children[1].className = popupDiv.children[1].children[1].className+' follow_btn_span_following';
+                    }
+                    
+                    popupDiv.children[2].innerText = fetcher.followers+' Followers';
+                    popupDiv.children[3].innerText = fetcher.following+' Following';
+                }
+            });
+            
+        }
     });
 
 
@@ -430,31 +526,4 @@
 
 </script>
 <% } %>
-
-<script>
-    (()=>{
-        let userCollection = document.getElementsByClassName('userProfileLink');
-    
-        for (let index = 0; index < userCollection.length; index++) {
-            userCollection[index].addEventListener('mouseover',async()=>{
-                let username = userCollection[index].className.slice(21);
-                let fetcher = await (await fetch('/users/popup/'+username)).json();
-    
-                let popupDiv = userCollection[index].parentNode.children[0];
-                            
-                popupDiv.children[0].src = fetcher.profileImg;
-                
-                if(fetcher.followStatus){
-                    popupDiv.children[2].className = popupDiv.children[2].className+' following_true';
-                }
-                
-                popupDiv.children[3].innerText = 'Followers '+fetcher.followers;
-                popupDiv.children[4].innerText = 'Following '+fetcher.following;
-            });
-            
-        }
-    
-    })();
-    
-</script>
 
