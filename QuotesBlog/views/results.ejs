@@ -1,10 +1,32 @@
 <%- include('./partials/header.ejs') %>
 
-<% if(locals.document[0]){ %>
-    <%- include('./partials/postsPreview') %>
-<% } %>
+<div id="results_body_div">
 
-<% if(!locals.document[0]){ %>
-    <h2>No Results found</h2>
-    <h3>Try different keywords</h3>
-<% } %>
+    
+
+    <% if(locals.document[0]){ %>
+        <div id="results_tags_div">
+            <h4>Showing results for: </h4>    
+            <% locals.document.searchQuery.forEach( tag =>{ %>
+                <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp;</a>    
+            <% }) %>
+        </div>
+
+        <%- include('./partials/postsPreview') %>
+    <% } %>
+
+    <% if(!locals.document[0]){ %>
+        <div id="results_tags_div">
+            <h4>Searched for: </h4>    
+            <% locals.document.searchQuery.forEach( tag =>{ %>
+                <a href="/results?search_query=<%= tag %>">#<%= tag %>&nbsp;</a>    
+            <% }) %>
+        </div>
+
+        <div id="no_results_div">
+            <h2>No Results found</h2>
+            <h3>Try different keywords</h3>
+        </div>
+    <% } %>
+
+</div>

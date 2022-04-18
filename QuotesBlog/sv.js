@@ -322,6 +322,9 @@ app.get('/results', async (req,res)=>{
     else{
         document = await database.findManyDocuments({tags:null},0,5,db,'Posts');
     }
+    
+    console.log('[GET/results]---------------------\n',req.query.search_query.split(','));
+    document.searchQuery = req.query.search_query.split(',');
     res.render('results',{document});
 });
 

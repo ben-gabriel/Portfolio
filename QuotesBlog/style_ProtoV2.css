@@ -70,6 +70,7 @@
         color: var(--icon-color-1);
         background-color: var(--button-color-1);
         border: none;
+        cursor: pointer;
     }
     button{
         background-color: var(--button-color-1);
@@ -252,6 +253,7 @@
         position: absolute;
         top: 100%;
         width: 100%;
+        max-width: var(--search-bar-width);
         z-index: 4;
 
         background-color: var(--tag-color-1);
@@ -490,7 +492,7 @@
         flex-direction: column;
         align-items: center;
     }
-    #homePageBody *{
+    #homePageBody > *{
         max-width: var(--post-container-width);
     }
 
@@ -543,7 +545,10 @@
     }
     .post_preview_quote{
         color: var(--quote-color-1);
-        white-space: pre-line;
+        font-size: large;
+        /* white-space: pre-line; */
+        word-wrap: break-word;
+        white-space: pre-wrap;
     }
     .post_preview_author{
         display: inline-block;
@@ -635,8 +640,10 @@
 
     #newTagCardsDiv{
         min-width: 50%;
+        max-width: 100%;
         border: 1px solid var(--post-color-2);
         display: flex;
+        flex-wrap: wrap;
         margin-top: 0.5em;
     }
 
@@ -658,4 +665,45 @@
     }
 
 
-    
+
+/* Results */
+    #results_body_div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+        width: 100%;
+        max-width: var(--post-container-width);
+
+        position: relative;
+        left: 50%;
+        transform:  translateX(-50%);
+
+        margin-top: 2em;
+    }    
+
+    #results_tags_div{
+        background-color: var(--post-color-1);
+        border: 1px solid var(--post-color-2);
+
+        padding: 0.5em;
+        color: var(--font-color-1);
+    }
+    #results_tags_div a{
+        text-decoration: none;
+    }
+    #results_tags_div h4{
+        display: inline-block;
+        margin: 0.5em;
+    }
+
+    #no_results_div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        margin-top: 2.5em;
+    }
+    #no_results_div *{
+        margin-top: 0.1em;
+    }
