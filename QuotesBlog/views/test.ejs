@@ -6,3 +6,14 @@
         <input type="submit">
     </form>
 </div>
+
+
+<br>
+<img id="myimg" src="/assets/logxo1.png" alt="" style="width: 5em;">
+
+<script>
+    let myimg = document.getElementById('myimg')
+    myimg.addEventListener('error',()=>{
+        myimg.src = '/assets/logo1.png'
+    });
+</script>

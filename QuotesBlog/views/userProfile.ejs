@@ -114,7 +114,7 @@
     async function renderPopup(){
         if(!document.getElementById('loginDiv')){
             let popupDiv = document.createElement('div');
-            popupDiv.innerHTML = await (await fetch('/test',{method:'POST'})).text();
+            popupDiv.innerHTML = await (await fetch('/popup_login_html',{method:'POST'})).text();
             popupDiv.id = 'popupDiv';
             
             let loginPopupScript = document.createElement('script');

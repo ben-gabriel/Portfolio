@@ -191,6 +191,10 @@ app.post('/login', async (req, res)=>{
     }
 });
 
+app.post('/popup_login_html',(req,res)=>{
+    res.render('loginPopup.ejs');
+});
+
 app.post('/popup_register', async(req,res)=>{  
     // Check if form is healthy by checking if req.body.username exist + as a string
     if(req.body.username && req.body.password){
@@ -333,7 +337,7 @@ app.get('/all', async (req,res)=>{
     res.render('home',{document});
 });
 
-app.get('/assets/:filename', testMiddleware, async (req,res)=>{
+app.get('/assets/:filename', async (req,res)=>{
     res.sendFile('./assets/'+req.params.filename,{root:__dirname})
 });
 
@@ -494,23 +498,29 @@ function testMiddleware(req,res,next){
 
 const fs = require('fs'); /* file system */
 const fileUpload = require('express-fileupload');
-app.use(fileUpload({
-    // useTempFiles : true,
-    // tempFileDir : 'C:/Users/sergi/Desktop/',
-    createParentPath: true,
-}));
+// app.use('/test',fileUpload({
+//     // useTempFiles : true,
+//     // tempFileDir : 'C:/Users/sergi/Desktop/',
+//     createParentPath: true,
+// }));
 
-app.get('/test', async (req,res)=>{
-    console.log('[GET/test]--------------------\n');
-    res.render('test');
-});
+// app.get('/test', async (req,res)=>{
+//     console.log('[GET/test]--------------------\n');
+//     res.render('test');
+// });
 
-app.post('/test', (req,res)=>{
-    console.log('[POST/test]--------------------\n',req.files);
-    // fs.writeFile('./',req.body.input_name,()=>{});
-    req.files.input_name.mv(`C:/Users/sergi/Desktop/img/test${Date.now()}.jpg`)
-    res.render('test');
-});
+// app.post('/test', (req,res)=>{
+//     console.log('[POST/test]--------------------\n',req.files);
+//     // req.files.input_name.mv(`C:/Users/sergi/Desktop/img/test${Date.now()}.png`)
+    
+//     let string = req.files.input_name.data.toString().replace(/([^a-zA-Z ])/g,'a')
+//     let mdata = Buffer.from(string,'utf8')
+//     req.files.input_name.encoding = 'utf8'
+//     req.files.input_name.encoding.data = mdata
+//     console.log(req.files)
+//     req.files.input_name.mv(`C:/Users/sergi/Desktop/img/test${Date.now()}.jpg`)
+//     res.render('test');
+// });
 
 
 // -------- Routes-> express.Router()
@@ -523,6 +533,8 @@ app.post('/test', (req,res)=>{
 // /#search_query/pageNumber
 // /all/pageNumber
 const postsRouter = require('./routes/posts.js');
+const { stringify } = require("querystring");
+const { render } = require("express/lib/response");
 app.use('/posts', postsRouter);
 
 // -------- Style

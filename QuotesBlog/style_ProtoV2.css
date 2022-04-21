@@ -51,6 +51,10 @@
         background-color: var(--body-color);
     }
 
+    a{
+        color: var(--tag-color-3);
+    }
+    
     .fa-icon::before{
         font-weight: 900;
         font-family: "Font Awesome 6 Free";
