@@ -837,5 +837,13 @@
 
     :root{
         --placeholder: rgba(0, 0, 0, 01.0);
-        --placeholder: rgba(0, 0, 0, 0.0);
+        --placeholder: rgba(0, 0, 0, 0.0) 0px;
+    }
+
+    .no_comments_div{
+        margin-top: 2em;
+        margin-left: 1em;
+        /* display: flex; */
+        justify-content: center;
+        color: var(--font-color-1);
     }

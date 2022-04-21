@@ -492,13 +492,24 @@ function testMiddleware(req,res,next){
     next();
 }
 
-app.get('/test', testMiddleware, async (req,res)=>{
-    res.sendFile('./assets/logo3.svg',{root:__dirname})
+const fs = require('fs'); /* file system */
+const fileUpload = require('express-fileupload');
+app.use(fileUpload({
+    // useTempFiles : true,
+    // tempFileDir : 'C:/Users/sergi/Desktop/',
+    createParentPath: true,
+}));
+
+app.get('/test', async (req,res)=>{
+    console.log('[GET/test]--------------------\n');
+    res.render('test');
 });
 
 app.post('/test', (req,res)=>{
-    console.log(req.body);
-    res.render('loginPopup.ejs');
+    console.log('[POST/test]--------------------\n',req.files);
+    // fs.writeFile('./',req.body.input_name,()=>{});
+    req.files.input_name.mv(`C:/Users/sergi/Desktop/img/test${Date.now()}.jpg`)
+    res.render('test');
 });
 
 

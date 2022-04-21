@@ -272,6 +272,7 @@
         else{
             // Load 'no comments yet' message on post
             let newCommentDiv = document.createElement('div');
+            newCommentDiv.className = 'no_comments_div'
             newCommentDiv.innerHTML = '<h3>No Comments Yet</H3>'
 
             commentsDiv.appendChild(newCommentDiv);
@@ -465,6 +466,7 @@
         else{
             // Load 'no comments yet' message on post
             let newCommentDiv = document.createElement('div');
+            newCommentDiv.className = 'no_comments_div'
             newCommentDiv.innerHTML = '<h3>No Comments Yet</H3>'
 
             commentsDiv.appendChild(newCommentDiv);
