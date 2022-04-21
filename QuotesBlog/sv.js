@@ -333,8 +333,35 @@ app.get('/results', async (req,res)=>{
 });
 
 app.get('/all', async (req,res)=>{
-    let document = await database.findManyDocuments({},0,1000,db,'Posts');
+    let document = await database.findManyDocuments({},0,-1,db,'Posts');
     res.render('home',{document});
+});
+
+app.get('/following', async (req,res)=>{
+    if(req.session.isLoggedIn){
+        console.log("[GET/following --------------------- \n");
+
+        let following = await database.findManyDocuments({followers:req.session.username},0,-1,db,'Users');
+        let findQuery = [];
+        let document = {};
+
+        if(following.length > 0){
+            following.forEach(user => {
+                findQuery.push({poster:user.username})    
+            });
+            document = await database.findManyDocuments({$or:findQuery},0,-1,db,'Posts');
+        }
+        if(!document){
+            document = {};
+        }
+
+        res.render('home_following',{document});
+
+    }
+    else{
+        res.redirect('/all');
+    }
+    
 });
 
 app.get('/assets/:filename', async (req,res)=>{
@@ -435,13 +462,13 @@ app.get('/users/:username', async (req,res)=>{
 });
 
 app.get('/users/posts/:username', async (req,res)=>{
-    let document = await database.findManyDocuments({poster:req.params.username},0,1000,db,'Posts');
+    let document = await database.findManyDocuments({poster:req.params.username},0,-1,db,'Posts');
     console.log('/users/posts/:username = --------------\n', document);
     res.render('partials/postsPreview.ejs',{document});
 });
 
 app.get('/users/favorites/:username', async (req,res)=>{
-    let document = await database.findManyDocuments({favoritedBy:req.params.username},0,1000,db,'Posts');
+    let document = await database.findManyDocuments({favoritedBy:req.params.username},0,-1,db,'Posts');
     console.log('/users/favorites/:username = --------------\n', document);
     res.render('partials/postsPreview.ejs',{document});
 });

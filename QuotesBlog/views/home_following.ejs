@@ -1,0 +1,24 @@
+<%- include('./partials/header.ejs') %>
+
+<!-- home page bar -->
+<div id="homePageBody">
+
+    <div id="homePageNav" >
+        <a class="tabButton" href="/all">All</a>
+        <a class="tabButton tabSelected" href="/following">Following</a>
+        <button class="sort_btn">Sort By</button>
+    </div>
+    
+    <% if(locals.document.length > 0){ %>
+    <!-- *** if logged in, show custom feed, else show general feed -->
+        <%- include('./partials/postsPreview') %>
+    <% }else{ %>
+        <div id="no_results_div">
+            <h2>You don't seem follow anyone</h2>
+            <h4>..or they haven't posted anything yet.</h4>
+            <br>
+            <h2>Try following more people!</h2>
+        </div>
+    <% } %>
+    
+</div>

@@ -68,7 +68,13 @@ let database = {
     findManyDocuments: async function(queryObj = {}, pageNumber=0, limit=5, db, collection){
         try {
             await client.connect();
-            const cursor = await client.db(db).collection(collection).find(queryObj).limit(limit).sort({_id:-1}).skip(pageNumber*limit);
+            let cursor;
+            if(limit === -1){
+                cursor = await client.db(db).collection(collection).find(queryObj).sort({_id:-1}).skip(pageNumber*limit);
+            }
+            else{
+                cursor = await client.db(db).collection(collection).find(queryObj).limit(limit).sort({_id:-1}).skip(pageNumber*limit);
+            }
         
             const result = await cursor.toArray();
             console.log('\n[database.js] findMany() =' , result,'\n');

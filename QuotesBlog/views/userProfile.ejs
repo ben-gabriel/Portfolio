@@ -72,7 +72,9 @@
     async function renderTabContent(tabIndex){
         tabsContentCollection[currentTab].style.display = 'none';
         tabsContentCollection[currentTab].innerHTML = '';
+        tabsCollection[currentTab].className = 'tabButton';
         currentTab = tabIndex;
+        tabsCollection[currentTab].className = 'tabButton tabSelected';
 
         if(tabIndex === 0){path = 'posts'}
         if(tabIndex === 1){path = 'favorites'}
