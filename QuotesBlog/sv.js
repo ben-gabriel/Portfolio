@@ -333,23 +333,76 @@ app.get('/results', async (req,res)=>{
 });
 
 app.get('/all', async (req,res)=>{
-    let document = await database.findManyDocuments({},0,-1,db,'Posts');
-    res.render('home',{document});
+    console.log('[GET/all] ----------------------\n', req.query.length);
+    if(req.query.sort){
+        console.log('[GET/all] [IF] \n');
+
+        if(req.query.sort === 'new'){
+            let document = await database.findManyDocuments({},0,-1,db,'Posts');
+            res.render('home',{document});
+        }
+        else if(req.query.sort === 'comments'){
+            let document = await database.findManyDocuments({},0,-1,db,'Posts',{amount_comments:-1,_id:-1});
+            res.render('home',{document});
+        }
+        else if(req.query.sort === 'hearts'){
+            let document = await database.findManyDocuments({},0,-1,db,'Posts',{amount_favorites:-1,_id:-1});
+            res.render('home',{document});
+        }
+        else{
+            // url query not healthy
+            let document = await database.findManyDocuments({},0,-1,db,'Posts');
+            res.render('home',{document});
+        }
+    }
+    else{
+        // url query non existent
+        let document = await database.findManyDocuments({},0,-1,db,'Posts');
+        console.log('[GET/all] [ELSE] \n');
+        res.render('home',{document});
+    }
+
 });
 
 app.get('/following', async (req,res)=>{
     if(req.session.isLoggedIn){
-        console.log("[GET/following --------------------- \n");
+        console.log("[GET/following] --------------------- \n");
 
         let following = await database.findManyDocuments({followers:req.session.username},0,-1,db,'Users');
         let findQuery = [];
         let document = {};
 
         if(following.length > 0){
+            console.log('[GET/following] [IF] \n');
+            
             following.forEach(user => {
+                console.log('[GET/following] [forEach] user = ',user,'\n');
                 findQuery.push({poster:user.username})    
             });
-            document = await database.findManyDocuments({$or:findQuery},0,-1,db,'Posts');
+
+            if(req.query.sort){
+                console.log('[GET/following] [IF^IF] query.sort = ', req.query.sort ,'\n');
+        
+                if(req.query.sort === 'new'){
+                    document = await database.findManyDocuments({$or:findQuery},0,-1,db,'Posts');
+                }
+                else if(req.query.sort === 'comments'){
+                    document = await database.findManyDocuments({$or:findQuery},0,-1,db,'Posts',{amount_comments:-1,_id:-1});
+                }
+                else if(req.query.sort === 'hearts'){
+                    document = await database.findManyDocuments({$or:findQuery},0,-1,db,'Posts',{amount_favorites:-1,_id:-1});
+                }
+                else{
+                    // url query not healthy
+                    document = await database.findManyDocuments({$or:findQuery},0,-1,db,'Posts');
+                }
+            }
+            else{
+                console.log('[GET/following] [IF^ELSE] \n');
+                // url query empty
+                document = await database.findManyDocuments({$or:findQuery},0,-1,db,'Posts');
+            }
+
         }
         if(!document){
             document = {};
@@ -359,6 +412,8 @@ app.get('/following', async (req,res)=>{
 
     }
     else{
+        console.log('[GET/following] [ELSE] \n');
+
         res.redirect('/all');
     }
     

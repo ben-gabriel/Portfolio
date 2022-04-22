@@ -6,11 +6,22 @@
     <div id="homePageNav" >
         <a class="tabButton" href="/all">All</a>
         <a class="tabButton tabSelected" href="/following">Following</a>
-        <button class="sort_btn">Sort By</button>
+
+        <div id="sort_div">
+
+            <button id="sort_btn">Sort By</button>
+            
+            <div id="sort_popup_div">
+                <a href="/following?sort=new">new</a>
+                <a href="/following?sort=comments">comments</a>
+                <a href="/following?sort=hearts">hearts</a>
+            </div>
+
+        </div>
+
     </div>
     
     <% if(locals.document.length > 0){ %>
-    <!-- *** if logged in, show custom feed, else show general feed -->
         <%- include('./partials/postsPreview') %>
     <% }else{ %>
         <div id="no_results_div">
@@ -20,5 +31,36 @@
             <h2>Try following more people!</h2>
         </div>
     <% } %>
-    
+
 </div>
+
+<style>
+    #sort_div{
+        position: relative;
+    }
+
+    #sort_popup_div{
+        position: absolute;
+        background-color: var(--post-color-1);
+        border: 1px solid var(--post-color-2);
+        display: none;
+    }
+
+</style>
+
+<script>
+    let sort_btn = document.getElementById('sort_btn');
+    let sort_popup = document.getElementById('sort_popup_div');
+    
+    sort_btn.addEventListener('focusin',()=>{
+       sort_popup.style.display= 'inline-block';
+    });
+
+    sort_btn.addEventListener('focusout',()=>{
+        setTimeout(()=>{
+            sort_popup.style.display= 'none';
+        },400);
+    });
+
+
+</script>

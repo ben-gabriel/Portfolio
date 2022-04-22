@@ -83,15 +83,16 @@ let database = {
         }
     },
 
-    findManyDocuments: async function(queryObj = {}, pageNumber=0, limit=5, db, collection){
+    findManyDocuments: async function(queryObj = {}, pageNumber=0, limit=5, db, collection, sortQuery={_id:-1}){
         try {
             await client.connect();
             let cursor;
             if(limit === -1){
-                cursor = await client.db(db).collection(collection).find(queryObj).sort({_id:-1}).skip(pageNumber*limit);
+                // no limit
+                cursor = await client.db(db).collection(collection).find(queryObj).sort(sortQuery).skip(pageNumber*limit);
             }
             else{
-                cursor = await client.db(db).collection(collection).find(queryObj).limit(limit).sort({_id:-1}).skip(pageNumber*limit);
+                cursor = await client.db(db).collection(collection).find(queryObj).limit(limit).sort(sortQuery).skip(pageNumber*limit);
             }
         
             const result = await cursor.toArray();

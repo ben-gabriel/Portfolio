@@ -6,12 +6,19 @@
     <div id="homePageNav" >
         <a class="tabButton tabSelected" href="/all">All</a>
         <a class="tabButton" href="/following">Following</a>
-        <form action="/home" method="get">
-            <button class="sort_btn">Sort By</button>
-            <input type="radio" name="sort_by_new" id="sort_by_new">
-            <input type="radio" name="sort_by_" id="sort_by_">
 
-        </form>
+        <div id="sort_div">
+
+            <button id="sort_btn">Sort By</button>
+            
+            <div id="sort_popup_div">
+                <a href="/all?sort=new">new</a>
+                <a href="/all?sort=comments">comments</a>
+                <a href="/all?sort=hearts">hearts</a>
+            </div>
+
+        </div>
+
     </div>
     
     <!-- *** if logged in, show custom feed, else show general feed -->
@@ -19,4 +26,33 @@
 
 </div>
 
+<style>
+    #sort_div{
+        position: relative;
+    }
 
+    #sort_popup_div{
+        position: absolute;
+        background-color: var(--post-color-1);
+        border: 1px solid var(--post-color-2);
+        display: none;
+    }
+
+</style>
+
+<script>
+    let sort_btn = document.getElementById('sort_btn');
+    let sort_popup = document.getElementById('sort_popup_div');
+    
+    sort_btn.addEventListener('focusin',()=>{
+       sort_popup.style.display= 'inline-block';
+    });
+
+    sort_btn.addEventListener('focusout',()=>{
+        setTimeout(()=>{
+            sort_popup.style.display= 'none';
+        },400);
+    });
+
+
+</script>
