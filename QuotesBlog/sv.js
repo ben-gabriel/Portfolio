@@ -375,7 +375,7 @@ app.post('/users/favorite/:postUrl', async (req,res)=>{
         if(checkPost){
             let checkFavStatus = checkPost.favoritedBy.includes(req.session.username);
             if(checkFavStatus){
-                let result = await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+                let result = await database.pullFromDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts',{amount_favorites:-1});
                 if(result.modifiedCount === 1){
                     res.json({favoriteStatus:false, action: 'removed'});
                 }
@@ -384,7 +384,7 @@ app.post('/users/favorite/:postUrl', async (req,res)=>{
                 }
             }
             else{
-                let result = await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts');
+                let result = await database.pushToDocument({publicID: req.params.postUrl},{favoritedBy: req.session.username},db,'Posts',{amount_favorites:1});
                 if(result.modifiedCount === 1){
                     res.json({favoriteStatus:true, action: 'added'});
                 }

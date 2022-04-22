@@ -59,12 +59,15 @@ router.post('/new', async (req,res)=>{
 
             let newPost = {
                 poster: req.session.username,
+                date: Date.now(),
                 content: contentBreakSpamRemoved,
                 tags: postTags,
                 quoteAuthor: req.body.quoteAuthor,
                 publicID: postUrl,
                 comments: [],
-                favoritedBy:[]
+                favoritedBy:[],
+                amount_comments:0,
+                amount_favorites:0,
             }
             
             console.log(newPost)
@@ -126,18 +129,19 @@ router.post('/newComment', async (req,res)=>{
         commentContent : req.body.commentContent,
         commentAuthor : req.session.username,
         commentID :  req.session.username + Date.now(),
+        date : Date.now(),
         replyingToID : req.body.replyingToID,
     }
 
     if(req.session.isLoggedIn){
         // database.updateOneDocument({}, )   
     
-        await database.pushToDocument({publicID: req.body.postUrl}, {comments:commentInsert}, db,collection);
+        await database.pushToDocument({publicID: req.body.postUrl}, {comments:commentInsert}, db,collection,{amount_comments:1});
         res.redirect(req.body.postUrl);
 
     }
     else{
-        // *** promt to log in
+        // *** prompt to log in
         console.log('not logged in');
         res.redirect('/login');
     }

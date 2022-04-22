@@ -22,10 +22,19 @@ let database = {
         }   
     },
 
-    pushToDocument: async function(queryObj={}, insertObj, db, collection){
+    pushToDocument: async function(queryObj={}, insertObj, db, collection, incObj){
         try {
             await client.connect();
-            let result = await client.db(db).collection(collection).updateOne(queryObj, {$push: insertObj});
+            let result;
+            if(incObj){
+                console.log('\n[database.js] pushToDocument() {IF} \n');
+                result = await client.db(db).collection(collection).updateOne(queryObj, {$push: insertObj,$inc:incObj});
+            }
+            else{
+                console.log('\n[database.js] pushToDocument() {ELSE} \n');
+                result = await client.db(db).collection(collection).updateOne(queryObj, {$push: insertObj});
+            }
+
             console.log('\n[database.js] pushToDocument() =',result,'\n');
             return result;
 
@@ -36,10 +45,19 @@ let database = {
         }
     },
 
-    pullFromDocument:async function(queryObj={}, removeObj, db, collection){
+    pullFromDocument:async function(queryObj={}, removeObj, db, collection, incObj){
         try {
             await client.connect();
-            let result = await client.db(db).collection(collection).updateOne(queryObj, {$pull: removeObj});
+            let result;
+            if(incObj){
+                console.log('\n[database.js] pullFromDocument() {IF} \n');
+                result = await client.db(db).collection(collection).updateOne(queryObj, {$pull: removeObj, $inc: incObj});
+            }
+            else{
+                console.log('\n[database.js] pullFromDocument() {ELSE} \n');
+                result = await client.db(db).collection(collection).updateOne(queryObj, {$pull: removeObj});
+            }
+
             console.log('\n[database.js] pullFromDocument() =',result,'\n');
             return result;
             

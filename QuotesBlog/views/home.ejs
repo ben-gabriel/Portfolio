@@ -6,7 +6,12 @@
     <div id="homePageNav" >
         <a class="tabButton tabSelected" href="/all">All</a>
         <a class="tabButton" href="/following">Following</a>
-        <button class="sort_btn">Sort By</button>
+        <form action="/home" method="get">
+            <button class="sort_btn">Sort By</button>
+            <input type="radio" name="sort_by_new" id="sort_by_new">
+            <input type="radio" name="sort_by_" id="sort_by_">
+
+        </form>
     </div>
     
     <!-- *** if logged in, show custom feed, else show general feed -->
