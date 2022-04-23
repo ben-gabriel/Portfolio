@@ -565,6 +565,18 @@ app.get('/users/popup/:username', async(req,res)=>{
     res.json(userData);
 });
 
+app.post('/users/profile_picture', async (req,res)=>{
+    if(req.session.isLoggedIn){
+        await database.updateOneDocument({username:req.session.username},{profilePictureUrl:req.body.picture_url},db,'Users');
+        console.log('[POST/users/profile_picture] ------------ \n');
+        res.redirect('/users/'+req.session.username);
+    }
+    else{
+        res.end();
+    }
+});
+
+
 // -------- Scripts
 app.get('/scripts/:fileName',(req,res)=>{
     console.log(`\n\n/scripts/:filename = ${req.params.fileName} --------------------`);
@@ -618,6 +630,7 @@ const fileUpload = require('express-fileupload');
 const postsRouter = require('./routes/posts.js');
 const { stringify } = require("querystring");
 const { render } = require("express/lib/response");
+const req = require("express/lib/request");
 app.use('/posts', postsRouter);
 
 // -------- Style
@@ -627,7 +640,7 @@ app.get('/style.css',(req,res)=>{
 
 // -------- 404
 app.get('*', (req,res)=>{
-    res.render('404');
+    res.status(404).render('404');
 });
 
 app.listen(port);

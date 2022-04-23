@@ -22,6 +22,29 @@ let database = {
         }   
     },
 
+    updateOneDocument: async function(queryObj={}, insertObj, db, collection, incObj){
+        try {
+            await client.connect();
+            let result;
+            if(incObj){
+                console.log('\n[database.js] updateOneDocument() {IF} \n');
+                result = await client.db(db).collection(collection).updateOne(queryObj, {$set: insertObj,$inc:incObj});
+            }
+            else{
+                console.log('\n[database.js] updateOneDocument() {ELSE} \n');
+                result = await client.db(db).collection(collection).updateOne(queryObj, {$set: insertObj});
+            }
+
+            console.log('\n[database.js] updateOneDocument() =',result,'\n');
+            return result;
+
+        }catch (e){
+            console.error(e);
+        }finally{
+            await client.close()
+        }
+    },
+
     pushToDocument: async function(queryObj={}, insertObj, db, collection, incObj){
         try {
             await client.connect();

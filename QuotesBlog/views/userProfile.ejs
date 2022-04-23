@@ -1,28 +1,63 @@
 <%- include('./partials/header.ejs') %>
 
-<div id="profileNav">
+<div id="profileNav">     
 
-    <div id='userCardDiv'>
-        <!-- <img class="profile_picture" src="/assets/profile1.png"> -->
-        <img class="profile_picture" src="<%= locals.userData.profilePictureUrl %>">
-        
-        <div id="user_card_subcontainer">
-            <h4><%= locals.userData.username %></h4>
-    
-            <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
-                <span class="follow_btn_span fa-icon follow_btn_span_following">
-                    <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">Follow</button>
-                </span>
-            <% } %>
-            <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
-                <span class="follow_btn_span fa-icon">    
-                    <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">Follow</button>
-                </span>
-            <% } %>
+    <% if( locals.userData.username === locals.userInfo.username){ %>
+        <div id="profile_picture_upload_div">
+            <form action="/users/profile_picture" method="post" id="profile_picture_upload_form">
+                <label for="picture_url">Image Url:</label>
+                <input type="url" name="picture_url" id="profile_picture_upload_input">
+                <button>Submit</button>
+                <i id="profile_picture_upload_cancel" class="fa-solid fa-circle-xmark"></i>
+            </form>
         </div>
 
-    </div>
-    
+        <div id='userCardDiv'>
+            <div id="main_profile_img_div" class="fa-icon">
+                <img id='main_profile_img' class="profile_picture" src="<%= locals.userData.profilePictureUrl %>">
+            </div>
+            
+            <div id="user_card_subcontainer">
+                <h4><%= locals.userData.username %></h4>
+        
+                <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
+                    <span class="follow_btn_span fa-icon follow_btn_span_following">
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">Follow</button>
+                    </span>
+                <% } %>
+                <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
+                    <span class="follow_btn_span fa-icon">    
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">Follow</button>
+                    </span>
+                <% } %>
+
+            </div>
+        </div>
+    <% }else{ %>
+        <div id='userCardDiv'>
+            <div>
+                <img class="profile_picture" src="<%= locals.userData.profilePictureUrl %>">
+            </div>
+            
+            <div id="user_card_subcontainer">
+                <h4><%= locals.userData.username %></h4>
+        
+                <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
+                    <span class="follow_btn_span fa-icon follow_btn_span_following">
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">Follow</button>
+                    </span>
+                <% } %>
+                <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
+                    <span class="follow_btn_span fa-icon">    
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">Follow</button>
+                    </span>
+                <% } %>
+
+            </div>
+        </div>
+    <% } %>
+
+
     <div id='profileTabsDiv'>
         <h3 class="tabButton">Posts</h3>
 
@@ -86,20 +121,38 @@
         // *** split html and script
         let fetcher = await (await fetch('/users/'+path+'/<%= locals.userData.username %>')).text(); 
         
-        fetcher = fetcher.replace("/script","script");
+        while(fetcher.includes(`/scripts`)){
+            fetcher= fetcher.replace('/scripts','flag1');
+        }
+        
+        while(fetcher.includes(`/script`)){
+            fetcher= fetcher.replace('/script','script');
+        }
+
+        while(fetcher.includes(`flag1`)){
+            fetcher= fetcher.replace('flag1','/scripts');
+        }
+        
         fetcher = fetcher.split("<script>");
+        
+        console.log('[userProfile.ejs log1] fetcher = ',fetcher)
         
         let fetchHtml = fetcher[0];
         let fetchScript = fetcher[1];
+
         let scriptTag = document.createElement('script');
         scriptTag.innerHTML = `${fetchScript}`;
 
+        console.log('[userProfile.ejs log2] scriptTag = ',scriptTag);
+        
+        
         tabsContentCollection[currentTab].innerHTML = fetchHtml;
         if(fetchScript){
             tabsContentCollection[currentTab].append(scriptTag);
         }
         
         addPopupEvent();
+        console.log('[userProfile.ejs log3]  ');
         tabsContentCollection[tabIndex].style.display = 'block';
     }
 
@@ -142,7 +195,7 @@
         let follow_username = mainFollowBtn.id.slice(14);
         let fetcher = await (await fetch(`/users/follow/${follow_username}`,options)).json();
         
-        console.log('[test.ejs] \n',fetcher);
+        console.log('[userProfile.ejs Main follow btn] \n',fetcher);
         if(fetcher.error === 'Not Logged In'){
             renderPopup();
         }
@@ -156,3 +209,20 @@
     });
 
 </script>
+
+<% if( locals.userData.username === locals.userInfo.username){ %>
+    <script>
+        //Main profile image
+        let main_profile_img_div = document.getElementById('main_profile_img_div');
+
+        main_profile_img_div.addEventListener('click',()=>{
+            document.getElementById('profile_picture_upload_div').style.display = 'block';
+        });
+
+        let profile_picture_upload_cancel = document.getElementById('profile_picture_upload_cancel');
+
+        profile_picture_upload_cancel.addEventListener('click', ()=>{
+            document.getElementById('profile_picture_upload_div').style.display = 'none';
+        });
+    </script>
+<% } %>

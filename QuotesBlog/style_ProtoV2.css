@@ -356,6 +356,65 @@
         border-radius: 5em;
     }
 
+    #main_profile_img_div{
+        cursor: pointer;
+        position: relative;
+        border-radius: 5em;
+    }
+
+    #main_profile_img_div:hover::before{
+        content: '\f31c';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        color: var(--icon-color-1);
+    }
+
+    #main_profile_img:hover{
+        opacity: 0.20;
+    }
+
+    #profile_picture_upload_div{
+        display: none;
+        position: absolute;
+        background-color: var(--post-color-1);
+        border: 1px solid var(--post-color-2);
+        
+        top: 100%;
+        left: -1;
+
+        padding: 1em;
+        z-index: 100;
+    }
+    #profile_picture_upload_div *{
+        font-weight: 1000;
+        color: var(--font-color-1);
+    }
+
+    #profile_picture_upload_cancel{
+        color: var(--icon-color-1);
+    }
+
+    #profile_picture_upload_form{
+        display: flex;
+        align-items: center;  
+        gap: 0.5em;  
+    }
+
+    #profile_picture_upload_form input{
+        outline: none;
+        border: 1px solid var(--search-bar-color-1);
+        padding: 0.2em;
+    }
+
+    #profile_picture_upload_form button{
+        padding: 0.2em;
+    }
+    #profile_picture_upload_form i{
+        cursor: pointer;
+    }
+
     #profileTabsDiv{
         display: flex;
         flex-direction: row;
@@ -439,10 +498,10 @@
 
 /* User Profile Popup */
     .userPopupContainer {
-        position: relative;
         width: fit-content;
     }
     .userPopupContainer:hover{
+        position: relative;
         width: 100%;
     }
     .userPopupContainer:hover div{
