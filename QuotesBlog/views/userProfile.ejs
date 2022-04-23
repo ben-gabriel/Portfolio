@@ -36,7 +36,7 @@
     <% }else{ %>
         <div id='userCardDiv'>
             <div>
-                <img class="profile_picture" src="<%= locals.userData.profilePictureUrl %>">
+                <img class="profile_picture" id="main_profile_img" src="<%= locals.userData.profilePictureUrl %>">
             </div>
             
             <div id="user_card_subcontainer">
@@ -93,6 +93,11 @@
 </div>
 
 <script>
+    // Img error load
+    let main_profile_img = document.getElementById('main_profile_img');
+    main_profile_img.addEventListener('error',()=>{
+        main_profile_img.src = '/assets/logo1.png'
+    });
 
     let tabsCollection = document.getElementsByClassName('tabButton');
     let tabsContentCollection = document.getElementsByClassName('profileTab');
@@ -207,6 +212,8 @@
             mainFollowBtn.parentElement.className = 'follow_btn_span fa-icon'; 
         }
     });
+
+    
 
 </script>
 

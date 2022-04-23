@@ -4,7 +4,7 @@
     <div id="userCard_<%= user.username %>" class="follow_card">
 
         <div class="follow_card_div">
-            <img class="profile_picture" src="<%= user.profilePictureUrl %>">
+            <img class="profile_picture user_follow_Card_img" src="<%= user.profilePictureUrl %>">
             
             <div class="follow_card_subcontainer">
                 <a href="/users/<%= user.username %>"><%= user.username %></a>
@@ -42,7 +42,7 @@
                 let follow_username = followBtnCollection[index].id.slice(10);
                 let fetcher = await (await fetch(`/users/follow/${follow_username}`,options)).json();
                 
-                console.log('[test.ejs] \n',fetcher);
+                console.log('[user_follow_Card.ejs] \n',fetcher);
                 if(fetcher.error === 'Not Logged In'){
                     renderPopup();
                 }
@@ -55,6 +55,16 @@
                 }
             });
         }
+
+        let pic_collection = document.getElementsByClassName('user_follow_Card_img');
+
+        
+        for (let index = 0; index < pic_collection.length; index++) {
+            pic_collection[index].addEventListener('error',()=>{
+                pic_collection[index].src = '/assets/logo1.png'
+            });
+        }
+
     })();
 
 </script>

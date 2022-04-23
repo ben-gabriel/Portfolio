@@ -131,6 +131,9 @@
                         let fetcher = await (await fetch('/users/popup/'+username)).json();
                         
                         popupDiv.children[0].src = fetcher.profileImg;
+                        popupDiv.children[0].addEventListener('error',()=>{
+                            popupDiv.children[0].src = '/assets/logo1.png'
+                        });
                         
                         if(fetcher.followStatus){
                             popupDiv.children[1].children[1].className = popupDiv.children[1].children[1].className+' follow_btn_span_following';
@@ -180,6 +183,9 @@
                         let fetcher = await (await fetch('/users/popup/'+username)).json();
                         
                         popupDiv.children[0].src = fetcher.profileImg;
+                        popupDiv.children[0].addEventListener('error',()=>{
+                            popupDiv.children[0].src = '/assets/logo1.png'
+                        });
                         
                         // if(fetcher.followStatus){
                         //     popupDiv.children[1].children[1].className = popupDiv.children[1].children[1].className+' follow_btn_span_following';
