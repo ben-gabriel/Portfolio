@@ -5,7 +5,7 @@
         --header-color-1: rgb(208, 206, 248);
 
         --search-bar-height: 2.5em;
-        --search-bar-width: 500px;
+        --search-bar-width: 31.25em; /* Make relative unit */
         --search-bar-color-1: rgb(160, 160, 248);
         --search-bar-color-2: rgb(163, 163, 221);
 
@@ -15,7 +15,7 @@
         --tag-color-2: rgb(177, 177, 236);
         --tag-color-3: rgb(160, 160, 248);
 
-        --post-container-width:  53em; /* Make relative unit */
+        --post-container-width:  53em;
         --nav-bar-width:  60em;
         --follow-card-width: 30em;
 
@@ -29,6 +29,9 @@
         --button-color-1: rgb(207, 207, 243);
         --button-color-2: rgb(224, 162, 162);
         --button-color-3: rgb(154, 154, 255);
+        --button-color-4: rgb(222, 222, 227);
+        --button-color-5: rgb(105, 102, 235,1);
+
 
         --font-color-1: rgb(91, 91, 107);
 
@@ -313,7 +316,7 @@
     }
     
     .login_btn::before{
-        content: '\f2bd';
+        content: '\f090';
     }
 
 

@@ -19,7 +19,151 @@
     
     <div id="top_right_menu">
         <a id="new_quote_btn" class='btn fa-icon' href="/posts/new">New Q</a>
-        <%- include('./logoutButton.ejs') %>
+
+        <% if( locals.userInfo.username ){ %>
+
+            <div id="user_menu_container">
+                    
+                <button id="user_menu_btn" class="btn">
+                    <i class="fa-solid fa-user"></i>
+                </button>
+
+                <div id="user_menu_popup">
+
+                    <div id="profile_btn_div" class="topright_menu_btn">
+                        <i class="fa-solid fa-user"></i>
+                        <a href="/users/<%= locals.userInfo.username %>">Profile</a>
+                    </div>
+
+                    <div id="colormode_btn_div" class="topright_menu_btn">
+                        <i class="fa-solid fa-moon"></i>
+                        <a href="">Dark Mode</a>
+                    </div>
+                    
+                    <div id="login_btn_div" class="topright_menu_btn">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <a id="top_menu_logout" href="">Logout</a>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+
+        <% }else{ %>
+            <a  class="btn fa-icon login_btn" href="/login">Login</a>
+
+            <div id="user_menu_container">
+                        
+                <button id="user_menu_btn" class="btn">
+                    <i class="fa-solid fa-user"></i>
+                </button>
+
+                <div id="user_menu_popup">
+
+                    <div id="colormode_btn_div" class="topright_menu_btn">
+                        <i class="fa-solid fa-moon"></i>
+                        <a href="">Dark Mode</a>
+                    </div>
+                    
+                    <div id="login_btn_div" class="topright_menu_btn">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <a href="/login">Login</a>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        <% } %>
+
+        
     </div>
     
 </div>
+
+
+<style>
+    #user_menu_container{
+        position: relative;
+    }
+
+    #user_menu_popup{
+        position: absolute;
+        background-color: var(--post-color-1);
+        border: 1px solid var(--post-color-2);
+        display: none;
+
+        right: 0;
+        z-index: 5;
+     
+        margin: 0.3em;
+        margin-right: 0.0;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        
+        width: max-content;
+    }
+
+    .topright_menu_btn{
+        display: flex;
+        width: 100%;
+        padding-left: 0.3em;
+        padding-right: 0.3em;
+    }
+        
+    .topright_menu_btn:hover{
+        background-color: var(--button-color-4);
+    }
+
+    .topright_menu_btn > *{
+        color: var(--icon-color-1);
+        text-decoration: none;
+        font-weight: 1000;
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+    }
+
+    .topright_menu_btn > a{
+        margin-left: 0.3em;
+    }
+
+    #user_menu_btn{
+        border-radius: 50em;
+    }
+
+</style>
+
+<script>
+    let user_menu_btn = document.getElementById('user_menu_btn');
+    let user_menu_popup = document.getElementById('user_menu_popup');
+    
+    user_menu_btn.addEventListener('focusin',()=>{
+        user_menu_popup.style.display= 'block';
+    });
+
+    user_menu_btn.addEventListener('focusout',()=>{
+        setTimeout(()=>{
+            user_menu_popup.style.display= 'none';
+        },200);
+    });
+
+</script>
+
+<% if( locals.userInfo.username){ %>
+
+    <script>
+        let top_menu_logout = document.getElementById('top_menu_logout');
+        top_menu_logout.addEventListener('click', async (e)=>{
+            e.preventDefault();
+            let fetcher = await( await fetch('/logout',{method:'post'}) ).json() ;
+            if(fetcher.logout === true){
+                location.replace('/');
+            }
+        });
+    </script>
+
+    <!-- <form action="/logout" method="post">
+            <input class='btn' type="submit" value="Logout">           
+    </form> -->
+
+<% } %>

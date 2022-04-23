@@ -219,6 +219,7 @@ app.post('/popup_register', async(req,res)=>{
                         following: [],
                         followers: [],
                         tagsOfInterest: [],
+                        profilePictureUrl: '/assets/profile1.png',
                     }
                     await database.createOneDocument(newUserDocument, db, "Users");
                     
@@ -308,7 +309,7 @@ app.post('/popup_login', async(req,res)=>{
 
 app.post('/logout', (req, res)=>{
     req.session.isLoggedIn=false;
-    res. redirect('/');
+    res.json({logout:true});
 });
 
 app.get('/results', async (req,res)=>{
