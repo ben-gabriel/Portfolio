@@ -177,7 +177,11 @@
         color: var(--font-color-1);
     }
 
-    
+    .mainFollowBtn{
+        background-color: rgba(0, 0, 0, 0);
+        border: none;
+        font-weight: 1000;        
+    }
 
 
 /* header.ejs */
@@ -506,6 +510,7 @@
     }
     .userPopupContainer:hover div{
         display: flex;
+
     }
     
     .profilePopup{
@@ -513,10 +518,11 @@
         
         position: absolute;
         
-        /* bottom: 120%; */
-        top: 110%;
+        /* top: 110%; */
+        bottom: 110%;
         /* left: -0.5em; */
-        
+        left: -1px;
+
         background-color: var(--post-color-1);
         border: 1px solid var(--post-color-2);
         
@@ -524,6 +530,8 @@
 
         padding: 0.5em;
         z-index: 5;
+
+        transition: all 1s;
     }
     .profilePopup > *{
         margin: 0.5em;

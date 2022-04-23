@@ -335,6 +335,17 @@
         });
     });
 
+//favoriteButton
+    let favorite_button = document.getElementById('favorite_<%= locals.postInfo.publicID %>');
+    favorite_button.addEventListener('click', async ()=>{
+        let fetcher = await (await fetch('/users/favorite/'+favorite_button.id.slice(9),{method:'post'})).json();
+        if(fetcher.action === 'removed'){
+            favorite_button.className = 'favoriteButton'; // remove favorited class
+        }
+        if(fetcher.action === 'added'){
+            favorite_button.className = 'favoriteButton favorited'; // add favorited class
+        }
+    });
 
 </script>
 <% } %>

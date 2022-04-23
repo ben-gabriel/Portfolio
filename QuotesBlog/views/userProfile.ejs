@@ -22,12 +22,12 @@
         
                 <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
                     <span class="follow_btn_span fa-icon follow_btn_span_following">
-                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">Follow</button>
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="mainFollowBtn following_true">Follow</button>
                     </span>
                 <% } %>
                 <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
                     <span class="follow_btn_span fa-icon">    
-                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">Follow</button>
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="mainFollowBtn">Follow</button>
                     </span>
                 <% } %>
 
@@ -44,12 +44,12 @@
         
                 <% if(locals.userData.followers.includes(locals.userInfo.username)){ %>
                     <span class="follow_btn_span fa-icon follow_btn_span_following">
-                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn following_true">Follow</button>
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="mainFollowBtn following_true">Follow</button>
                     </span>
                 <% } %>
                 <% if(!(locals.userData.followers.includes(locals.userInfo.username))){ %>
                     <span class="follow_btn_span fa-icon">    
-                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="followBtn">Follow</button>
+                        <button id="mainFollowBtn_<%= locals.userData.username %>" class="mainFollowBtn">Follow</button>
                     </span>
                 <% } %>
 
