@@ -13,8 +13,9 @@
         </div>
 
         <div id='userCardDiv'>
+            
             <div id="main_profile_img_div" class="fa-icon">
-                <img id='main_profile_img' class="profile_picture" src="<%= locals.userData.profilePictureUrl %>">
+                <img id='main_profile_img_own' class="profile_picture" src="<%= locals.userData.profilePictureUrl %>">
             </div>
             
             <div id="user_card_subcontainer">
@@ -95,6 +96,10 @@
 <script>
     // Img error load
     let main_profile_img = document.getElementById('main_profile_img');
+    if(!main_profile_img){
+        main_profile_img = document.getElementById('main_profile_img_own');
+    }
+
     main_profile_img.addEventListener('error',()=>{
         main_profile_img.src = '/assets/logo1.png'
     });

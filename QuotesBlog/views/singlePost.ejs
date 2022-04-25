@@ -75,13 +75,29 @@
                 <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
                 <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
     
+                <textarea class="comment_textarea" name="commentContent" placeholder="Leave a comment"></textarea>
+                <input class="comment_submit_btn" type="submit" value="Comment">
+                
+            </form>
+        </div>
+
+    </div>
+    <!-- <div class="commentsDiv" id="commentsDiv">
+
+        <div class="comments_subcontainer">
+            <a  href=<%= '/posts/'+ locals.postInfo.publicID %>> <%= locals.postInfo.comments.length %> comments </a>
+    
+            <form action="./newComment" method="post" class="<%= locals.authRequired %>"> 
+                <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
+                <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || 'originalPost' %>>
+    
                 <input type="text" name="commentContent">
                 <input type="submit" value="Comment">
                 
             </form>
         </div>
 
-    </div>
+    </div> -->
 
 </div>
 
@@ -151,8 +167,10 @@
                         <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
                         <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
 
-                        <input type="text" name="commentContent" id="commentContent">
-                        <input type="submit" value="Comment">
+                        
+                        <textarea class="comment_textarea" name="commentContent" placeholder="Leave a comment"></textarea>
+                        <input class="comment_submit_btn" type="submit" value="Reply">
+                
                     `;
 
                     
@@ -164,10 +182,11 @@
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
-                    replyButton.className = 'replyButton'
+                    replyButton.className = 'replyButton comment_reply_btn'
                     
                     let cancelReplyButton = document.createElement('button');
                     cancelReplyButton.textContent = 'Cancel';
+                    cancelReplyButton.className = 'comment_cancel_btn';
 
                     let replyForm = document.createElement('form');
                     replyForm.action = './newComment';
@@ -222,8 +241,10 @@
                         <input type="hidden" name="postUrl" value=<%= locals.postInfo.publicID %>>
                         <input type="hidden" name="replyingToID" value=<%=  locals.postInfo.null || '${commentsJson[index].commentID}' %>>
 
-                        <input type="text" name="commentContent">
-                        <input type="submit" value="Comment">
+                        
+                        <textarea class="comment_textarea" name="commentContent" placeholder="Leave a comment"></textarea>
+                        <input class="comment_submit_btn" type="submit" value="Reply">
+                
                     `;
 
                     
@@ -235,11 +256,12 @@
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
-                    replyButton.className = 'replyButton'
+                    replyButton.className = 'replyButton comment_reply_btn'
 
 
                     let cancelReplyButton = document.createElement('button');
                     cancelReplyButton.textContent = 'Cancel';
+                    cancelReplyButton.className = 'comment_cancel_btn';
 
                     let replyForm = document.createElement('form');
                     replyForm.action = './newComment';
@@ -411,7 +433,7 @@
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
-                    replyButton.className = 'replyButton'
+                    replyButton.className = 'replyButton comment_reply_btn'
 
                     replyButton.addEventListener('click', (e)=>{
                         e.preventDefault();
@@ -458,7 +480,7 @@
 
                     let replyButton = document.createElement('button');
                     replyButton.textContent = 'Reply';
-                    replyButton.className = 'replyButton'                   
+                    replyButton.className = 'replyButton comment_reply_btn'                   
 
                     replyButton.addEventListener('click', (e)=>{
                         e.preventDefault();

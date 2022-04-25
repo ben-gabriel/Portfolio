@@ -5,7 +5,7 @@
 
     <div id="homePageNav" >
         <a class="tabButton tabSelected" href="/all">All</a>
-        <a class="tabButton" href="/following">Following</a>
+        <a class="tabButton <%= locals.authRequired %>" href="/following">Following</a>
 
         <div id="sort_div">
 
