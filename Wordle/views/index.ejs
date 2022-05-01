@@ -51,51 +51,51 @@
     <section id="game_table">
 
         <div class="game_row">
-            <div>W</div>
-            <div>O</div>
-            <div>R</div>
-            <div>D</div>
-            <div>L</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
 
         <div class="game_row">
-            <div>W</div>
-            <div>O</div>
-            <div>R</div>
-            <div>D</div>
-            <div>L</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
 
         <div class="game_row">
-            <div>W</div>
-            <div>O</div>
-            <div>R</div>
-            <div>D</div>
-            <div>L</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
 
         <div class="game_row">
-            <div>W</div>
-            <div>O</div>
-            <div>R</div>
-            <div>D</div>
-            <div>L</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
 
         <div class="game_row">
-            <div>W</div>
-            <div>O</div>
-            <div>R</div>
-            <div>D</div>
-            <div>L</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
 
         <div class="game_row">
-            <div>W</div>
-            <div>O</div>
-            <div>R</div>
-            <div>D</div>
-            <div>L</div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
 
     </section>
@@ -105,40 +105,40 @@
         <div id="screen_keyboard">
         
             <div class="keyboard_row"> 
-                <p id="q">Q</p>
-                <p id="w">W</p>
-                <p id="e">E</p>
-                <p id="r">R</p>
-                <p id="t">T</p>
-                <p id="y">Y</p>
-                <p id="u">U</p>
-                <p id="i">I</p>
-                <p id="o">O</p>
-                <p id="p">P</p>
+                <p id="q" class="keyboard_key">Q</p>
+                <p id="w" class="keyboard_key">W</p>
+                <p id="e" class="keyboard_key">E</p>
+                <p id="r" class="keyboard_key">R</p>
+                <p id="t" class="keyboard_key">T</p>
+                <p id="y" class="keyboard_key">Y</p>
+                <p id="u" class="keyboard_key">U</p>
+                <p id="i" class="keyboard_key">I</p>
+                <p id="o" class="keyboard_key">O</p>
+                <p id="p" class="keyboard_key">P</p>
             </div>
 
             <div class="keyboard_row">
-                <p id="a">A</p>
-                <p id="s">S</p>
-                <p id="d">D</p>
-                <p id="f">F</p>
-                <p id="g">G</p>
-                <p id="h">H</p>
-                <p id="j">J</p>
-                <p id="k">K</p>
-                <p id="l">L</p>
+                <p id="a" class="keyboard_key">A</p>
+                <p id="s" class="keyboard_key">S</p>
+                <p id="d" class="keyboard_key">D</p>
+                <p id="f" class="keyboard_key">F</p>
+                <p id="g" class="keyboard_key">G</p>
+                <p id="h" class="keyboard_key">H</p>
+                <p id="j" class="keyboard_key">J</p>
+                <p id="k" class="keyboard_key">K</p>
+                <p id="l" class="keyboard_key">L</p>
             </div>
 
             <div class="keyboard_row">
-                <p id="enter">ENTER</p>
-                <p id="z">Z</p>
-                <p id="x">X</p>
-                <p id="c">C</p>
-                <p id="v">V</p>
-                <p id="b">B</p>
-                <p id="n">N</p>
-                <p id="m">M</p>
-                <p id="del">
+                <p id="enter" class="keyboard_key">ENTER</p>
+                <p id="z" class="keyboard_key">Z</p>
+                <p id="x" class="keyboard_key">X</p>
+                <p id="c" class="keyboard_key">C</p>
+                <p id="v" class="keyboard_key">V</p>
+                <p id="b" class="keyboard_key">B</p>
+                <p id="n" class="keyboard_key">N</p>
+                <p id="m" class="keyboard_key">M</p>
+                <p id="backspace" class="keyboard_key">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                         <path fill="var(--color-font-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path>
                     </svg>
@@ -156,6 +156,7 @@
     *{
         margin: 0;
         padding: 0;
+        user-select: none;
         box-sizing: border-box;    
     }    
 
@@ -163,12 +164,13 @@
         --color-font-1: #ffffff;
 
         --color-border-1: #3a3a3c;
+        --color-border-2: #49494994;
 
         --color-background-1: #121213;
         --color-background-2: #494949;
         --color-background-3: #3a3a3c;
         --color-background-4: #818384;
-
+        
     }
 
     body{
@@ -234,9 +236,9 @@
 
         width: 18%;
 
-        border: 1px solid var(--color-border-1);
+        /* border: 1px solid var(--color-border-2); */
         background-color: var(--color-background-3);
-        
+
         transition: all 1s;
     }
 
@@ -306,9 +308,10 @@
         justify-content: center;
         align-items: center;
 
-        font-family: 'lato';
+        font-family: 'lato', sans-serif;
         font-weight: 500;
         font-size: 0.9em;
+        cursor: pointer;
 
         color: var(--color-font-1);
 
@@ -320,7 +323,7 @@
         background-color: var(--color-background-4);
     }
 
-    #enter, #del{
+    #enter, #backspace{
         width: 66px;
     }
 
@@ -338,3 +341,76 @@
     }
 
 </style>
+
+<script>
+
+    const gameboard = (
+
+        ()=>{
+
+            let currentRow = 0;
+            let currentColumn = 0;
+
+            
+            let userInput = document.createElement('input');
+            userInput.type = 'text';
+            document.body.append(userInput);
+
+            
+            let keyboard_collection = document.getElementsByClassName('keyboard_key');
+
+            function pressKey(key){
+                if(userInput.value.length < 6){
+
+                    let keyboard = ['q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m','enter','backspace']
+                    key = key.toLowerCase();
+                    
+                    if(keyboard.includes(key)){
+                        console.log('[pressKey()] = ', key);
+                        userInput.value = userInput.value + key;
+                    }
+
+                }
+            }
+
+            function renderLetter(){
+
+            }
+
+            for (let index = 0; index < keyboard_collection.length; index++) {
+                let key = keyboard_collection[index].id;
+
+                keyboard_collection[index].addEventListener('click', ()=>{
+                    pressKey(key);
+                });
+    
+            }
+
+            window.addEventListener('keydown', (e)=>{
+                pressKey(e.key);
+            });
+
+            
+            // setters
+            function setRow(){
+                // *** on enter it should pass to next row, max of 6 [0 to 5]
+            }
+
+            // getters
+            function getColumn(){
+                if(userInput.value.length < 6){
+                    return userInput.value.length;
+                }
+                else{
+                    return 6;
+                }
+            }
+
+            // export
+            return {getColumn}
+        }
+
+    )();
+    
+</script>
+

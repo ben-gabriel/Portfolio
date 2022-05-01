@@ -1,4 +1,5 @@
 const express = require('express');
+const { get } = require('express/lib/response');
 const app = express();
 const port = 2404;
 
@@ -12,7 +13,9 @@ app.get('/', (req,res)=>{
 });
 
 
-
+app.get('/test.js',(req,res)=>{
+    res.sendFile('./test.js',{root:__dirname})
+});
 
 
 // --------
