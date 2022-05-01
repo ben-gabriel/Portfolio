@@ -599,10 +599,10 @@ const fileUpload = require('express-fileupload');
 //     createParentPath: true,
 // }));
 
-// app.get('/test', async (req,res)=>{
-//     console.log('[GET/test]--------------------\n');
-//     res.render('test');
-// });
+app.get('/test', async (req,res)=>{
+    console.log('[GET/test]--------------------\n');
+    res.render('test');
+});
 
 // app.post('/test', (req,res)=>{
 //     console.log('[POST/test]--------------------\n',req.files);

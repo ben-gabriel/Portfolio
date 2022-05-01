@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "Wordle": "nodemon Wordle/sv.js",
     "QuotesBlog": "nodemon QuotesBlog/sv.js"
+
   },
   "repository": {
     "type": "git",
