@@ -9,7 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,6 +65,7 @@
             <div>D</div>
             <div>L</div>
         </div>
+
         <div class="game_row">
             <div>W</div>
             <div>O</div>
@@ -72,6 +73,7 @@
             <div>D</div>
             <div>L</div>
         </div>
+
         <div class="game_row">
             <div>W</div>
             <div>O</div>
@@ -79,6 +81,7 @@
             <div>D</div>
             <div>L</div>
         </div>
+
         <div class="game_row">
             <div>W</div>
             <div>O</div>
@@ -86,6 +89,7 @@
             <div>D</div>
             <div>L</div>
         </div>
+
         <div class="game_row">
             <div>W</div>
             <div>O</div>
@@ -98,7 +102,50 @@
 
 
     <section id="footer">
-        <div id="screen_keyboard"></div>
+        <div id="screen_keyboard">
+        
+            <div class="keyboard_row"> 
+                <p id="q">Q</p>
+                <p id="w">W</p>
+                <p id="e">E</p>
+                <p id="r">R</p>
+                <p id="t">T</p>
+                <p id="y">Y</p>
+                <p id="u">U</p>
+                <p id="i">I</p>
+                <p id="o">O</p>
+                <p id="p">P</p>
+            </div>
+
+            <div class="keyboard_row">
+                <p id="a">A</p>
+                <p id="s">S</p>
+                <p id="d">D</p>
+                <p id="f">F</p>
+                <p id="g">G</p>
+                <p id="h">H</p>
+                <p id="j">J</p>
+                <p id="k">K</p>
+                <p id="l">L</p>
+            </div>
+
+            <div class="keyboard_row">
+                <p id="enter">ENTER</p>
+                <p id="z">Z</p>
+                <p id="x">X</p>
+                <p id="c">C</p>
+                <p id="v">V</p>
+                <p id="b">B</p>
+                <p id="n">N</p>
+                <p id="m">M</p>
+                <p id="del">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path fill="var(--color-font-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path>
+                    </svg>
+                </p>
+            </div>
+            
+        </div>
     </section>
 
 </body>
@@ -119,6 +166,9 @@
 
         --color-background-1: #121213;
         --color-background-2: #494949;
+        --color-background-3: #3a3a3c;
+        --color-background-4: #818384;
+
     }
 
     body{
@@ -161,14 +211,9 @@
         width: 21em;
         height: 25.2em;
 
-        padding: 1em;
-        
-        background-color: var(--color-background-2);
-
     }
 
     .game_row{
-        /* border: 1px solid red; */
         display: flex;
         justify-content: space-between;
         height: 14.94%;
@@ -186,8 +231,8 @@
 
         width: 18%;
 
-        border: var(--color-font-1) 1px solid;
-        background-color: var(--color-background-2);
+        border: 1px solid var(--color-border-1);
+        background-color: var(--color-background-3);
         
         transition: all 1s;
     }
@@ -230,11 +275,49 @@
         transition: all 1s;
     } */
 
+
     /* Keyboard*/
     #footer{
-        /* placeholder */
         height: 200px;
         width: 500px;
-        background-color: var(--color-background-2);    
     }
+
+    #screen_keyboard{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        height: 100%;
+    }
+
+    .keyboard_row{
+        display: flex;
+        justify-content: center;
+        gap: 0.35em;
+
+        height: fit-content;
+    }
+
+    .keyboard_row > *{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-family: 'lato';
+        font-weight: 500;
+        font-size: 0.9em;
+
+        color: var(--color-font-1);
+
+        width: 43px;
+        height: 58px;
+
+        border-radius: 4px;
+
+        background-color: var(--color-background-4);
+    }
+
+    #enter, #del{
+        width: 66px;
+    }
+
 </style>
