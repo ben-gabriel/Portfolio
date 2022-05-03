@@ -171,6 +171,10 @@
         --color-background-2: #494949;
         --color-background-3: #3a3a3c;
         --color-background-4: #818384;
+
+        --color-background-5: #3a3a3c;
+        --color-background-6: #b59f3b;
+        --color-background-7: #538d4e;
         
     }
 
@@ -260,10 +264,19 @@
 
         /* border: 1px solid var(--color-border-2); */
         background-color: var(--color-background-3);
-
+        
         transition: all 1s;
     }
-
+    
+    .unincluded{
+        background-color: var(--color-background-5);
+    }
+    .included{
+        background-color: var(--color-background-6);
+    }
+    .matched{
+        background-color: var(--color-background-7);
+    }
 
     /* #div1{
         display: flex;
@@ -481,83 +494,27 @@
                         }
                         
                         for (let index = 0; index < 5; index++) {
+
                             for (let index2 = 0; index2 < 5; index2++) {
                                 
                                 if(userInput.value[index] === word[index2] && letterAmount[index] > 0 && letterStatus[index] !== 'matched'){
-                                    console.log('test ')
                                     letterStatus[index] = 'included';
                                 }
                             
                             }
 
                         }
-                        
-                        
-                        // word.forEach(letter => {
-                        //     if((userInput.value[index] === letter)&&(letterStatus[index]!=='matched')&&(letterAmount>0)){
-                        //         letterStatus[index] = 'included';
-                        //     }
-                        // });
-
-                            
+                           
                             
                         console.log('log 0 = ', word);
                         console.log('log 1 = ', letterStatus);
                         console.log('log 2 = ', letterAmount);
-
-
                         
-                        // for (let index = 0; index < 5; index++) {
-                            
-                        //     if( wordIndex[index] === userInput.value[index] ){
-                        //         wordIndex[index] = 9;
-                        //     }
-
-                        //     let repeatAmount = 0;
-                        //     for (let index2 = 0; index2 < 5; index2++) {
-                        //         if(wordle[index] === wordle[index2]){
-                        //             repeatAmount = repeatAmount + 1;
-                        //             if(wordIndex[index] === 9){
-                        //                 repeatAmount = repeatAmount - 1;
-                        //             }                            
-                        //         }
-                        //         wordIndex[index] = repeatAmount;
-                        //     }
-
-                        //     // if(wordIndex[index] !== 9){
-                        //     //     let repeatAmount = 0;
-                        //     //     for (let index2 = 0; index2 < 5; index2++) {
-                        //     //         if(wordle[index] === wordle[index2]){
-                        //     //             repeatAmount = repeatAmount + 1;
-                        //     //         }                            
-                        //     //     }
-                        //     //     wordIndex[index] = repeatAmount;
-                        //     // }
-
-
-                        //     console.log('log 1, ', wordIndex);
-
-                        //     // console.log('log 2',wordClone)
-                            
-                        //     // while(wordClone.includes(userInput.value[index])){
-                        //     //     wordClone = wordClone.replace(userInput.value[index],index);
-                        //     //     console.log(wordClone);
-                        //     // }
-                        //     // console.log('log 3',wordClone)
-                            
-
-                        //     // if( wordle.includes(userInput.value[index]) ){
-                        //     //     record[currentRow][index] = 'included';
-                        //     // }
-                        //     // else{
-                        //     //     record[currentRow][index] = 'unincluded';
-                        //     // }
-                            
-                        //     // if( wordle[index] === userInput.value[index] ){
-                        //     //     record[currentRow][index] = 'match';
-                        //     // }
-                            
-                        // }
+                        //add class
+                        let rowsCollection = document.getElementsByClassName('game_row');
+                        for (let index = 0; index < 5; index++) {
+                            rowsCollection[currentRow].children[index].className = letterStatus[index];
+                        }
                         
                         userInput.value = '';
                         currentRow = setRow();
