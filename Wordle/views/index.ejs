@@ -214,7 +214,7 @@
         
         <section id="info">
         
-            <svg height="24" viewBox="0 0 24 24" width="24" id="info_close">
+            <svg height="24" viewBox="0 0 24 24" width="24" id="info_close" class="clickable">
                     <path fill="var(--color-font-1)" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
             </svg>
 
@@ -238,14 +238,35 @@
                     <br>
                     <br>
                     
+                    <div class="example_row">
+                        <div class="matched">W</div>
+                        <div>E</div>
+                        <div>A</div>
+                        <div>R</div>
+                        <div>Y</div>
+                    </div>
                     The letter <span style="font-weight: bold;">W</span> is in the word and in the correct spot.
                     <br>
                     <br>
                     
+                    <div class="example_row">
+                        <div>P</div>
+                        <div class="included">I</div>
+                        <div>L</div>
+                        <div>L</div>
+                        <div>S</div>
+                    </div>
                     The letter <span style="font-weight: bold;">I</span> is in the word but in the wrong spot.
                     <br>
                     <br>
-                    
+
+                    <div class="example_row">
+                        <div>V</div>
+                        <div>A</div>
+                        <div>G</div>
+                        <div class="unincluded">U</div>
+                        <div>E</div>
+                    </div>
                     The letter <span style="font-weight: bold;">U</span> is not in the word in any spot.
                 </p>
             </div>
@@ -319,6 +340,12 @@
         font-family: 'Source Serif Pro', serif;
         font-weight: 1000;
         font-size: 2.5em;
+    }
+
+    #top_left_menu, #top_right_menu{
+        display: flex;
+        align-items: center;
+        gap: 7px;
     }
 
 
@@ -565,13 +592,13 @@
     #popup_container_info{
         position: absolute;
 
-        display: flex;
+        display: none;
         justify-content: center;
 
         font-family: 'lato', sans-serif;
         color: var(--color-font-1);
 
-        height: 100%;
+        height: 100vh;
         width: 100%;
 
         padding-top: 10px;
@@ -608,6 +635,32 @@
         padding: 14px 0;
     }
 
+    .example_row{
+        display: flex;
+        height: 40px;
+        margin: 10px 0;
+    }
+
+    .example_row > *{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-family: 'lato';
+        font-size: 2em;
+        font-weight: 1000;
+        color: var(--color-font-1);
+
+        width: 40px;
+
+        margin-right: 4px;
+
+        border: 2px solid var(--color-border-1);
+        background-color: var(--color-background-1);
+        
+        transition: all 1s;
+    }
+
     /* Media Queries */
 
     @media (max-width: 400px) {
@@ -625,6 +678,15 @@
             font-size: 10px;
             font-weight: 900;
             margin-right: 4px;
+        }
+
+        #info{
+            padding: 1em;
+        }
+
+        #info_close{
+            position:absolute;
+            left: 90%;
         }
         
     }
@@ -896,6 +958,18 @@
     });
 
     /* Info Popup */
+    let btn_info = document.getElementById('btn_info');
+    let popup_container_info = document.getElementById('popup_container_info');
+    let info_close = document.getElementById('info_close');
+
+    btn_info.addEventListener('click', ()=>{
+        popup_container_info.style.display = 'flex';
+    });
+    
+    info_close.addEventListener('click', ()=>{
+        popup_container_info.style.display = 'none';
+    });
+    
 
 </script>
 
