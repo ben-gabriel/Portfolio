@@ -969,7 +969,8 @@
             let gameState = initStorage('gameState', 'running');
             let recordObj =  {0:[null,null,null,null,null,''],1:[null,null,null,null,null,''],2:[null,null,null,null,null,''],3:[null,null,null,null,null,''],4:[null,null,null,null,null,''],5:[null,null,null,null,null,'']};
             let record = initStorage('record', JSON.stringify(recordObj));
-            let wordle = initStorage('wordle', getRandomWord(wordBank));
+            // let wordle = initStorage('wordle', getRandomWord(wordBank));
+            let wordle = 'tasty';
 
             /* DOM */
             let popupMessage = document.getElementById('popup_message');
@@ -1028,6 +1029,7 @@
                 console.log('[gameOver()] log 1');
                 localStorage.setItem('gameState','over');
                 gameState = 'over';
+                document.getElementById('popup_container_stats').style.display = 'block';
             }
 
             function renderLetter(key){
@@ -1079,20 +1081,17 @@
                                     letterAmount[index2] = letterAmount[index2] - 1;
                                 }
                             }
-
                         }
                         
                         // add included status 
                         for (let index = 0; index < 5; index++) {
+                            let currentLetter = userInput.value[index];
 
                             for (let index2 = 0; index2 < 5; index2++) {
-                                
-                                if(userInput.value[index] === word[index2] && letterAmount[index] > 0 && letterStatus[index] !== 'matched'){
+                                if( currentLetter === word[index2] && letterAmount[index2] > 0 && letterStatus[index] !== 'matched'){
                                     letterStatus[index] = 'included';
                                 }
-                            
                             }
-
                         }
 
                         // save record to local storage
@@ -1212,8 +1211,19 @@
         popup_container_stats.style.display = 'none';
     });
     
-    popup_container_stats.addEventListener('click', ()=>{
-        popup_container_stats.style.display = 'none';
+    popup_container_stats.addEventListener('click', (e)=>{
+        if(e.target === e.currentTarget){
+            popup_container_stats.style.display = 'none';
+        }  
+    });
+
+    /* New Word Btn */
+    let change_word_btn = document.getElementById('change_word_btn');
+    change_word_btn.addEventListener('click',()=>{
+        localStorage.removeItem('wordle');
+        localStorage.removeItem('record');
+        localStorage.removeItem('gameState');
+        window.location.reload();
     });
 
     /* Info Popup */
