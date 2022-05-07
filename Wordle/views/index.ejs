@@ -243,7 +243,7 @@
                     <br>
                     
                     <div class="example_row">
-                        <div class="matched">W</div>
+                        <div id="example_matched">W</div>
                         <div>E</div>
                         <div>A</div>
                         <div>R</div>
@@ -255,7 +255,7 @@
                     
                     <div class="example_row">
                         <div>P</div>
-                        <div class="included">I</div>
+                        <div id="example_included">I</div>
                         <div>L</div>
                         <div>L</div>
                         <div>S</div>
@@ -268,7 +268,7 @@
                         <div>V</div>
                         <div>A</div>
                         <div>G</div>
-                        <div class="unincluded">U</div>
+                        <div id="example_unincluded">U</div>
                         <div>E</div>
                     </div>
                     The letter <span style="font-weight: bold;">U</span> is not in the word in any spot.
@@ -1018,7 +1018,6 @@
             let lastMatchedRow = initStorage('lastMatchedRow', 6);
             let lastWord = initStorage('lastWord','');
             let wordle = initStorage('wordle', getRandomWord(wordBank));
-            wordle = 'tatta'; //---------- delete line
 
             /* DOM */
             let popupMessage = document.getElementById('popup_message');
@@ -1055,7 +1054,9 @@
                     }
                 }
                 if(currentRow>5){
-                    document.getElementById('popup_container_stats').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('popup_container_stats').style.display = 'block';
+                    }, 1100 );
                 }
             })();
 
@@ -1114,7 +1115,9 @@
                 gameState = 'over';
                 
                 renderStats();
-                document.getElementById('popup_container_stats').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('popup_container_stats').style.display = 'block';
+                }, 1100 );
             }
 
             function renderLetter(key){
@@ -1205,11 +1208,24 @@
                                 rowsCollection[spinRow].children[index].className = letterStatus[index] + ' letterSpin';
                             }, spinDelay*index);
                         }
-
+                        
                         for (let index = 0; index < 5; index++) {
-                            document.getElementById(userInput.value[index]).className = letterStatus[index];
+                            let currentClass = document.getElementById(userInput.value[index]).className;
+                            
+                            if( letterStatus[index] === 'unincluded' && currentClass === 'keyboard_key' ){
+                                document.getElementById(userInput.value[index]).className = 'keyboard_key '+letterStatus[index];
+                            }
+                            
+                            if( letterStatus[index] === 'included' && currentClass !== 'keyboard_key matched' ){
+                                document.getElementById(userInput.value[index]).className = 'keyboard_key '+letterStatus[index];
+                            }
+                            
+                            if(letterStatus[index] === 'matched'){
+                                document.getElementById(userInput.value[index]).className = 'keyboard_key '+letterStatus[index];
+                            }
                         }
 
+                        console.log(letterStatus)//------------
                         
                         if(userInput.value === wordle){
                             gameOver();
@@ -1246,10 +1262,12 @@
             }
 
             function renderStats(){
+                
                 stat_wins.innerText = Math.floor((parseInt(localStorage.getItem('wins'))/parseInt(localStorage.getItem('played')))*100);
                 if(isNaN(stat_wins.innerText)){
                     stat_wins.innerText = '0';
                 }
+
                 stat_played.innerText = localStorage.getItem('played');
                 stat_max_streak.innerText = localStorage.getItem('streakMax');
                 stat_current_streak.innerText = localStorage.getItem('streakCurrent');
@@ -1279,8 +1297,6 @@
 
                     stats_chart_collection[index].children[1].children[0].innerText = statsDistribution[index];
                 }
-
-                
 
             };
 
@@ -1374,13 +1390,29 @@
     let popup_container_info = document.getElementById('popup_container_info');
     let info_close = document.getElementById('info_close');
 
+    let example_matched = document.getElementById('example_matched');
+    let example_included = document.getElementById('example_included'); 
+    let example_unincluded = document.getElementById('example_unincluded');    
+    
     btn_info.addEventListener('click', ()=>{
         popup_container_info.style.display = 'flex';
+
+        setTimeout(()=>{
+            example_matched.className = 'matched letterSpin';
+            example_included.className = 'included letterSpin';
+            example_unincluded.className = 'unincluded letterSpin';
+        },100);
     });
     
     info_close.addEventListener('click', ()=>{
         popup_container_info.style.display = 'none';
+
+        example_matched.className = '';
+        example_included.className = '';
+        example_unincluded.className = '';
     });
+
+
 
     /* Settings Popup */
     let btn_settings = document.getElementById('btn_settings');
