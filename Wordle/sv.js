@@ -9,6 +9,7 @@ app.set('views','Wordle/views');
 app.use(express.urlencoded({extended:true}));
 
 app.get('/', (req,res)=>{
+    console.log('GET/')
     res.render('index');
 });
 
