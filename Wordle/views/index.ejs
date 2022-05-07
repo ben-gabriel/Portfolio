@@ -165,6 +165,7 @@
 
     
     <div id="popup_container_stats">
+
         <section id="stats">
             
             <div id="stats_close" class="clickable">
@@ -928,6 +929,16 @@
         color: var(--color-font-1);
     }
 
+    /* Animations */
+    @keyframes letterSpin {
+        from{
+            transform:rotateX(0);
+        }
+        to{
+            transform:rotateX(360deg);
+        }
+    }
+
 </style>
 
 <script>
@@ -976,14 +987,13 @@
             let distributionObj = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0}
             let distribution = initStorage('distribution', JSON.stringify(distributionObj));
             let lastMatchedRow = initStorage('lastMatchedRow', 6);
-            // let wordle = initStorage('wordle', getRandomWord(wordBank));
-            let wordle = 'tasty';
-
-
+            let lastWord = initStorage('lastWord','');
+            let wordle = initStorage('wordle', getRandomWord(wordBank));
+            wordle = 'junto';
 
             /* DOM */
             let popupMessage = document.getElementById('popup_message');
-            let errorActive = false;
+            let messageActive = false;
             
             let userInput = document.createElement('input');
             userInput.type = 'text';
@@ -1073,8 +1083,8 @@
                 
                 localStorage.setItem('gameState','over');
                 gameState = 'over';
-                renderStats();
                 
+                renderStats();
                 document.getElementById('popup_container_stats').style.display = 'block';
             }
 
@@ -1127,19 +1137,28 @@
                                     letterAmount[index2] = letterAmount[index2] - 1;
                                 }
                             }
+
                         }
                         
-                        // add included status 
+                        // add included status
                         for (let index = 0; index < 5; index++) {
                             let currentLetter = userInput.value[index];
 
                             for (let index2 = 0; index2 < 5; index2++) {
                                 if( currentLetter === word[index2] && letterAmount[index2] > 0 && letterStatus[index] !== 'matched'){
+
+                                    // Substract letter amount on 'included' letter
+                                    for (let index3 = 0; index3 < 5; index3++) {
+                                        if(currentLetter === word[index3]){
+                                            letterAmount[index3] = letterAmount[index3] - 1;
+                                        }
+                                    }
+                                    
                                     letterStatus[index] = 'included';
+
                                 }
                             }
                         }
-
                         // save record to local storage
                         for (let index = 0; index < 5; index++) {
                             recordObj[currentRow][index] = letterStatus[index];
@@ -1164,30 +1183,35 @@
                         userInput.value = '';
                     }
                     else{
-                        renderError('Not in word bank')
+                        renderMessage('Not in word bank')
                     }
                 }
                 else{
-                    renderError('5 Letters required');
+                    renderMessage('5 Letters required');
                 }
             }
 
-            function renderError(message){
+            function renderMessage(message, timer = 1500){
                 popupMessage.innerText = message;
                 popupMessage.style.display = 'block';
                 popupMessage.style.opacity = '100%';
-                if(!errorActive){
+                
+                if(!messageActive && timer !== -1){
                     setTimeout(()=>{
-                        errorActive = false;
+                        messageActive = false;
                         popupMessage.style.opacity = '0%';
                         popupMessage.style.display = 'block';
-                    },1500);
+                    },timer);
                 }
-                errorActive = true;
+
+                messageActive = true;
             }
 
             function renderStats(){
                 stat_wins.innerText = Math.floor((parseInt(localStorage.getItem('wins'))/parseInt(localStorage.getItem('played')))*100);
+                if(isNaN(stat_wins.innerText)){
+                    stat_wins.innerText = '0';
+                }
                 stat_played.innerText = localStorage.getItem('played');
                 stat_max_streak.innerText = localStorage.getItem('streakMax');
                 stat_current_streak.innerText = localStorage.getItem('streakCurrent');
@@ -1210,7 +1234,7 @@
                         stats_chart_collection[index].children[1].style.width = `${(statsDistribution[index]/max)*100}%`;
                     }
 
-                    stats_chart_collection[index].children[1].style.backgroundColor = ''
+                    stats_chart_collection[index].children[1].style.backgroundColor = '';
                     if( lastRow > -1 && lastRow < 6){
                         stats_chart_collection[lastRow].children[1].style.backgroundColor = 'var(--color-background-7)';
                     }
@@ -1271,7 +1295,7 @@
 
 
             // export
-            return {getColumn, getRow, getRecord, renderLetter}
+            return {getColumn, getRow, getRecord, renderLetter, renderMessage}
         }
 
     )();
