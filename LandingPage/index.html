@@ -6,16 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio - Sergio Benitez</title>
 
-    
+    <!-- Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Catamaran -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 </head>
 <body>
-    
+
     <section id="section_main">
-        
+
         <div id="nav_bar">
-            <a href="#section_projects">PROJECTS</a>
-            <a href="#section_contact">CONTACT</a>
+            <a class="nav_bar_link" href="#section_projects">PROJECTS</a>
+            <a class="nav_bar_link" href="#section_contact">CONTACT</a>
             <img class="nav_bar_icon" src="./assets/icon_twitter_1.svg">
             <img class="nav_bar_icon" src="./assets/icon_github_1.svg">
             <img class="nav_bar_icon" src="./assets/icon_linkedin_1.svg">
@@ -24,64 +32,232 @@
         <div id="main_content">
 
             <div id="main_text">
-                <h1>Hello, I am Sergio.</h1>
+                <h1>Hello, I am <span>Sergio</span>.</h1>
                 <h2>Full-stack web developer</h2>
                 <p>
-                    I'm a self taught developer, with a relentless desire to keep learning and improving day by day.
-                    Located in Argentina, I speak fluent english and native spanish.
-                    Planning to pursue a college degree in the near future.
+                    I'm a self taught developer, with a relentless desire to keep learning and improving day by day. <br>
+                    Located in Argentina, I speak fluent english and native spanish. <br>
+                    Planning to pursue a college degree in the near future. <br>
                 </p>
             </div>
 
-            <img src="./assets/main_undraw.svg">
-                
+            <img id="main_image" src="./assets/main_undraw.svg">
 
         </div>
 
-    </section>    
-    
+    </section>
+
     <section id="section_projects">
 
-    </section>    
-    
+    </section>
+
     <section id="section_skills">
 
-    </section>    
-    
+    </section>
+
     <section id="section_contact">
 
-    </section>    
+    </section>
 
 </body>
 </html>
 
 <style>
+    /* General */
     *{
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        font-family: 'Poppins', sans-serif;
     }
-    
+
+    :root{
+        --font-color-1: #ffffff;
+        --font-color-2: #575757;
+        --font-color-3: #343394;
+
+        --background-color-1: #ffffff;
+        --background-color-2:  #3E3D98;
+
+        --width-main-p: 35em;
+
+        --title-size-0: 3em;
+        --title-size-1: 3em;
+        --title-size-2: 2em;
+        --title-size-3: 1.5em;
+
+        --subtitle-size-0: 2em;
+        --subtitle-size-1: 2em;
+        --subtitle-size-2: 1.5em;
+        --subtitle-size-3: 1.2em;
+
+        --paragraph-size-0: 0.8em;
+        --paragraph-size-1: 1em;
+        --paragraph-size-3: 0.8em;
+        --paragraph-size-3: 0.8em;
+
+        --nav-bar-height: 3.5em;
+    }
+
     section{
-        height: 100vh;
+        min-height:100vh;
+        min-width: 100%;
+    }
+
+
+
+    /* Section 1 */
+    #section_main{
+        background-color: var(--background-color-1);
+        display: flex;
+        justify-content: center;
+    }
+
+    #nav_bar{
+        background: linear-gradient(28deg, var(--background-color-1) 29.52%, var(--background-color-2) 29.53%);
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.07);
+
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        gap: 1em;
+        padding-right: 2em;
+
+        height: var(--nav-bar-height);
+
+        position: absolute;
         width: 100%;
     }
 
-    #section_main{
-        background-color: white;
+    .nav_bar_link{
+        color: var(--font-color-1);
+
+        font-family: 'Catamaran';
+        font-size: 1.1em;
+        letter-spacing: 0.09em;
+        text-decoration: none;
+        font-weight: 400;
+    }
+
+    .nav_bar_icon{
+        height: 2em;
+    }
+
+    #main_content{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        margin: var(--nav-bar-height) 0;
+    }
+    #main_content > *{
+        padding: 1.5em;
+    }
+
+    #main_image{
+        height: fit-content;
+        align-self: flex-end;
+        
+        min-width: var(--width-main-p);
+        max-width: 50vw;
+
+    }
+
+    #main_text * {
+        color: var(--font-color-2);
+        font-weight: 400;
+        letter-spacing: 0.09em;
+    }
+
+    #main_text h1{
+        font-size: var(--title-size-1);
+    }
+    #main_text span{
+        color: var(--font-color-3);
     }
     
+    #main_text h2{
+        font-size: var(--subtitle-size-1);
+    }
+
+    #main_text p{
+        text-align: justify;
+        max-width: var(--width-main-p);
+    }
+
+
+    /* Section 2 */
     #section_projects{
         background: linear-gradient(180deg, rgba(1, 0, 43, 0.94) 0%, rgba(2, 0, 80, 0.94) 58.33%, rgba(27, 26, 141, 0.94) 58.34%, rgba(27, 26, 135, 0.94) 100%);;
     }
-    
+
+
+    /* Section 3 */
     #section_skills{
         background-color: white;
         background-color: rgb(0, 0, 0);
     }
 
+
+    /* Section 4 */
     #section_contact{
         background-color: white;
+    }
+
+    @media (max-width: 420px){
+        
+        #main_text{
+            text-align: center;
+        }
+
+        #main_text h1{
+            font-size: var(--title-size-3);
+        }
+
+        #main_text h2{
+            font-size: var(--subtitle-size-3);
+        }
+        
+        #main_text p{
+            font-size: var(--paragraph-size-3);
+        }
+
+    }
+
+    @media (max-width: 570px){
+      
+        #main_text h1{
+            font-size: var(--title-size-2);
+        }
+
+        #main_text h2{
+            font-size: var(--subtitle-size-2);
+        }
+        
+        #main_text p{
+            font-size: var(--paragraph-size-2);
+        }
+        
+        #main_image{
+            min-width: 100%;
+            width:100%;
+            max-width: 100vw;
+        }
+
+    }
+
+    @media (max-width: 1500px){
+        #main_text h1{
+            font-size: var(--title-size-1);
+        }
+
+        #main_text h2{
+            font-size: var(--subtitle-size-1);
+        }
+        
+        #main_text p{
+            font-size: var(--paragraph-size-1);
+        }
     }
 
 </style>
