@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const port = 2404;
@@ -18,13 +19,13 @@ const session = require('express-session');
 const MongoDBStore  = require("connect-mongodb-session")(session);
 
 const store = new MongoDBStore({
-    uri: 'mongodb://localhost:27017',
+    uri: process.env.MONGO_URI_BLOG,
     databaseName: 'QuotesBlog',
     collection: 'Sessions'
 });
 
 app.use(session({ 
-    secret: 'SecretWord', 
+    secret: process.env.SESSION_SECRET_KEY_BLOG, 
     cookie: { maxAge: 60000000000 },
     saveUninitialized: true,
     resave: false,

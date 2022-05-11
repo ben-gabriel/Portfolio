@@ -1,7 +1,7 @@
 const res = require("express/lib/response");
 const { MongoClient } = require("mongodb")
 
-const uri = 'mongodb://localhost:27017';
+const uri = process.env.MONGODB_URI_BLOG;
 const client = new MongoClient(uri);
 // const db = 'quotesBlog';
 // const collection = 'posts';
