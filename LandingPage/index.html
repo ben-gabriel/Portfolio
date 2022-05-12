@@ -50,11 +50,30 @@
     </section>
 
     <section id="section_projects">
-        <div id="test">
-            <div id="test1"></div>
-            <div id="test2"></div>
-            <div id="test3"></div>
+        <h1>PROJECTS</h1>
+        
+        <div id="project_cards_container">
+
+            <div class="project_card">
+                <h2 class="project_title">Phraseit</h2>
+                <p class="project_text">
+                    A sort of blog/website inspired by the likes of reddit and twitter. <br>
+                    Where the user can create an account and post “Phrases”.
+                    As well as comment said posts, save their favorites and follow other users. <br>
+                    Made using Bcrypt to safely store the passwords, ExpressJs, EJS and MongoDb. <br>
+                </p>
+            </div>
+            
+            <div class="project_card">
+                <h2 class="project_title">Wordle</h2>
+                <p class="project_text">
+                    A clone of the popular game “Wordle”, now own by the New York Times. <br>
+                    Made using vanilla Js, html and css, implements the use of local storage, and animations. <br>
+                </p>
+            </div>
+        
         </div>
+
     </section>
 
     <section id="section_skills">
@@ -78,14 +97,20 @@
     }
 
     :root{
-        --font-color-1: #ffffff;
+        --font-color-1: #ffffffe3;
         --font-color-2: #575757;
         --font-color-3: #343394;
 
         --background-color-1: #ffffff;
         --background-color-2:  #3E3D98;
+        --background-color-3:  #0E0C60;
+        
+        --border-color-1: #ffffff40;
 
         --width-main-p: 32em;
+        --width-card-1: 30em;
+
+        --hight-card-1: 28em;
 
         --title-size-0: 4em;
         --title-size-1: 3em;
@@ -119,13 +144,16 @@
 
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
-        padding-top: var(--nav-bar-height);
     }
 
     #nav_bar{
-        background: linear-gradient(28deg, var(--background-color-1) 29.52%, var(--background-color-2) 29.53%);
+        background: linear-gradient(28deg, 
+            var(--background-color-1) 29.52%,
+            var(--background-color-2) 29.69%, 
+            var(--background-color-2) 29.54%
+        );
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.07);
+        box-shadow: 0px 0 6px 1px rgb(0 0 0 / 12%);
 
         display: flex;
         justify-content: flex-end;
@@ -137,8 +165,6 @@
         height: var(--nav-bar-height);
 
         width: 100%;
-        position: absolute;
-        top: 0;
     }
 
     .nav_bar_link{
@@ -163,6 +189,8 @@
 
         min-height: 75vh;
         gap: 3em;
+        padding: 10vh 0;
+        flex-grow: 1;
     }
     #main_content > *{
         padding: 1.5em;
@@ -202,41 +230,80 @@
     }
 
 
+    /*-----------------------------------------*/
+    
     /* Section 2 */
     #section_projects{
-        background: linear-gradient(180deg, rgba(1, 0, 43, 0.94) 0%, rgba(2, 0, 80, 0.94) 58.33%, rgba(27, 26, 141, 0.94) 58.34%, rgba(27, 26, 135, 0.94) 100%);;
-    }
+        background: linear-gradient(
+            180deg, 
+            rgba(1, 0, 43, 0.94) 0%,
+            rgba(2, 0, 80, 0.94) 58.33%,
+            rgba(27, 26, 141, 0.94) 58.34%, 
+            rgba(27, 26, 135, 0.94) 100%
+        );
 
-    #test{
-        height: 90vh;
-        width: 90vw;
-        border: 1px solid red;
+        color: var(--font-color-1);
+
         display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+
     }
 
-    #test1{
-        width: 25%;
-        height: 25%;
-        border: solid 1px red;
-        margin: 1em;
+    #section_projects h1{
+        font-size: var(--title-size-0);
+        letter-spacing: 0.09em;
+        text-decoration: underline;
+        text-decoration-thickness: 0.05em;
+        font-weight: 400;
+
+        display: flex;
+        align-items: center;
+
         flex-grow: 1;
     }
-    #test2{
-        width: 25%;
-        height: 25%;
-        border: solid 1px blue;
-        margin: 1em;
-        flex-grow: 2;
-        align-self: flex-end;
-    }
-    #test3{
-        width: 25%;
-        height: 25%;
-        border: solid 1px green;
-        margin: 1em;
+    
+    #project_cards_container{
+        
+        display: flex;
+        flex-wrap: wrap;
+        
+        justify-content: space-evenly;
+        
+        width: 100%;
+        
         flex-grow: 1;
     }
 
+    .project_card {
+        background-color: var(--background-color-3);
+        border: 0.15em solid var(--border-color-1);
+        box-shadow: 0px 0px 28px 10px rgb(0 0 0 / 6%);    
+        
+        width: var(--width-card-1);
+        height: var(--hight-card-1);
+
+        padding: 3em;
+        margin: 0 2em 2em 2em;
+    }
+    
+    .project_title{
+        text-align: center;
+        font-size: var(--subtitle-size-0);
+
+        font-weight: 400;
+        letter-spacing: 0.09em;
+    }
+
+    .project_text{
+        text-align: justify;
+        font-size: var(--paragraph-size-0);
+    }
+
+    /*-----------------------------------------*/
+    
     /* Section 3 */
     #section_skills{
         background-color: white;
