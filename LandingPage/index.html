@@ -34,6 +34,7 @@
             <div id="main_text">
                 <h1>Hello, I am <span>Sergio</span>.</h1>
                 <h2>Full-stack web developer</h2>
+                <br>
                 <p>
                     I'm a self taught developer, with a relentless desire to keep learning and improving day by day. <br>
                     Located in Argentina, I speak fluent english and native spanish. <br>
@@ -42,13 +43,18 @@
             </div>
 
             <img id="main_image" src="./assets/main_undraw.svg">
-
+            
         </div>
+        
 
     </section>
 
     <section id="section_projects">
-
+        <div id="test">
+            <div id="test1"></div>
+            <div id="test2"></div>
+            <div id="test3"></div>
+        </div>
     </section>
 
     <section id="section_skills">
@@ -79,23 +85,24 @@
         --background-color-1: #ffffff;
         --background-color-2:  #3E3D98;
 
-        --width-main-p: 35em;
+        --width-main-p: 32em;
 
-        --title-size-0: 3em;
+        --title-size-0: 4em;
         --title-size-1: 3em;
         --title-size-2: 2em;
         --title-size-3: 1.5em;
 
-        --subtitle-size-0: 2em;
+        --subtitle-size-0: 2.1em;
         --subtitle-size-1: 2em;
         --subtitle-size-2: 1.5em;
         --subtitle-size-3: 1.2em;
 
-        --paragraph-size-0: 0.8em;
+        --paragraph-size-0: 1.2em;
         --paragraph-size-1: 1em;
-        --paragraph-size-3: 0.8em;
+        --paragraph-size-2: 0.9em;
         --paragraph-size-3: 0.8em;
 
+        --title-line-height-0: 1em;
         --nav-bar-height: 3.5em;
     }
 
@@ -109,8 +116,11 @@
     /* Section 1 */
     #section_main{
         background-color: var(--background-color-1);
+
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding-top: var(--nav-bar-height);
     }
 
     #nav_bar{
@@ -126,8 +136,9 @@
 
         height: var(--nav-bar-height);
 
-        position: absolute;
         width: 100%;
+        position: absolute;
+        top: 0;
     }
 
     .nav_bar_link{
@@ -147,8 +158,11 @@
     #main_content{
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-evenly;
-        margin: var(--nav-bar-height) 0;
+        justify-content: center;
+        align-self: center;
+
+        min-height: 75vh;
+        gap: 3em;
     }
     #main_content > *{
         padding: 1.5em;
@@ -156,33 +170,35 @@
 
     #main_image{
         height: fit-content;
-        align-self: flex-end;
         
         min-width: var(--width-main-p);
         max-width: 50vw;
 
+        align-self: flex-end;
     }
 
-    #main_text * {
+    #main_text > *{
         color: var(--font-color-2);
         font-weight: 400;
         letter-spacing: 0.09em;
     }
 
     #main_text h1{
-        font-size: var(--title-size-1);
+        font-size: var(--title-size-0);
+        line-height: var(--title-line-height-0);
     }
     #main_text span{
         color: var(--font-color-3);
     }
     
     #main_text h2{
-        font-size: var(--subtitle-size-1);
+        font-size: var(--subtitle-size-0);
     }
 
     #main_text p{
         text-align: justify;
         max-width: var(--width-main-p);
+        font-size: var(--paragraph-size-0);
     }
 
 
@@ -191,6 +207,35 @@
         background: linear-gradient(180deg, rgba(1, 0, 43, 0.94) 0%, rgba(2, 0, 80, 0.94) 58.33%, rgba(27, 26, 141, 0.94) 58.34%, rgba(27, 26, 135, 0.94) 100%);;
     }
 
+    #test{
+        height: 90vh;
+        width: 90vw;
+        border: 1px solid red;
+        display: flex;
+    }
+
+    #test1{
+        width: 25%;
+        height: 25%;
+        border: solid 1px red;
+        margin: 1em;
+        flex-grow: 1;
+    }
+    #test2{
+        width: 25%;
+        height: 25%;
+        border: solid 1px blue;
+        margin: 1em;
+        flex-grow: 2;
+        align-self: flex-end;
+    }
+    #test3{
+        width: 25%;
+        height: 25%;
+        border: solid 1px green;
+        margin: 1em;
+        flex-grow: 1;
+    }
 
     /* Section 3 */
     #section_skills{
@@ -204,60 +249,5 @@
         background-color: white;
     }
 
-    @media (max-width: 420px){
-        
-        #main_text{
-            text-align: center;
-        }
-
-        #main_text h1{
-            font-size: var(--title-size-3);
-        }
-
-        #main_text h2{
-            font-size: var(--subtitle-size-3);
-        }
-        
-        #main_text p{
-            font-size: var(--paragraph-size-3);
-        }
-
-    }
-
-    @media (max-width: 570px){
-      
-        #main_text h1{
-            font-size: var(--title-size-2);
-        }
-
-        #main_text h2{
-            font-size: var(--subtitle-size-2);
-        }
-        
-        #main_text p{
-            font-size: var(--paragraph-size-2);
-        }
-        
-        #main_image{
-            min-width: 100%;
-            width:100%;
-            max-width: 100vw;
-        }
-
-    }
-
-    @media (max-width: 1500px){
-        #main_text h1{
-            font-size: var(--title-size-1);
-        }
-
-        #main_text h2{
-            font-size: var(--subtitle-size-1);
-        }
-        
-        #main_text p{
-            font-size: var(--paragraph-size-1);
-        }
-    }
 
 </style>
