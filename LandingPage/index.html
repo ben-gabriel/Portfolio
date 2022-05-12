@@ -18,7 +18,7 @@
 
 </head>
 <body>
-
+<div id="body_div">
     <section id="section_main">
 
         <div id="nav_bar">
@@ -45,9 +45,9 @@
             <img id="main_image" src="./assets/main_undraw.svg">
             
         </div>
-        
 
     </section>
+
 
     <section id="section_projects">
         <h1>PROJECTS</h1>
@@ -76,14 +76,37 @@
 
     </section>
 
+
     <section id="section_skills">
+        
+        <div id="skills_logos">
+            <h2 id="skills_title">SKILLS</h2>
+
+            <div id="logos_div">
+                <img class="skill_logo" src="./assets/logo_css_1.svg">
+                <img class="skill_logo" src="./assets/logo_html_1.svg">
+                <img class="skill_logo" src="./assets/logo_js_1.svg">
+                <img class="skill_logo" src="./assets/logo_mongo_1.svg">
+                <img class="skill_logo" src="./assets/logo_node_1.svg">
+                <img class="skill_logo" src="./assets/logo_figma_1.svg">
+            </div>
+        </div>
+
+        <div id="skills_description">
+            <p id="skills_text">
+                My technical skills include the use of CSS, HTML and Javascript on the front-end, and NodeJs + Mongodb on the back-end. <br>
+                Making use of frameworks and tools like Express (along with the EJS rendering engine), Bcrypt and the MongoDriver, the next item in the list is learning React to complete the MERN stack. <br>
+                On the prototyping department I serve myself of the popular tool Figma, as well as some Photoshop knowledge. <br>
+            </p>
+        </div>
 
     </section>
+
 
     <section id="section_contact">
 
     </section>
-
+</div>
 </body>
 </html>
 
@@ -109,6 +132,7 @@
 
         --width-main-p: 32em;
         --width-card-1: 30em;
+        --width-skills-p: 48em;
 
         --hight-card-1: 28em;
 
@@ -131,12 +155,20 @@
         --nav-bar-height: 3.5em;
     }
 
-    section{
+    /* Sections */
+
+    #section_main, #section_contact{
         min-height:100vh;
         min-width: 100%;
+
     }
+    
+    #section_projects, #section_skills{
+        min-height:110vh;
+        min-width: 100%;
 
-
+    }
+    
 
     /* Section 1 */
     #section_main{
@@ -234,13 +266,20 @@
     
     /* Section 2 */
     #section_projects{
-        background: linear-gradient(
-            180deg, 
-            rgba(1, 0, 43, 0.94) 0%,
-            rgba(2, 0, 80, 0.94) 58.33%,
-            rgba(27, 26, 141, 0.94) 58.34%, 
-            rgba(27, 26, 135, 0.94) 100%
-        );
+        background-image: linear-gradient(
+            270deg, rgba(176, 42, 42, .16) 0%,
+            rgba(176, 42, 42, .56) 18.45%,
+            rgba(176, 42, 42, .8) 49.67%,
+            rgba(176, 42, 42, .56) 82.52%,
+            rgba(176, 42, 42, .196364) 99.7%,
+            rgba(189, 40, 40, 0) 99.71%,
+            rgba(203, 56, 55, 0) 99.72%,
+            rgba(203, 56, 55, .16) 99.73%),
+            url(https://static.npmjs.com/abf53a31b2da4657a1a004ee9358551c.png)
+        ;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
 
         color: var(--font-color-1);
 
@@ -253,11 +292,7 @@
     }
 
     #section_projects h1{
-        font-size: var(--title-size-0);
         letter-spacing: 0.09em;
-        text-decoration: underline;
-        text-decoration-thickness: 0.05em;
-        font-weight: 400;
 
         display: flex;
         align-items: center;
@@ -306,15 +341,43 @@
     
     /* Section 3 */
     #section_skills{
-        background-color: white;
-        background-color: rgb(0, 0, 0);
+        background-color: var(--background-color-1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;    
     }
 
+    #skills_logos{
+        text-align: center;
+        height: 30vh;
+    }
+
+    #logos_div{
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 1.5em;
+        flex-wrap: wrap;
+        width: fit-content;
+    }
+
+
+    #skills_description{
+        font-size: var(--paragraph-size-0);
+        max-width: var(--width-skills-p);
+    }
+    
+
+
+
+    /*-----------------------------------------*/
 
     /* Section 4 */
     #section_contact{
-        background-color: white;
+        background-color: rgb(0, 0, 0);
     }
+
 
 
 </style>
