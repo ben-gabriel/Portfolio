@@ -58,7 +58,7 @@
                 <h2 class="project_title">Phraseit</h2>
                 <p class="project_text">
                     A sort of blog/website inspired by the likes of reddit and twitter. <br>
-                    Where the user can create an account and post “Phrases”.
+                    Where the user can create an account and post “Phrases”. <br>
                     As well as comment said posts, save their favorites and follow other users. <br>
                     Made using Bcrypt to safely store the passwords, ExpressJs, EJS and MongoDb. <br>
                 </p>
@@ -79,9 +79,9 @@
 
     <section id="section_skills">
         
+        <h2 id="skills_title">SKILLS</h2>
+        
         <div id="skills_logos">
-            <h2 id="skills_title">SKILLS</h2>
-
             <div id="logos_div">
                 <img class="skill_logo" src="./assets/logo_css_1.svg">
                 <img class="skill_logo" src="./assets/logo_html_1.svg">
@@ -314,7 +314,7 @@
     }
 
     #section_projects h1{
-        letter-spacing: 0.09em;
+        letter-spacing: 0.3em;
 
         display: flex;
         align-items: center;
@@ -356,6 +356,7 @@
 
     .project_text{
         text-align: justify;
+        letter-spacing: 0.09em;
         font-size: var(--paragraph-size-0);
     }
 
@@ -367,27 +368,42 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;    
+        justify-content: center; 
+        gap: 5em;   
+    }
+    #section_skills > *{
+        margin: 1em;
+        color: var(--font-color-2);
     }
 
-    #skills_logos{
+    /* #skills_logos{
         text-align: center;
-        height: 30vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
     }
+    */
 
     #logos_div{
         display: flex;
         align-items: baseline;
         justify-content: center;
-        gap: 1.5em;
+        gap: 3em;
         flex-wrap: wrap;
         width: fit-content;
     }
 
+    #skills_title{
+        letter-spacing: 0.3em;
+        align-items: center;
+    }
 
     #skills_description{
         font-size: var(--paragraph-size-0);
         max-width: var(--width-skills-p);
+        letter-spacing: 0.09em;
+        display: flex;
+        align-items: center;
     }
     
 
