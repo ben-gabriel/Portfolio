@@ -167,10 +167,15 @@
 
     }
     
-    #section_projects, #section_skills{
+    #section_projects{
+        min-height:75vh;
+        min-width: 100%;
+    }
+
+    #section_skills{
         min-height:110vh;
         min-width: 100%;
-
+        padding: 0em 0;
     }
     
 
@@ -185,7 +190,7 @@
     /* Nav Bar*/
         #nav_bar{
             background: linear-gradient(28deg, 
-                var(--background-color-1) 29.52%,
+                var(--background-color-2) 29.52%,
                 var(--background-color-2) 29.69%, 
                 var(--background-color-2) 29.54%
             );
@@ -416,12 +421,14 @@
             rgba(189, 40, 40, 0) 99.71%,
             rgba(203, 56, 55, 0) 99.72%,
             rgba(203, 56, 55, .16) 99.73%),
-            /* url(/LandingPage/assets/test.jpg) */
-            /* url(https://dpuk71x9wlmkf.cloudfront.net/assets/2019/11/25224457/Mastering-the-Interview-Coding-Interview-Questions-social.png) */
-            /* url(https://wallpapercave.com/wp/wp8064209.jpg) */
-            /* url(https://cdn140.picsart.com/304314179253201.png) */
-            /* url(https://i0.wp.com/cdn2.nerdordie.com/2019/04/arcadepop_stinger-1.jpg) */
-            url(https://static.videezy.com/system/resources/thumbnails/000/050/375/original/4K-2.jpg)
+            /* url(/LandingPage/assets/background_image_0.png) */
+            /* url(/LandingPage/assets/background_image_1.png) */
+            /* url(/LandingPage/assets/background_image_2.jpg) */
+            url(/LandingPage/assets/background_image_3.png)
+            /* url(/LandingPage/assets/background_image_4.png) */
+            /* url(/LandingPage/assets/background_image_5.webp) */
+            /* url(/LandingPage/assets/background_image_6.jpg) */
+            /* url(/LandingPage/assets/background_image_7.webp) */
         ;
         
         
@@ -632,7 +639,7 @@
 
     @media (max-width:400px){
         .skill_logo{
-            width: 15vw;
+            width: 11vw;
         }  
         #section_skills{
             gap: 0.5em;   
