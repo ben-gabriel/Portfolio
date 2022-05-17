@@ -6,68 +6,77 @@ const port = 2404;
 
 const client_id = process.env.TWITTER_CLIENT_ID;
 const client_secret = process.env.TWITTER_CLIENT_SECRET;
-let globalRefreshToken = process.env.TWITTER_BOT_REFRESH_TOKEN;
-let globalCodeVerifier = process.env.TWITTER_BOT_CODE_VERIFIER;
-let globalCode = process.env.TWITTER_BOT_CODE;
-// let globalCode = '';
-// let globalCodeVerifier = '';
+
+let globalCode = '';
+let globalCodeVerifier = '';
+let globalRefreshToken = '';
 let globalState = '';
-let loggedClient = '';
+let globalLoggedClient = '';
 
 const client = new TwitterApi({ clientId: client_id, clientSecret: client_secret });
+
 
 //Generate OAuth 2 link + code verifier
 app.get('/link', async (req,res)=>{
 
     const { url, codeVerifier, state } = client.generateOAuth2AuthLink('http://127.0.0.1:2404/callback',{ scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
     globalCodeVerifier = codeVerifier;
-    globalState = state;
 
-    res.send(`
-        <h1>URL: <a href='${url}'>link</a></h1>
-        <p>CodeVerifier: ${codeVerifier}<p>
-        <p>State: ${state}<p>
-    `);
+    res.send(` <h1>URL: <a href='${url}'>OAuth2 Link</a></h1> `);
 
 });   
 
 app.get('/callback', async (req,res)=>{
 
     globalCode = req.query.code;
-    res.send(`
-        <p>Code: ${req.query.code}<p>
-    `);
+    globalState = req.query.state;
 
+    globalLoggedClient  = await botLogin(globalCode, globalCodeVerifier);
+
+    botDocument = {
+        code: globalCode,
+        codeVerifier: globalCodeVerifier,
+        state: globalState,
+        refreshToken: globalRefreshToken,
+    };
+
+    dbCreateBotDocument(botDocument);
+    res.redirect('/');
 });
     
-app.get('/login', async(req, res)=>{
-    let code = globalCode;
-    let codeVerifier = globalCodeVerifier;
-    
+async function botLogin(argCode, argCodeV){
+    let code = argCode;
+    let codeVerifier = argCodeV;
+    let result = '';
+
     try {
-        loggedClient = await client.loginWithOAuth2({ code, codeVerifier, redirectUri: 'http://127.0.0.1:2404/callback' });
-        loggedClient = loggedClient.client;
-        console.dir(await loggedClient);
-        
-        // res.send(`
-        //     TWITTER_BOT_CODE_VERIFIER = '${codeVerifier}' <br>
-        //     TWITTER_BOT_CODE = '${code}' <br>
-        //     TWITTER_BOT_STATE = '${globalState}' <br>
-        //     TWITTER_BOT_REFRESH_TOKEN = '${loggedClient.refreshToken}' <br>
-        // `);
+        result = await client.loginWithOAuth2({ code, codeVerifier, redirectUri: 'http://127.0.0.1:2404/callback' });
+        globalRefreshToken = result.refreshToken;
+        result = result.client;
         
     } catch (error) {
+        console.log('\n[loginBot] error = ');
         console.dir(error);        
     }
 
-    // try {
-    //     let test = await client.refreshOAuth2Token('eWRHVXptMDZmd0l1bmdzb1lBVVNBRjFycllqTDBZa1lHZ2lOX2QtYzJNd3duOjE2NTI3MzQ2NTE1NjQ6MTowOnJ0OjE');
-    //     console.dir(await test);
-    // } catch (error) {
-    //     console.dir(error)        
-    // }
-    
-    res.send('<a href="/tweet">tweet</a>');
+    return result;
+};
+
+app.get('/login', async(req,res)=>{
+    let botData = await dbGetBotData();
+    console.log('[/login] botData = \n',botData)
+
+    globalLoggedClient =  await botLogin(botData.code, botData.codeVerifier);
+    try {
+        globalLoggedClient =  await client.refreshOAuth2Token(botData.refreshToken);
+        await dbSetRefreshToken({},{refreshToken: globalLoggedClient.refreshToken});
+        globalLoggedClient = globalLoggedClient.client;
+    } catch (error) {
+        console.error('\n\n',error)        
+    }
+    console.log('[/login] \n',globalLoggedClient)
+    // dbSetRefreshToken()
+    res.end()
 
 });
 
@@ -75,7 +84,7 @@ app.get('/tweet', async (req,res)=>{
 
     try {
         let text= 'test + '+ Date.now();
-        let test =  await loggedClient.v2.tweet(text);
+        let test =  await globalLoggedClient.v2.tweet(text);
         console.dir(test);
     } catch (error) {
         console.dir(error)
@@ -83,19 +92,18 @@ app.get('/tweet', async (req,res)=>{
 
     res.end()
 });
-
-
     
 console.log('--------\nTwitterBot listening in port: ', port);
 app.listen(port);
 
+
+/* ----------------------- */
 /* Datbase */
 const { MongoClient } = require("mongodb")
-
 const uri = process.env.MONGODB_URI_BLOG;
 const dbClient = new MongoClient(uri);
 
-async function dbCreateBotData(newDocument){      
+async function dbCreateBotDocument(newDocument){      
     let result = '';
     try {
         await dbClient.connect();
@@ -126,13 +134,26 @@ async function dbSetRefreshToken(queryObj={}, insertObj){
         return result;
     }
 }
+
 async function dbGetRefreshToken(queryObj={}){
     let result = '';
     try {
         await dbClient.connect();
         result = await dbClient.db('TwitterBot').collection('botData').findOne(queryObj);
-        console.log('\n[database] findOne() =' , result,'\n');
-        
+    }catch (e){
+        console.error(e);
+        result = e;
+    }finally{
+        await dbClient.close()
+        return result.refreshToken;
+    }
+}
+
+async function dbGetBotData(queryObj={}){
+    let result = '';
+    try {
+        await dbClient.connect();
+        result = await dbClient.db('TwitterBot').collection('botData').findOne(queryObj);
     }catch (e){
         console.error(e);
         result = e;
@@ -141,5 +162,4 @@ async function dbGetRefreshToken(queryObj={}){
         return result;
     }
 }
-
 
