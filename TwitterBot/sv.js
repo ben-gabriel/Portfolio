@@ -12,7 +12,7 @@ let globalCode = process.env.TWITTER_BOT_CODE;
 // let globalCode = '';
 // let globalCodeVerifier = '';
 let globalState = '';
-let loggedClient='';
+let loggedClient = '';
 
 const client = new TwitterApi({ clientId: client_id, clientSecret: client_secret });
 
@@ -72,7 +72,7 @@ app.get('/login', async(req, res)=>{
 });
 
 app.get('/tweet', async (req,res)=>{
-    
+
     try {
         let text= 'test + '+ Date.now();
         let test =  await loggedClient.v2.tweet(text);
@@ -88,5 +88,58 @@ app.get('/tweet', async (req,res)=>{
     
 console.log('--------\nTwitterBot listening in port: ', port);
 app.listen(port);
+
+/* Datbase */
+const { MongoClient } = require("mongodb")
+
+const uri = process.env.MONGODB_URI_BLOG;
+const dbClient = new MongoClient(uri);
+
+async function dbCreateBotData(newDocument){      
+    let result = '';
+    try {
+        await dbClient.connect();
+        result = await dbClient.db('TwitterBot').collection('botData').insertOne(newDocument);
+        console.log('\n[database] createOne() =' , result,'\n');
+
+    }catch (e){
+        console.error(e);
+        result = e;
+    }finally{
+        await dbClient.close();
+        return result.insertedId;
+    }   
+}
+
+async function dbSetRefreshToken(queryObj={}, insertObj){
+    let result= '';
+    try {
+        await dbClient.connect();
+        result = await dbClient.db('TwitterBot').collection('botData').updateOne(queryObj, {$set: insertObj});
+        console.log('\n[database] updateOneDocument() =', result,'\n');
+
+    }catch (e){
+        console.error(e);
+        result = e;
+    }finally{
+        await dbClient.close()
+        return result;
+    }
+}
+async function dbGetRefreshToken(queryObj={}){
+    let result = '';
+    try {
+        await dbClient.connect();
+        result = await dbClient.db('TwitterBot').collection('botData').findOne(queryObj);
+        console.log('\n[database] findOne() =' , result,'\n');
+        
+    }catch (e){
+        console.error(e);
+        result = e;
+    }finally{
+        await dbClient.close()
+        return result;
+    }
+}
 
 
