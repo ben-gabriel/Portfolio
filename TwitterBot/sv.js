@@ -1,5 +1,6 @@
 require('dotenv').config();
-const { TwitterApi } = require('twitter-api-v2');
+// const { TwitterApi } = require('twitter-api-v2');
+const { ETwitterStreamEvent, TweetStream, TwitterApi, ETwitterApiError } = require('twitter-api-v2');
 const express = require('express');
 const app = express();
 const port = 2404;
@@ -44,24 +45,6 @@ app.get('/callback', async (req,res)=>{
     res.redirect('/');
 });
     
-async function botLogin(argCode, argCodeV){
-    let code = argCode;
-    let codeVerifier = argCodeV;
-    let result = '';
-
-    try {
-        result = await client.loginWithOAuth2({ code, codeVerifier, redirectUri: 'http://127.0.0.1:2404/callback' });
-        globalRefreshToken = result.refreshToken;
-        result = result.client;
-        
-    } catch (error) {
-        console.log('\n[loginBot] error = ');
-        console.dir(error);        
-    }
-
-    return result;
-};
-
 app.get('/login', async(req,res)=>{
     let botData = await dbGetBotData();
     console.log('[/login] botData = \n',botData)
@@ -69,10 +52,12 @@ app.get('/login', async(req,res)=>{
     globalLoggedClient =  await botLogin(botData.code, botData.codeVerifier);
     try {
         globalLoggedClient =  await client.refreshOAuth2Token(botData.refreshToken);
+         console.log('[/login] \n',globalLoggedClient)
+
         await dbSetRefreshToken({},{refreshToken: globalLoggedClient.refreshToken});
         globalLoggedClient = globalLoggedClient.client;
     } catch (error) {
-        console.error('\n\n',error)        
+        console.error('\n\n',error.data)        
     }
     console.log('[/login] \n',globalLoggedClient)
     // dbSetRefreshToken()
@@ -87,18 +72,139 @@ app.get('/tweet', async (req,res)=>{
         let test =  await globalLoggedClient.v2.tweet(text);
         console.dir(test);
     } catch (error) {
-        console.dir(error)
+        console.dir(error.data)
+    }
+
+    res.end()
+});
+
+/* Stream practice */
+const streamClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN); // (create a client)
+let stream;
+
+streamClient.v2.streamRules().then( data =>{
+    console.log(data);
+});
+
+// streamClient.v2.updateStreamRules({
+//     add:[{"value": "day #100daysofcode -is:retweet -is:reply",'tag': '#100daysofcode + day keyword' }],
+// }).then(data =>{
+//     console.log(data);
+// });
+
+// streamClient.v2.updateStreamRules({
+//     delete:{ids:['1526929887432409089']}
+// }).then(data=>{
+//     console.log(data);
+// });
+
+app.get('/test', async(req,res)=>{
+    
+    // try {
+    //     let text= 'test + '+ Date.now();
+    //     let test =  await globalLoggedClient() ;
+
+    //     client.v2.sea
+
+    //     console.dir(test);
+    // } catch (error) {
+    //     console.dir(error)
+    // }
+
+    // try {
+    //     console.log('\n------- s1');
+    //     // const stream1 = await globalLoggedClient.v2.sampleStream();
+    //     const stream1 = await globalLoggedClient.v2.getStream('tweets/sample/stream');
+    //     console.log(stream1);
+
+    // } catch (error) {
+    //     console.error(error.data);        
+    // }
+
+    // try {
+    //     console.log('\n------- s2');
+    //     const stream2 = await client.v2.sampleStream();
+    //     console.log(stream2);
+
+    // } catch (error) {
+    //     console.error(error.data);        
+    // }
+
+    try {
+
+        // stream = await streamClient.v2.sampleStream({'tweet.fields':'lang'});
+        // id rule 1526919371645456384
+
+        stream = await streamClient.v2.searchStream();
+
+        // Awaits for a tweet
+        stream.on(
+            // Emitted when Node.js {response} emits a 'error' event (contains its payload).
+            ETwitterStreamEvent.ConnectionError,
+            err => console.log('Connection error!', err),
+        );
+
+        stream.on(
+            // Emitted when a Twitter payload (a tweet or not, given the endpoint).
+            ETwitterStreamEvent.Data,
+            eventData => console.log('Twitter has sent something:', eventData),
+        );
+
+        stream.on(
+            // Emitted when a Twitter sent a signal to maintain connection active
+            ETwitterStreamEvent.DataKeepAlive,
+            () => console.log('Twitter has a keep-alive packet.'),
+        );
+
+        // Enable reconnect feature
+        stream.autoReconnect = true;
+
+        // Be sure to close the stream where you don't want to consume data anymore from it
+        app.get('/close', (req,res)=>{
+            stream.close();
+            res.end();
+        });
+
+        stream.on(
+            // Emitted when Node.js {response} is closed by remote or using .close().
+            ETwitterStreamEvent.ConnectionClosed,
+            () => console.log('Connection has been closed.'),
+        );
+
+    } catch (error) {
+        console.dir(error.data)
     }
 
     res.end()
 });
     
+/* Functions */
+async function botLogin(argCode, argCodeV){
+    let code = argCode;
+    let codeVerifier = argCodeV;
+    let result = '';
+
+    try {
+        result = await client.loginWithOAuth2({ code, codeVerifier, redirectUri: 'http://127.0.0.1:2404/callback' });
+        globalRefreshToken = result.refreshToken;
+        result = result.client;
+        
+    } catch (error) {
+        console.log('\n[loginBot] error = ');
+        console.dir(error.data);        
+    }
+
+    return result;
+};
+
+
+/* ----------------------- */
 console.log('--------\nTwitterBot listening in port: ', port);
 app.listen(port);
 
 
 /* ----------------------- */
-/* Datbase */
+/* Database */
 const { MongoClient } = require("mongodb")
 const uri = process.env.MONGODB_URI_BLOG;
 const dbClient = new MongoClient(uri);
