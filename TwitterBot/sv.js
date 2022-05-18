@@ -20,7 +20,7 @@ const client = new TwitterApi({ clientId: client_id, clientSecret: client_secret
 //Generate OAuth 2 link + code verifier
 app.get('/link', async (req,res)=>{
 
-    const { url, codeVerifier, state } = client.generateOAuth2AuthLink('http://127.0.0.1:2404/callback',{ scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] });
+    const { url, codeVerifier, state } = client.generateOAuth2AuthLink('http://127.0.0.1:2404/callback',{ scope: ['tweet.read', 'tweet.write', 'users.read','like.write', 'offline.access'] });
     globalCodeVerifier = codeVerifier;
 
     res.send(` <h1>URL: <a href='${url}'>OAuth2 Link</a></h1> `);
@@ -86,6 +86,22 @@ streamClient.v2.streamRules().then( data =>{
     console.log(data);
 });
 
+
+app.get('/me', async(req,res)=>{
+    let data = await globalLoggedClient.v2.me()
+    console.log(data.data.id);
+    console.log(data.data);
+    console.log(data);
+    try {
+        let test = await globalLoggedClient.v2.like('1525095929061187584','1526933852538687489')
+        console.log(test);
+    } catch (error) {
+        console.error(error)
+    }
+    res.end();
+});
+
+
 // streamClient.v2.updateStreamRules({
 //     add:[{"value": "day #100daysofcode -is:retweet -is:reply",'tag': '#100daysofcode + day keyword' }],
 // }).then(data =>{
@@ -143,11 +159,16 @@ app.get('/test', async(req,res)=>{
             ETwitterStreamEvent.ConnectionError,
             err => console.log('Connection error!', err),
         );
+        
+        let data = await globalLoggedClient.v2.me();
 
         stream.on(
             // Emitted when a Twitter payload (a tweet or not, given the endpoint).
             ETwitterStreamEvent.Data,
-            eventData => console.log('Twitter has sent something:', eventData),
+            eventData => {console.log('Twitter has sent something:', eventData)
+                console.log('---\ntest\n-\n-\n-\n-\n-\n-\n-\n')
+                globalLoggedClient.v2.like(data.data.id,eventData.data.id)
+            },
         );
 
         stream.on(
