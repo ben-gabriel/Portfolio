@@ -189,8 +189,9 @@ app.get('/me', async(req,res)=>{
     res.json(data);
 });
 
+
 /* ----------------------- */
-/* Stream practice */
+/* Stream */
 const streamClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN); // (create a client)
 let stream;
 
@@ -199,20 +200,32 @@ app.post('/start_stream', async(req,res)=>{
         let userData = await globalLoggedClient.v2.me();
 
         try {
-            stream = await streamClient.v2.searchStream();
+            //tweet.fields=entities
+            stream = await streamClient.v2.searchStream({'tweet.fields':'entities'});
+            
+            stream.on(ETwitterStreamEvent.Data, eventData => {
+                // Emitted when a Twitter payload (a tweet or not, given the endpoint).
+                console.log('---\n');
+                console.log('Twitter has sent: ', eventData);
+
+                eventData.matching_rules.forEach(rule => {
+                    if(eventData.data.entities.hashtags.length < 4){
+                        if(rule === 'like'){
+                            globalLoggedClient.v2.like(userData.data.id, eventData.data.id);
+                        }
+                        if(rule === 'retweet'){
+                            globalLoggedClient.v2.retweet(userData.data.id, eventData.data.id);
+                        }
+                    }
+                });
+
+            });
 
             stream.on(ETwitterStreamEvent.ConnectionError, err =>{
                     // Emitted when Node.js {response} emits a 'error' event (contains its payload).
                     console.log('[/start_stream] Connection error!', err)
                 }
             );
-            
-            stream.on(ETwitterStreamEvent.Data, eventData => {
-                // Emitted when a Twitter payload (a tweet or not, given the endpoint).
-                console.log('Twitter has sent something:', eventData);
-                console.log('---\n');
-                globalLoggedClient.v2.like(userData.data.id, eventData.data.id);
-            });
 
             stream.on(ETwitterStreamEvent.DataKeepAlive,() => {
                 // Emitted when a Twitter sent a signal to maintain connection active
@@ -224,7 +237,7 @@ app.post('/start_stream', async(req,res)=>{
 
         } catch (error) {
             console.log('[/start_stream] Error = ');
-            console.log(error);
+            console.dir(error.data);
         }
     }
     else{
@@ -247,6 +260,7 @@ app.post('/close_stream', (req,res)=>{
     }
     res.redirect('/');
 });
+
 
 /* ----------------------- */
 /* Functions */
@@ -285,7 +299,11 @@ async function botLogin(argCode = '', argCodeV = ''){
 };
 
 
-
+/* ----------------------- */
+/* Test */
+app.get('/test', (req,res)=>{
+    res.end();
+});
 
 /* ----------------------- */
 console.log('--------\nTwitterBot listening in port: ', port);
