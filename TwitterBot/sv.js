@@ -209,12 +209,15 @@ app.post('/start_stream', async(req,res)=>{
                 console.log('Twitter has sent: ', eventData);
 
                 eventData.matching_rules.forEach(rule => {
+                    if(rule.tag === 'like'){
+                        globalLoggedClient.v2.like(userData.data.id, eventData.data.id);
+                    }
                     if(eventData.data.entities.hashtags.length < 4){
-                        if(rule === 'like'){
-                            globalLoggedClient.v2.like(userData.data.id, eventData.data.id);
-                        }
-                        if(rule === 'retweet'){
+                        if(rule.tag === 'retweet'){
                             globalLoggedClient.v2.retweet(userData.data.id, eventData.data.id);
+                        }
+                        if(rule.tag === 'test'){
+                            console.log('---\nTEST TAG\n');
                         }
                     }
                 });
@@ -233,7 +236,7 @@ app.post('/start_stream', async(req,res)=>{
             });
 
             stream.autoReconnect = true;
-            setInterval(botLogin(), 7080000);
+            setInterval(botLogin, 7080000); //refresh after 128 minutes
             console.log('[/start_stream] Connection successful, Stream started');
 
         } catch (error) {
