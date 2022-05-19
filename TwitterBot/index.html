@@ -23,7 +23,7 @@
         (async ()=>{
             let fetcher = await (await fetch('/me')).json();
             console.log(fetcher)
-            if(fetcher.username === 'none'){
+            if(fetcher.username === -1){
                 userlink.innerText = 'Not logged in'
             }
             else{
@@ -49,9 +49,21 @@
         <input type="text" name="text">
         <button type="submit">Tweet</button>
     </form>
+
     
     <br>
+    <!-- Stream -->
     <h4>Stream Rules</h4>
+
+    <form action="/start_stream" method="post" style="display: inline;">
+        <button type="submit">Start Stream</button>
+    </form>
+
+    <form action="/close_stream" method="post" style="display: inline;">
+        <button type="submit">Close Stream</button>
+    </form>
+    <br><br>
+
     <div id="stream_rules_div" style="display: flex; flex-wrap: wrap; gap: 1em;">
         <form action="/add_stream_rule" method="post" style='border: 1px solid black;padding: 1em;display: inline-block;'>
             <label>Add rule</label><br><br>

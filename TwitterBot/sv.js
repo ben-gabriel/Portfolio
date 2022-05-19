@@ -122,17 +122,7 @@ app.post('/login', async(req,res)=>{
     console.log('[/login] botData = \n',botData)
 
     globalLoggedClient =  await botLogin(botData.code, botData.codeVerifier);
-    try {
-        globalLoggedClient =  await client.refreshOAuth2Token(botData.refreshToken);
-         console.log('[/login] \n',globalLoggedClient)
-
-        await dbSetRefreshToken({},{refreshToken: globalLoggedClient.refreshToken});
-        globalLoggedClient = globalLoggedClient.client;
-    } catch (error) {
-        console.error('\n\n',error.data)        
-    }
-    console.log('[/login] \n',globalLoggedClient)
-
+    
     res.redirect('/')
 });
 
@@ -157,6 +147,7 @@ app.get('/stream_rules', async (req,res)=>{
 });
 
 app.post('/add_stream_rule', async(req,res)=>{
+    console.log('---\n[/add_stream_rule] Body:');
     console.log(req.body)
     try {
         await streamClient.v2.updateStreamRules({
@@ -171,6 +162,7 @@ app.post('/add_stream_rule', async(req,res)=>{
 });
 
 app.post('/delete_stream_rule', async(req,res)=>{
+    console.log('---\n[/delete_stream_rule] Body:');
     console.log(req.body)
     try {
         streamClient.v2.updateStreamRules({
@@ -184,82 +176,81 @@ app.post('/delete_stream_rule', async(req,res)=>{
     res.redirect('/')
 });
 
+app.get('/me', async(req,res)=>{
+    let data = '';
+
+    if(globalLoggedClient !== ''){
+        data = await globalLoggedClient.v2.me();
+        data = data.data;
+    }else{
+        data = {username: -1}
+    }
+    
+    res.json(data);
+});
 
 /* ----------------------- */
 /* Stream practice */
 const streamClient = new TwitterApi(process.env.TWITTER_BEARER_TOKEN); // (create a client)
 let stream;
 
-app.get('/me', async(req,res)=>{
-    let data = '';
+app.post('/start_stream', async(req,res)=>{
+    if(globalLoggedClient !== ''){
+        let userData = await globalLoggedClient.v2.me();
 
-    if(globalLoggedClient){
-        data = await globalLoggedClient.v2.me();
-        data = data.data;
-    }else{
-        data = {username: 'None'}
+        try {
+            stream = await streamClient.v2.searchStream();
+
+            stream.on(ETwitterStreamEvent.ConnectionError, err =>{
+                    // Emitted when Node.js {response} emits a 'error' event (contains its payload).
+                    console.log('[/start_stream] Connection error!', err)
+                }
+            );
+            
+            stream.on(ETwitterStreamEvent.Data, eventData => {
+                // Emitted when a Twitter payload (a tweet or not, given the endpoint).
+                console.log('Twitter has sent something:', eventData);
+                console.log('---\n');
+                globalLoggedClient.v2.like(userData.data.id, eventData.data.id);
+            });
+
+            stream.on(ETwitterStreamEvent.DataKeepAlive,() => {
+                // Emitted when a Twitter sent a signal to maintain connection active
+                console.log('[/start_stream] Twitter has a keep-alive packet.')
+            });
+
+            stream.autoReconnect = true;
+            console.log('[/start_stream] Connection successful, Stream started');
+
+        } catch (error) {
+            console.log('[/start_stream] Error = ');
+            console.log(error);
+        }
     }
-    
-    res.json(data);
+    else{
+        console.log('[/start_stream] else: Not logged in');
+    }
+
+    res.redirect('/');
 });
 
-
-app.get('/test', async(req,res)=>{
-    
-    try {
-
-        stream = await streamClient.v2.searchStream();
-
-        // Awaits for a tweet
-        stream.on(
-            // Emitted when Node.js {response} emits a 'error' event (contains its payload).
-            ETwitterStreamEvent.ConnectionError,
-            err => console.log('Connection error!', err),
-        );
-        
-        let data = await globalLoggedClient.v2.me();
-
-        stream.on(
-            // Emitted when a Twitter payload (a tweet or not, given the endpoint).
-            ETwitterStreamEvent.Data,
-            eventData => {console.log('Twitter has sent something:', eventData)
-                console.log('---\n')
-                globalLoggedClient.v2.like(data.data.id,eventData.data.id)
-            },
-        );
-
-        stream.on(
-            // Emitted when a Twitter sent a signal to maintain connection active
-            ETwitterStreamEvent.DataKeepAlive,
-            () => console.log('Twitter has a keep-alive packet.'),
-        );
-
-        // Enable reconnect feature
-        stream.autoReconnect = true;
-
-        // Be sure to close the stream where you don't want to consume data anymore from it
-        app.get('/close', (req,res)=>{
-            stream.close();
-            res.end();
-        });
-
-        stream.on(
+app.post('/close_stream', (req,res)=>{
+    if(stream){
+        stream.on(ETwitterStreamEvent.ConnectionClosed, () =>{
             // Emitted when Node.js {response} is closed by remote or using .close().
-            ETwitterStreamEvent.ConnectionClosed,
-            () => console.log('Connection has been closed.'),
-        );
-
-    } catch (error) {
-        console.dir(error.data)
+            console.log('[/close_stream] Connection has been closed');
+        });
+        stream.close();
     }
-
-    res.end()
+    else{
+        console.log('[/close_stream] No Connection to close');
+    }
+    res.redirect('/');
 });
-
 
 /* ----------------------- */
 /* Functions */
-async function botLogin(argCode, argCodeV){
+async function botLogin(argCode = '', argCodeV = ''){
     let code = argCode;
     let codeVerifier = argCodeV;
     let result = '';
@@ -268,15 +259,30 @@ async function botLogin(argCode, argCodeV){
         result = await client.loginWithOAuth2({ code, codeVerifier, redirectUri: 'http://127.0.0.1:2404/callback' });
         globalRefreshToken = result.refreshToken;
         result = result.client;
+        console.log('----\n[botLogin] loginWithOAuth2 result = ', result)
         
     } catch (error) {
-        console.log('\n[loginBot] error = ');
-        console.dir(error.data);        
+        console.log('----\n[botLogin] loginWithOAuth2 error = ');
+        console.dir(error.data);
+
+        // If it can't login, then try refresh token.
+        try {
+            argRefreshT = await dbGetRefreshToken();
+            result =  await client.refreshOAuth2Token(argRefreshT);
+            console.log('----\n[botLogin] refreshOAuth2Token result = ',result)
+    
+            await dbSetRefreshToken({},{refreshToken: result.refreshToken});
+            result = result.client;
+
+        } catch (error) {
+            console.log('----\n[botLogin] refreshOAuth2Token error = ');
+            console.error(error)        
+        }        
+
     }
 
     return result;
 };
-
 
 
 
