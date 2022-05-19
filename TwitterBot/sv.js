@@ -119,7 +119,7 @@ app.get('/callback', async (req,res)=>{
     
 app.post('/login', async(req,res)=>{
     let botData = await dbGetBotData();
-    console.log('[/login] botData = \n',botData)
+    console.log('[/login] botData = \n',botData);
 
     globalLoggedClient =  await botLogin(botData.code, botData.codeVerifier);
     
@@ -223,7 +223,7 @@ app.post('/start_stream', async(req,res)=>{
 
             stream.on(ETwitterStreamEvent.ConnectionError, err =>{
                     // Emitted when Node.js {response} emits a 'error' event (contains its payload).
-                    console.log('[/start_stream] Connection error!', err)
+                    console.log('[/start_stream] Connection error!', err);
                 }
             );
 
@@ -233,6 +233,7 @@ app.post('/start_stream', async(req,res)=>{
             });
 
             stream.autoReconnect = true;
+            setInterval(botLogin(), 7080000);
             console.log('[/start_stream] Connection successful, Stream started');
 
         } catch (error) {
@@ -308,3 +309,4 @@ app.get('/test', (req,res)=>{
 /* ----------------------- */
 console.log('--------\nTwitterBot listening in port: ', port);
 app.listen(port);
+
