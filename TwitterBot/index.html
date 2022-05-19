@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TwitterBot</title>
+    <style>
+        *{
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <h1>TwitterBot Interface</h1>
+
+    <label>Current User: </label>&nbsp
+    <a id="current_user" style="text-decoration:none; color: #0000ee" href="">Loading</a>
+    <br><br>
+    <script>
+        let userlink = document.getElementById('current_user');
+        (async ()=>{
+            let fetcher = await (await fetch('/me')).json();
+            console.log(fetcher)
+            if(fetcher.username === 'none'){
+                userlink.innerText = 'Not logged in'
+            }
+            else{
+                userlink.innerText = '@'+fetcher.username;
+                userlink.href = 'https://twitter.com/'+fetcher.username;
+            }
+        })();
+    </script>
+
+    <label>Generate new user data: </label>&nbsp
+    <a style="text-decoration:none; color: #0000ee" href="/link">OAuth2 link</a>
+    <br>
+
+    <br>
+    <form action="/login" method="post">
+        <label>Login/Refresh with currently stored user data (database): </label>
+        <button type="submit">Login / Refresh</button>
+    </form>
+    
+    <br>
+    <form action="/tweet" method="post">
+        <label>Post test tweet: </label>
+        <input type="text" name="text">
+        <button type="submit">Tweet</button>
+    </form>
+    
+    <br>
+    <h4>Stream Rules</h4>
+    <div id="stream_rules_div" style="display: flex; flex-wrap: wrap; gap: 1em;">
+        <form action="/add_stream_rule" method="post" style='border: 1px solid black;padding: 1em;display: inline-block;'>
+            <label>Add rule</label><br><br>
+            <label for="tag">Tag:</label>
+            <input type="text" name="tag" required><br><br>
+            <label for="value">Value:</label>
+            <input type="text" name="value" required><br><br>
+            <button type="submit">Submit</button>
+        </form>
+        <br><br>
+    </div>
+    <script>
+        (async()=>{
+            let fetcher = await (await fetch('/stream_rules')).json();
+            console.dir(fetcher);
+            div = document.getElementById('stream_rules_div');
+
+            for (let index = 0; index < fetcher.length; index++) {
+                let rule = document.createElement('div')
+                rule.innerHTML = `
+                    <form action="/delete_stream_rule" method="post" style='border: 1px solid black;padding: 1em;display: inline-block;'>
+                        <p>Tag: <span style="color: #5b71c3;">${fetcher[index].tag}</span> </p>
+                        <p>Value: <span style="color: #5b71c3;">${fetcher[index].value}</span> </p>
+                        <p>id: <span style="color: #5b71c3;">${fetcher[index].id}</span> </p> 
+                        <button type="submit">Delete Rule</button>
+                        <input type="hidden" name="id" value="${fetcher[index].id}">
+                    </form>
+                    <br>
+                `;
+                div.append(rule);
+            }
+        })();
+    </script>
+    <span>
+        
+    </span>
+
+
+</body>
+</html>
