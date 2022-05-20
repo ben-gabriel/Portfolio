@@ -236,7 +236,11 @@ app.post('/start_stream', async(req,res)=>{
             });
 
             stream.autoReconnect = true;
-            setInterval(botLogin, 7080000); //refresh after 128 minutes
+
+            setInterval(async()=>{
+                globalLoggedClient = await botLogin();
+            }, (60000)*110 ); //refresh after 110 minutes (Twitter access token last for 120 minutes)
+
             console.log('[/start_stream] Connection successful, Stream started');
 
         } catch (error) {
