@@ -1,7 +1,7 @@
 const express = require('express');
 const { get } = require('express/lib/response');
 const app = express();
-const port = 2404;
+const port = 2405;
 
 // -------- Settings
 app.set('view engine', 'ejs');
@@ -14,8 +14,9 @@ app.get('/', (req,res)=>{
 });
 
 
-app.get('/test.js',(req,res)=>{
-    res.sendFile('./test.js',{root:__dirname})
+app.get('/script.js',(req,res)=>{
+    console.log('GET/script.js')
+    res.sendFile('./scripts/script.js',{root:__dirname})
 });
 
 
