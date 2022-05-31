@@ -114,29 +114,29 @@
     </section>
 
 
-    <div id="separator"></div>
+    <!-- <div id="separator"></div> -->
 
     <section id="section_contact">
 
-        <div id="main_content">
+        <div id="contact_content">
 
-            <div id="main_text">
+            <div id="contact_text">
                 <h1>Get in touch: </h1>
                 <br>
-                <p>Check my <a href="http://github.com/ben-gabriel">Github</a> profile.</p>
+                <p>Check my <a target="_blank" class="contact_link" href="http://github.com/ben-gabriel">Github</a> profile.</p>
                 <br>
-                <p>Check my <a href="https://www.linkedin.com/in/ben-gabriel/">LinkedIn</a> profile.</p>
+                <p>Check my <a target="_blank" class="contact_link" href="https://www.linkedin.com/in/ben-gabriel/">LinkedIn</a> profile.</p>
                 <br>
-                <p>Dm me on <a href="https://twitter.com/isBenBrie">Twitter</a>.</p>
+                <p>Dm me on <a target="_blank" class="contact_link" href="https://twitter.com/isBenBrie">Twitter</a>.</p>
                 <br>
-                <p>Send me an email: <a href="mailto:ben.gabriel.w@gmail.com">ben.gabriel.w@gmail.com</a>.</p>
+                <p>Send me an email: <a class="contact_link" href="mailto:ben.gabriel.w@gmail.com">ben.gabriel.w@gmail.com</a>.</p>
             </div>
 
-            <img id="main_image" src="./assets/contact_undraw_1.svg">
+            <img id="contact_image" src="./assets/contact_undraw_1.svg">
             
         </div>
         
-        <div id="nav_bar">
+        <div id="footer_bar">
             <a class="nav_bar_link" href="#section_projects">PROJECTS</a>
             <a class="nav_bar_link" href="#section_contact">CONTACT</a>
             <img class="nav_bar_icon" src="./assets/icon_twitter_1.svg">
@@ -161,7 +161,14 @@
     /* Section 4 */
     #section_contact{
         background-color: rgb(255, 255, 255);
+        display: flex;
+        flex-direction: column;
     }
+    
+    .contact_link{
+        text-decoration: none;
+    }
+
 
 </style>
 
@@ -234,7 +241,7 @@
     }
     
 
-    /* Section 1 */
+    /* Section 1 - Section 4 */
     #section_main{
         background-color: var(--background-color-1);
 
@@ -243,7 +250,7 @@
     }
 
     /* Nav Bar*/
-        #nav_bar{
+        #nav_bar, #footer_bar{
             background: linear-gradient(28deg, 
                 var(--background-color-2) 29.52%,
                 var(--background-color-2) 29.69%, 
@@ -279,7 +286,7 @@
         }
     
     /* Content */
-        #main_content{
+        #main_content, #contact_content{
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -290,11 +297,11 @@
             padding: 10vh 0;
             flex-grow: 1;
         }
-        #main_content > *{
+        #main_content > *, #contact_content > *{
             padding: 1.5em;
         }
 
-        #main_image{
+        #main_image, #contact_image{
             height: fit-content;
             
             min-width: var(--width-main-p);
@@ -303,13 +310,13 @@
             align-self: flex-end;
         }
 
-        #main_text > *{
+        #main_text > *, #contact_text > *{
             color: var(--font-color-2);
             font-weight: 400;
             letter-spacing: 0.09em;
         }
 
-        #main_text h1{
+        #main_text h1, #contact_text h1{
             font-size: var(--title-size-0);
             line-height: var(--title-line-height-0);
         }
@@ -321,7 +328,7 @@
             font-size: var(--subtitle-size-0);
         }
 
-        #main_text p{
+        #main_text p, #contact_text p{
             text-align: justify;
             max-width: var(--width-main-p);
             font-size: var(--paragraph-size-0);
