@@ -6,6 +6,7 @@
   "scripts": {
     "Wordle": "nodemon Wordle/sv.js",
     "TwitterBot": "nodemon TwitterBot/sv.js",
+    "LandingPage": "nodemon LandingPage/sv.js",
     "QuotesBlog": "nodemon QuotesBlog/sv.js"
   },
   "repository": {

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 2405;
+const port = process.env.PORT || 2405;
 
 app.get('/', (req,res)=>{
     console.log('\n\n');
@@ -11,5 +11,5 @@ app.get('/assets/:filename',(req,res)=>{
     res.sendFile('./assets/'+req.params.filename,{root:__dirname})
 });
 
-console.log('LandingPAge sv listening in port: ',port)
+console.log('LandingPage sv listening in port: ',port)
 app.listen(port)

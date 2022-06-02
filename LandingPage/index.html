@@ -18,15 +18,15 @@
 
 </head>
 <body>
-<div id="body_div">
+<!-- <div id="body_div"> -->
     <section id="section_main">
 
         <div id="nav_bar">
             <a class="nav_bar_link" href="#section_projects">PROJECTS</a>
             <a class="nav_bar_link" href="#section_contact">CONTACT</a>
-            <img class="nav_bar_icon" src="./assets/icon_twitter_1.svg">
-            <img class="nav_bar_icon" src="./assets/icon_github_1.svg">
-            <img class="nav_bar_icon" src="./assets/icon_linkedin_1.svg">
+            <a class='nav_bar_icon github_icon' target="_blank" href="http://github.com/ben-gabriel" ></a>
+            <a class='nav_bar_icon linkedin_icon' target="_blank" href="https://www.linkedin.com/in/ben-gabriel"></a>
+            <a class='nav_bar_icon twitter_icon' target="_blank" href="https://twitter.com/isBenBrie"></a>
         </div>
 
         <div id="main_content">
@@ -139,18 +139,20 @@
         <div id="footer_bar">
             <a class="nav_bar_link" href="#section_projects">PROJECTS</a>
             <a class="nav_bar_link" href="#section_contact">CONTACT</a>
-            <img class="nav_bar_icon" src="./assets/icon_twitter_1.svg">
-            <img class="nav_bar_icon" src="./assets/icon_github_1.svg">
-            <img class="nav_bar_icon" src="./assets/icon_linkedin_1.svg">
+            <a class='nav_bar_icon github_icon' target="_blank" href="http://github.com/ben-gabriel" ></a>
+            <a class='nav_bar_icon linkedin_icon' target="_blank" href="https://www.linkedin.com/in/ben-gabriel"></a>
+            <a class='nav_bar_icon twitter_icon' target="_blank" href="https://twitter.com/isBenBrie"></a>
         </div>
 
     </section>
 
-</div>
+<!-- </div> -->
 </body>
 </html>
 
 <style>
+    
+
     #separator{
         height: 1em;
         /* background-image: linear-gradient(139deg, #fb8817, #ff4b01, #c12127, #e02aff); */
@@ -283,6 +285,21 @@
 
         .nav_bar_icon{
             height: 2em;
+            width: 2em;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .github_icon{
+            background-image: url('./assets/icon_github_1.svg');
+        }
+        
+        .linkedin_icon{
+            background-image: url('./assets/icon_linkedin_1.svg');
+        }
+        
+        .twitter_icon{
+            background-image: url('./assets/icon_twitter_1.svg');
         }
     
     /* Content */
