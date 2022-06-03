@@ -20,7 +20,27 @@
 <body>
 <!-- <div id="body_div"> -->
     <section id="section_main">
+        <svg id="hamburger_menu_svg" xmlns="http://www.w3.org/2000/svg" width="83" height="83" viewBox="0 0 83 83" fill="none">
+            <g id="hamburger_open" >
+                <path d="M41.5 83C64.4198 83 83 64.4198 83 41.5C83 18.5802 64.4198 0 41.5 0C18.5802 0 0 18.5802 0 41.5C0 64.4198 18.5802 83 41.5 83Z" fill="white"/>
+                <path d="M67.8913 25H16V32.5106H67.8913V25Z" fill="black"/>
+                <path d="M67.8913 37.9727H16V45.4832H67.8913V37.9727Z" fill="black"/>
+                <path d="M67.8913 50.9456H16V58.4561H67.8913V50.9456Z" fill="black"/>
+            </g>
+        </svg>
 
+        <div id="hamburger_menu_div">
+
+            <div id="hamburger_menu_content" class="hamburger_menu_hidden">
+                <a class="hamburger_link hamburger_projects" href="#section_projects">Projects</a>
+                <a class="hamburger_link hamburger_contact" href="#section_contact">Contact</a>
+                <a class="hamburger_link hamburger_github" href="https://github.com/ben-gabriel">Github</a>
+                <a class="hamburger_link hamburger_linkedin" href="https://www.linkedin.com/in/ben-gabriel">LinkedIn</a>
+                <a class="hamburger_link hamburger_twitter" href="https://twitter.com/isBenBrie">Twitter</a>
+            </div>
+
+        </div>
+        
         <div id="nav_bar">
             <a class="nav_bar_link" href="#section_projects">PROJECTS</a>
             <a class="nav_bar_link" href="#section_contact">CONTACT</a>
@@ -267,6 +287,7 @@
 
         --title-line-height-0: 1em;
         --nav-bar-height: 3.5em;
+        --hamburger-height: 2em;
     }
 
     /* Sections */
@@ -347,6 +368,88 @@
         .twitter_icon{
             background-image: url('./assets/icon_twitter_1.svg');
         }
+
+        /* Hamburger Menu */
+
+        /*temporary*/ #nav_bar{display: none;}
+
+        #hamburger_menu_svg{
+            position: absolute; /* change to fixed when menu open*/
+            height: var(--hamburger-height);
+            width: auto;
+            margin: .75em;
+            right: 0;
+            border: 2px solid rgba(0, 0, 0, 0.747);
+            border-radius: 100%;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        #hamburger_menu_content{
+            display: flex;
+            flex-direction: column;
+
+            position:fixed;
+            width: 100%;
+            height: 100%;
+            
+            background-color: #000000;
+            z-index: 5;
+            
+            align-items: center;
+            justify-content: center;
+            gap: 1.5em;
+
+            transition: all 0.5s ease;
+        }
+        #hamburger_menu_content::after{
+            /* Padding for mobile scroll */
+            content: '';
+            background-color: #000000;
+            position: fixed;
+            top: 90%;
+            height: 20vh;
+            width: 100vw;
+            z-index: 5;
+        }
+
+        .hamburger_menu_hidden{
+            right: -110%;
+        }
+        .hamburger_menu_visible{
+            right: 0%;
+        }
+
+        .hamburger_link{
+            color: var(--font-color-1);
+
+            font-family: 'Catamaran';
+            font-size: 1.5em;
+            letter-spacing: 0.09em;
+            text-decoration: none;
+            font-weight: 400;
+
+        }
+        
+        /* .hamburger_link::before{
+            align-self: center;
+        }
+        .hamburger_projects::before{
+            content:url('./assets/icon_twitter_1.svg');
+        }
+        .hamburger_contact::before{
+            content:url('./assets/icon_twitter_1.svg');
+        }
+        .hamburger_github::before{
+            content:url('./assets/icon_github_1.svg');
+        }
+        .hamburger_linkedin::before{
+            content:url('./assets/icon_linkedin_1.svg');
+        }
+        .hamburger_twitter::before{
+            content:url('./assets/icon_twitter_1.svg');
+        } */
+        
     
     /* Content */
         #main_content, #contact_content{
@@ -874,3 +977,22 @@
 
 
 </style>
+
+<script>
+    let hamburger_svg = document.getElementById('hamburger_menu_svg');
+    let hamburger_content = document.getElementById('hamburger_menu_content');
+    
+    hamburger_svg.addEventListener('click', ()=>{
+        if(hamburger_content.className === 'hamburger_menu_visible' ){
+            document.body.style.overflow = 'visible'
+            hamburger_content.className = 'hamburger_menu_hidden'; 
+        }else{
+            hamburger_content.className = 'hamburger_menu_visible';
+            setTimeout(()=>{
+                document.body.style.overflow = 'hidden'
+            },500);
+        }
+    });
+
+
+</script>
