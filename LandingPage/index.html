@@ -40,6 +40,17 @@
                     Located in Argentina, I speak fluent english and native spanish. <br>
                     Planning to pursue a college degree in the near future. <br>
                 </p>
+                <br>
+                
+                <a id="get_in_touch" href="#section_contact">
+                    <h2>Get in touch</h2>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M11.9998 24C5.3831 24 0 18.6169 0 11.9998C0 5.3831 5.3831 0 11.9998 0C18.6169 0 24 5.3831 24 11.9998C24 18.6169 18.6169 24 11.9998 24ZM11.9998 1.6709C6.30463 1.6709 1.6709 6.30463 1.6709 11.9998C1.6709 17.6954 6.30463 22.3291 11.9998 22.3291C17.6954 22.3291 22.3291 17.6954 22.3291 11.9998C22.3291 6.30463 17.6954 1.6709 11.9998 1.6709Z" fill="#000000"/>
+                        <path d="M9.59459 17.5309C9.36696 17.5309 9.14014 17.4383 8.97534 17.2564C8.66532 16.9141 8.6914 16.3858 9.03406 16.0762L13.6699 11.8786L9.473 7.24279C9.16297 6.90094 9.18989 6.37267 9.53174 6.06304C9.87359 5.75342 10.4023 5.77953 10.7115 6.12179L15.4688 11.3768C15.7789 11.7186 15.7528 12.2469 15.4101 12.5565L10.1551 17.3147C9.99518 17.4595 9.79448 17.5309 9.59459 17.5309Z" fill="#3F3D56"/>
+                    </svg>
+                </a>
+
             </div>
 
             <img id="main_image" src="./assets/main_undraw_5.svg">
@@ -154,7 +165,29 @@
 </html>
 
 <style>
-    
+    #get_in_touch{
+        display: flex;  
+        justify-content: center;  
+        align-items: center;
+        border-bottom: solid 2px var(--font-color-4);
+        width: fit-content;
+        padding: 0.2em 2em;
+        gap: 1em;
+        text-decoration: none;
+        align-self: center;
+        transform: scale(.85) translateX(-2.5em);
+    }
+
+    #get_in_touch > *{
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 400;
+        line-height: 46px;
+
+        letter-spacing: 0.09em;
+
+        color: var(--font-color-3);
+    }
 
     #separator{
         height: 1em;
@@ -172,6 +205,7 @@
     
     .contact_link{
         text-decoration: none;
+        color: var(--font-color-5);
     }
 
 
@@ -191,6 +225,8 @@
         --font-color-2: #575757;
         /* --font-color-3: #343394; */
         --font-color-3: #000000;
+        --font-color-4: #cccccc;
+        --font-color-5: #6b18ee;
 
         --background-color-1: #ffffff;
         /* --background-color-2:  #3E3D98; */
@@ -216,7 +252,7 @@
         --subtitle-size-1: 2em;
         --subtitle-size-2: 1.5em;
         --subtitle-size-3: 1.2em;
-
+        
         --paragraph-size-0: 1.2em;
         --paragraph-size-1: 1em;
         --paragraph-size-2: 0.9em;
@@ -316,6 +352,8 @@
             gap: 3em;
             padding: 10vh 0;
             flex-grow: 1;
+
+
         }
         #main_content > *, #contact_content > *{
             padding: 1.5em;
@@ -328,6 +366,11 @@
             max-width: 50vw;
 
             align-self: flex-end;
+        }
+
+        #main_text {
+            display: flex;
+            flex-direction: column;
         }
 
         #main_text > *, #contact_text > *{
