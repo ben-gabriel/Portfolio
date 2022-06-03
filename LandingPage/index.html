@@ -64,39 +64,43 @@
         <h1>PROJECTS</h1>
         
         <div id="project_cards_container">
+            <div id="project_cards_subcontainer">
 
-            <div class="project_card">
-                <h2 class="project_title">Phraseit</h2>
-                <p class="project_text">
-                    A sort of blog/website inspired by the likes of reddit and twitter. <br>
-                    Where the user can create an account and post “Phrases”. <br>
-                    As well as comment said posts, save their favorites and follow other users. <br>
-                    Made using Bcrypt to safely store the passwords, ExpressJs, EJS and MongoDb. <br>
-                </p>
-                <div class="project_links">
+                <div class="project_card">
+                    <h2 class="project_title">Phraseit</h2>
+                    <p class="project_text">
+                        A sort of blog/website inspired by the likes of reddit and twitter. <br>
+                        Where the user can create an account and post “Phrases”. <br>
+                        As well as comment said posts, save their favorites and follow other users. <br>
+                        Made using Bcrypt to safely store the passwords, ExpressJs, EJS and MongoDb. <br>
+                    </p>
+                    <div class="project_links">
+                        <a href="http://">Source Code</a>
 
+                        <a href="http://">Live Example</a>
+                    </div>
                 </div>
-            </div>
+                
+                <div class="project_card">
+                    <h2 class="project_title">Wordle</h2>
+                    <p class="project_text">
+                        A clone of the popular game “Wordle”, now own by the New York Times. <br>
+                        Made using vanilla Js, html and css, implements the use of local storage, and animations. <br>
+                    </p>
+                </div>
             
-            <div class="project_card">
-                <h2 class="project_title">Wordle</h2>
-                <p class="project_text">
-                    A clone of the popular game “Wordle”, now own by the New York Times. <br>
-                    Made using vanilla Js, html and css, implements the use of local storage, and animations. <br>
-                </p>
-            </div>
-        
-            <div class="project_card">
-                <h2 class="project_title">Twitter Bot</h2>
-                <p class="project_text">
-                    A bot that interacts with Twitter's API V2, recieving a constant 
-                    stream of data, scanning new tweets in real time for certain chosen 
-                    parameters, and liking or retweeting said posts based on these 
-                    parameters.
-                    Makes use of the twitter-api-v2 npm module, MongoDb and ExpressJs.
-                </p>
-            </div>
+                <div class="project_card">
+                    <h2 class="project_title">Twitter Bot</h2>
+                    <p class="project_text">
+                        A bot that interacts with Twitter's API V2, recieving a constant 
+                        stream of data, scanning new tweets in real time for certain chosen 
+                        parameters, and liking or retweeting said posts based on these 
+                        parameters.
+                        Makes use of the twitter-api-v2 npm module, MongoDb and ExpressJs.
+                    </p>
+                </div>
 
+            </div>
         </div>
 
     </section>
@@ -227,6 +231,8 @@
         --font-color-3: #000000;
         --font-color-4: #cccccc;
         --font-color-5: #6b18ee;
+        --font-color-6: #ffffffb8;
+        --font-color-7: #ffffffda;
 
         --background-color-1: #ffffff;
         /* --background-color-2:  #3E3D98; */
@@ -582,27 +588,37 @@
     }
     
     #project_cards_container{
+        display: flex;
+        width: 100%;
+        flex-grow: 1;
+    }
+
+    #project_cards_subcontainer{
         
         display: flex;
         flex-wrap: wrap;
         
         justify-content: space-evenly;
         
+        height: fit-content;
         width: 100%;
         
-        flex-grow: 1;
     }
 
     .project_card {
         background-color: var(--background-color-3);
-        border: 0.15em solid var(--border-color-1);
+        /* border: 1px solid var(--border-color-1); */
         box-shadow: 0px 0px 28px 10px rgb(0 0 0 / 6%);    
         
         width: var(--width-card-1);
-        height: var(--hight-card-1);
+        /* height: var(--hight-card-1); */
 
         padding: 3em;
         margin: 0 2em 2em 2em;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
     }
     
     .project_title{
@@ -611,12 +627,15 @@
         
         font-weight: 400;
         letter-spacing: 0.09em;
+        
+        color: var(--font-color-7);
     }
 
     .project_text{
         text-align: justify;
         letter-spacing: 0.09em;
         font-size: var(--paragraph-size-0);
+        color: var(--font-color-6);
     }
 
     @media (max-width:1100px){
@@ -656,7 +675,6 @@
         .project_card {  
             
             width: var(--width-card-1);
-            height: var(--width-card-2);
 
             min-height: var(--width-card-2);
 
