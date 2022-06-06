@@ -1,5 +1,6 @@
 /* General */
     :root{
+        --body-color: rgb(218, 224, 30);
         --body-color: rgb(218, 224, 230);
 
         --header-color-1: rgb(208, 206, 248);
@@ -37,6 +38,7 @@
 
         --font-color-1: rgb(91, 91, 107);
         --font-color-2: rgb(178 178 181);
+        --font-color-3: rgb(207, 100, 100);
 
         --profile-color-1: rgb(255, 255, 255);
         --profile-color-2: rgb(207, 207, 243);
@@ -559,25 +561,115 @@
 
 
 /* loginPopup.ejs */
-    #loginDiv{
-        background-color: rgba(31, 71, 71, 0.925);
+    #popupDiv{
+        background-color: var(--body-color);
+        position:fixed;
         
-        height: 100vh;
-        width: 100%;
-        overflow: hidden;
+        min-height:fit-content;
+        min-width: fit-content;
+        transform: translate(-50%, -50%);
+        
+        padding: 1em;
+        
+        top: 50%;
+        left: 50%;
+        border: 1px solid var(--tag-color-3);
 
-        position:absolute;
-        top: 0;
-        left: 0;
+    }
+    #popupDiv h1{
+        color: var(--font-color-1);
+        text-align: center;
+        padding-top: .5em;
+    }
+
+    #loginDiv{
+        background-color: var(--header-color-1);
+        
+        height:fit-content;
+        width: fit-content;
+        overflow: hidden;
     
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         z-index: 10;    
+
+        border: 1px solid var(--post-color-2);
+        background-color: var(--post-color-1);
+        
+        padding: 2em;
+        padding-top: 0;
+
+        position: relative;
+        border-top-right-radius: 1em;
     }
 
+    #errorMessage{
+        padding-top: .5em;
+        color: var(--font-color-3);
+    }
 
+    #loginDiv label{
+        font-weight: 1000;
+        padding-top: 2em; 
+        padding-bottom: 0.3em;        
+        color: var(--font-color-1);
+        display: block;
+    }
+    #loginDiv form div label{
+        transform: translateX(-0.75em);
+    }
+
+    #loginDiv input{  
+        padding: 0.5em;
+        border: 1px solid var(--search-bar-color-1);
+    }
+
+    #loginDiv input:focus{
+        border: 2px solid var(--search-bar-color-1);
+        outline: none;
+    }
+
+    #usernameStatus, #emptyLoginLabel{
+        text-align: center;
+        color: var(--font-color-3);
+    }
+
+    /* #loginDiv form{
+        display: flex;
+        flex-direction: column;
+    } */
+
+    #loginDiv form button {
+        width: 100%;
+    }
+
+    #loginPopupTabs{
+        display: flex;
+        gap: 1em;
+        margin: 0.5em 0em;
+        flex-wrap: wrap;
+    }
+
+    #closeLoginButton{
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-radius: 100%;
+        height: 1.5em;
+        width: 1.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotateZ(45deg);
+        z-index: 15;
+    }
+    
+    #closeLoginButton::before{
+        content: '\f055';
+        color: var(--icon-color-1);
+    }
 
 /* Home Page */
     #homePageBody{

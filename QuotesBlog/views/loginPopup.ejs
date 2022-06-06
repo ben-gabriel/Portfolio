@@ -1,10 +1,11 @@
 <div id="loginDiv">
 
+    
     <!-- Nav -->
-    <div>
-        <button id="loginTab">Login</button>
-        <button id="registerTab">Register</button>
-        <button id="closeLoginButton">x</button>
+    <div id="loginPopupTabs">
+        <h4 class="tabButton" id="loginTab">Login</h4>
+        <h4 class="tabButton" id="registerTab">Register</h4>
+        <button class="btn fa-icon" id="closeLoginButton"></button>
     </div>
 
     <h3 id="errorMessage"></h3>
@@ -23,7 +24,8 @@
             <input type="password" id="logPassword" name='password' required>    
         </div>
         
-        <button type="submit">Login</button>
+        <label id="emptyLoginLabel"><span style="color: var(--font-color-1);">-</span></label>
+        <button type="submit" class="btn class="tabButton">Login</button>
         
     </form>
     
@@ -33,7 +35,6 @@
         <div>
             <label for="regUsername">Username</label>
             <input type="text" id="regUsername" name='username' required value="<%= locals.usernameEntered %>">
-            <label id="usernameStatus"></label>
         </div>
     
         <div>
@@ -41,7 +42,8 @@
             <input type="password" id="regPassword" name='password' required>    
         </div>
     
-        <button type="submit">Register</button>
+        <label id="usernameStatus"><span style="color: var(--font-color-1);">-</span></label>
+        <button type="submit" class="btn">Register</button>
     
     </form>
     
