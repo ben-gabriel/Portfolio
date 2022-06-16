@@ -52,7 +52,7 @@
         <div id="main_content">
 
             <div id="main_text">
-                <h1>Hello, I am <span>Sergio</span>.</h1>
+                <h1>Hello, I am <span>Sergio</span></h1>
                 <h2>Full-stack web developer</h2>
                 <br>
                 <p>
@@ -62,18 +62,19 @@
                 </p>
                 <br>
                 
-                <a id="get_in_touch" href="#section_contact">
+                <!-- <a id="get_in_touch" href="#section_contact">
                     <h2>Get in touch</h2>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M11.9998 24C5.3831 24 0 18.6169 0 11.9998C0 5.3831 5.3831 0 11.9998 0C18.6169 0 24 5.3831 24 11.9998C24 18.6169 18.6169 24 11.9998 24ZM11.9998 1.6709C6.30463 1.6709 1.6709 6.30463 1.6709 11.9998C1.6709 17.6954 6.30463 22.3291 11.9998 22.3291C17.6954 22.3291 22.3291 17.6954 22.3291 11.9998C22.3291 6.30463 17.6954 1.6709 11.9998 1.6709Z" fill="#000000"/>
                         <path d="M9.59459 17.5309C9.36696 17.5309 9.14014 17.4383 8.97534 17.2564C8.66532 16.9141 8.6914 16.3858 9.03406 16.0762L13.6699 11.8786L9.473 7.24279C9.16297 6.90094 9.18989 6.37267 9.53174 6.06304C9.87359 5.75342 10.4023 5.77953 10.7115 6.12179L15.4688 11.3768C15.7789 11.7186 15.7528 12.2469 15.4101 12.5565L10.1551 17.3147C9.99518 17.4595 9.79448 17.5309 9.59459 17.5309Z" fill="#3F3D56"/>
                     </svg>
-                </a>
-
+                </a> -->
+                <br>
+                <a id="get_in_touch" href="#section_contact">Get In Touch</a>
             </div>
 
-            <img id="main_image" src="./assets/main_undraw_5.svg">
+            <img id="main_image" src="./assets/main_3d_1.jpg">
             
         </div>
 
@@ -246,16 +247,18 @@
 
     :root{
         --font-color-1: #ffffffe3;
-        --font-color-2: #575757;
+        --font-color-2: #ffffff;
         /* --font-color-3: #343394; */
-        --font-color-3: #000000;
+        --font-color-3: #b1b1b1;
         --font-color-4: #cccccc;
         --font-color-5: #6b18ee;
         --font-color-6: #ffffffb8;
         --font-color-7: #ffffffe0;
         --font-color-8: #fffffff1;
+        --font-color-9: #343434;
 
-        --background-color-1: #ffffff;
+        --background-color-1: linear-gradient(287.56deg, #9A72F0 0%, #360D8B 100%);
+        --background-color-4: #ffffff;
         /* --background-color-2:  #3E3D98; */
         /* --background-color-3:  #0E0C60; */
         --background-color-2:  #000000;
@@ -299,7 +302,7 @@
     }
     
     #section_projects{
-        min-height:75vh;
+        min-height:110vh;
         min-width: 100%;
     }
 
@@ -312,7 +315,7 @@
 
     /* Section 1 - Section 4 */
     #section_main{
-        background-color: var(--background-color-1);
+        background: var(--background-color-1);
 
         display: flex;
         flex-direction: column;
@@ -320,13 +323,13 @@
 
     /* Nav Bar*/
         #nav_bar, #footer_bar{
-            background: linear-gradient(28deg, 
+            /* background: linear-gradient(28deg, 
                 var(--background-color-2) 29.52%,
                 var(--background-color-2) 29.69%, 
                 var(--background-color-2) 29.54%
             );
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.07);
-            box-shadow: 0px 0 6px 1px rgb(0 0 0 / 12%);
+            box-shadow: 0px 0 6px 1px rgb(0 0 0 / 12%); */
 
             display: flex;
             justify-content: flex-end;
@@ -371,9 +374,12 @@
 
         /* Hamburger Menu */
 
-        /*temporary*/ #nav_bar{display: none;}
-
+        #nav_bar{
+        }
+        
         #hamburger_menu_svg{
+            /*temporary*/ display: none;
+
             position: absolute; /* change to fixed when menu open*/
             height: var(--hamburger-height);
             width: auto;
@@ -473,8 +479,9 @@
             height: fit-content;
             
             min-width: var(--width-main-p);
-            max-width: 50vw;
+            max-width: 38vw;
 
+            user-select: none;
             align-self: flex-end;
         }
 
@@ -485,8 +492,11 @@
 
         #main_text > *, #contact_text > *{
             color: var(--font-color-2);
-            font-weight: 400;
-            letter-spacing: 0.09em;
+            font-weight: 300;
+            letter-spacing: 0.14em;
+        }
+        #contact_text > *{
+            color: var(--font-color-9);
         }
 
         #main_text h1, #contact_text h1{
@@ -507,7 +517,7 @@
             font-size: var(--paragraph-size-0);
         }
 
-        #get_in_touch{
+        /* #get_in_touch{
             display: flex;  
             justify-content: center;  
             align-items: center;
@@ -530,8 +540,21 @@
             letter-spacing: 0.09em;
 
             color: var(--font-color-3);
-        }
+        } */
 
+        #get_in_touch{
+            align-self: center;
+            width: fit-content;
+            text-decoration: none;
+            background: white;
+            color: black;
+            mix-blend-mode: screen;
+            font-weight: 600;
+            padding: .25em .5em;
+            border-radius: 5em;
+            
+            font-size: var(--subtitle-size-0);
+        }
 
     @media (max-width:760px){
         #main_content, #contact_content{
@@ -576,7 +599,7 @@
         }
 
         #get_in_touch{
-            transform: scale(.85);
+            font-size: var(--subtitle-size-1);
         }
     }
     
@@ -625,6 +648,10 @@
             text-align: center;
             font-size: var(--paragraph-size-2);
         }
+        
+        #get_in_touch{
+            font-size: var(--subtitle-size-2);
+        }
     }
     
     @media (max-width:400px){
@@ -672,6 +699,10 @@
             text-align: center;
             font-size: var(--paragraph-size-3);
         }
+        
+        #get_in_touch{
+            font-size: var(--subtitle-size-3);
+        }
     }
 
     /*-----------------------------------------*/
@@ -689,8 +720,8 @@
             rgba(203, 56, 55, .16) 99.73%),
             url(https://static.npmjs.com/abf53a31b2da4657a1a004ee9358551c.png)
         ; */
-        background-image: linear-gradient(
-            270deg, 
+        background-image: /*linear-gradient(
+            /* 270deg, 
             rgba(176, 42, 42, 0.16) 0%,
             rgba(176, 42, 42, .56) 18.45%,
             rgba(176, 42, 42, .8) 49.67%,
@@ -698,7 +729,7 @@
             rgba(176, 42, 42, .196364) 99.7%,
             rgba(189, 40, 40, 0) 99.71%,
             rgba(203, 56, 55, 0) 99.72%,
-            rgba(203, 56, 55, .16) 99.73%),
+            rgba(203, 56, 55, .16) 99.73%), */
             url(/assets/background_image_0.png)
             /* url(/assets/background_image_0.png) */
             /* url(/assets/background_image_1.png) */
@@ -753,9 +784,9 @@
     }
 
     .project_card {
-        background-color: var(--background-color-3);
         /* border: 1px solid var(--border-color-1); */
-        box-shadow: 0px 0px 28px 10px rgb(0 0 0 / 6%);    
+        /* background-color: var(--background-color-3);
+        box-shadow: 0px 0px 28px 10px rgb(0 0 0 / 6%);     */
         
         width: var(--width-card-1);
         /* height: var(--hight-card-1); */
@@ -767,6 +798,14 @@
         display: flex;
         flex-direction: column;
         gap: 1em;
+        
+
+        background: rgba(6, 17, 78, 0.01);
+        box-shadow: 2px 2px 13px rgba(0, 0, 0, 0.15), inset 4px 4px 13px rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(50px);
+        /* Note: backdrop-filter has minimal browser support */
+
+        border-radius: 10px;
     }
     
     .project_title{
@@ -882,7 +921,7 @@
     
     /* Section 3 */
     #section_skills{
-        background-color: var(--background-color-1);
+        background-color: var(--background-color-4);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -891,7 +930,7 @@
     }
     #section_skills > *{
         margin: 1em;
-        color: var(--font-color-2);
+        color: var(--font-color-9);
     }
 
     /* #skills_logos{
