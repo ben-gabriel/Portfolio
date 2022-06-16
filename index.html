@@ -566,7 +566,7 @@
         }
         #hamburger_menu_svg{
             display: block;
-            position: fixed;
+            position: absolute;
         }
 
         #main_content, #contact_content{
@@ -1036,7 +1036,9 @@
     hamburger_svg.addEventListener('click', ()=>{
         if(hamburger_content.className === 'hamburger_menu_visible' ){
             hamburger_content.className = 'hamburger_menu_hidden'; 
+            hamburger_svg.style.position = 'absolute';
         }else{
+            hamburger_svg.style.position = 'fixed';
             hamburger_content.className = 'hamburger_menu_visible';
         }
     });
