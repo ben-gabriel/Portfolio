@@ -79,7 +79,7 @@
                 <a id="get_in_touch" href="#section_contact">Get In Touch</a>
             </div>
 
-            <img id="main_image" src="./assets/main_3d_1.jpg">
+            <img id="main_image" src="./LandingPage/assets/main_3d_1.jpg">
             
         </div>
 
@@ -160,12 +160,12 @@
         
         <div id="skills_logos">
             <div id="logos_div">
-                <img class="skill_logo" src="./assets/logo_css_1.svg">
-                <img class="skill_logo" src="./assets/logo_html_1.svg">
-                <img class="skill_logo" src="./assets/logo_js_1.svg">
-                <img class="skill_logo" src="./assets/logo_mongo_1.svg">
-                <img class="skill_logo" src="./assets/logo_node_1.svg">
-                <img class="skill_logo" src="./assets/logo_figma_1.svg">
+                <img class="skill_logo" src="./LandingPage/assets/logo_css_1.svg">
+                <img class="skill_logo" src="./LandingPage/assets/logo_html_1.svg">
+                <img class="skill_logo" src="./LandingPage/assets/logo_js_1.svg">
+                <img class="skill_logo" src="./LandingPage/assets/logo_mongo_1.svg">
+                <img class="skill_logo" src="./LandingPage/assets/logo_node_1.svg">
+                <img class="skill_logo" src="./LandingPage/assets/logo_figma_1.svg">
             </div>
         </div>
 
@@ -198,17 +198,17 @@
                 <p>Send me an email: <a class="contact_link" href="mailto:ben.gabriel.w@gmail.com">ben.gabriel.w@gmail.com</a>.</p>
             </div>
 
-            <img id="contact_image" src="./assets/contact_undraw_1.svg">
+            <img id="contact_image" src="./LandingPage/assets/contact_undraw_1.svg">
             
         </div>
         
-        <div id="footer_bar">
+        <!-- <div id="footer_bar">
             <a class="nav_bar_link" href="#section_projects">PROJECTS</a>
             <a class="nav_bar_link" href="#section_contact">CONTACT</a>
             <a class='nav_bar_icon github_icon' target="_blank" href="https://github.com/ben-gabriel" ></a>
             <a class='nav_bar_icon linkedin_icon' target="_blank" href="https://www.linkedin.com/in/ben-gabriel"></a>
             <a class='nav_bar_icon twitter_icon' target="_blank" href="https://twitter.com/isBenBrie"></a>
-        </div>
+        </div> -->
 
     </section>
 
@@ -369,15 +369,15 @@
         }
 
         .github_icon{
-            background-image: url('./assets/icon_github_2.svg');
+            background-image: url('./LandingPage/assets/icon_github_2.svg');
         }
         
         .linkedin_icon{
-            background-image: url('./assets/icon_linkedin_2.svg');
+            background-image: url('./LandingPage/assets/icon_linkedin_2.svg');
         }
         
         .twitter_icon{
-            background-image: url('./assets/icon_twitter_2.svg');
+            background-image: url('./LandingPage/assets/icon_twitter_2.svg');
         }
 
         /* Hamburger Menu */
@@ -565,6 +565,10 @@
         }
 
     @media (max-width:760px){
+        #nav_bar{
+            display: none;
+        }
+
         #main_content, #contact_content{
             display: flex;
             flex-wrap: wrap;
@@ -738,7 +742,7 @@
             rgba(189, 40, 40, 0) 99.71%,
             rgba(203, 56, 55, 0) 99.72%,
             rgba(203, 56, 55, .16) 99.73%), */
-            url(/assets/background_image_0.png)
+            url('./LandingPage/assets/background_image_0.png')
             /* url(/assets/background_image_0.png) */
             /* url(/assets/background_image_1.png) */
             /* url(/assets/background_image_2.jpg) */

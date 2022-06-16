@@ -381,10 +381,6 @@
         }
 
         /* Hamburger Menu */
-
-        #nav_bar{
-        }
-        
         #hamburger_menu_svg{
             /*temporary*/ display: none;
 
@@ -392,11 +388,11 @@
             height: var(--hamburger-height);
             width: auto;
             margin: .75em;
-            right: 0;
-            border: 2px solid rgba(0, 0, 0, 0.747);
-            border-radius: 100%;
+            top: 1em;
+            right: 1em;
             cursor: pointer;
             z-index: 10;
+            mix-blend-mode: screen;
         }
 
         #hamburger_menu_content{
@@ -565,6 +561,13 @@
         }
 
     @media (max-width:760px){
+        #nav_bar{
+            display: none;
+        }
+        #hamburger_menu_svg{
+            display: block;
+        }
+
         #main_content, #contact_content{
             display: flex;
             flex-wrap: wrap;
