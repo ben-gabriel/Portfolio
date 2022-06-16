@@ -16,6 +16,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- Raleway -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
 </head>
 <body>
 <!-- <div id="body_div"> -->
@@ -42,8 +47,8 @@
         </div>
         
         <div id="nav_bar">
-            <a class="nav_bar_link" href="#section_projects">PROJECTS</a>
-            <a class="nav_bar_link" href="#section_contact">CONTACT</a>
+            <a class="nav_bar_link" href="#section_projects">Projects</a>
+            <a class="nav_bar_link" href="#section_contact">Contact</a>
             <a class='nav_bar_icon github_icon' target="_blank" href="https://github.com/ben-gabriel" ></a>
             <a class='nav_bar_icon linkedin_icon' target="_blank" href="https://www.linkedin.com/in/ben-gabriel"></a>
             <a class='nav_bar_icon twitter_icon' target="_blank" href="https://twitter.com/isBenBrie"></a>
@@ -252,8 +257,8 @@
         --font-color-3: #b1b1b1;
         --font-color-4: #cccccc;
         --font-color-5: #6b18ee;
-        --font-color-6: #ffffffb8;
-        --font-color-7: #ffffffe0;
+        --font-color-6: #ffffffe0;
+        --font-color-7: #ffffffde;
         --font-color-8: #fffffff1;
         --font-color-9: #343434;
 
@@ -331,6 +336,8 @@
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.07);
             box-shadow: 0px 0 6px 1px rgb(0 0 0 / 12%); */
 
+            position: relative;
+            top: 3.25em;
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -346,30 +353,31 @@
         .nav_bar_link{
             color: var(--font-color-1);
 
-            font-family: 'Catamaran';
-            font-size: 1.1em;
+            font-family: 'Raleway';
+            font-size: 1.4em;
             letter-spacing: 0.09em;
             text-decoration: none;
-            font-weight: 400;
+            font-weight: 300;
         }
 
         .nav_bar_icon{
-            height: 2em;
-            width: 2em;
+            height: 2.6em;
+            width: 2.6em;
             background-position: center;
-            background-size: cover;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
 
         .github_icon{
-            background-image: url('./assets/icon_github_1.svg');
+            background-image: url('./assets/icon_github_2.svg');
         }
         
         .linkedin_icon{
-            background-image: url('./assets/icon_linkedin_1.svg');
+            background-image: url('./assets/icon_linkedin_2.svg');
         }
         
         .twitter_icon{
-            background-image: url('./assets/icon_twitter_1.svg');
+            background-image: url('./assets/icon_twitter_2.svg');
         }
 
         /* Hamburger Menu */
