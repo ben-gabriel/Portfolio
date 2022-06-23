@@ -358,6 +358,14 @@
             letter-spacing: 0.09em;
             text-decoration: none;
             font-weight: 300;
+            
+            border-radius: 100em;
+            box-shadow: 0px 0px 0px 9px #ffffff00, inset 0px 0px 20px 10px #ffffff00;
+            transition: box-shadow 1s;
+        }
+        .nav_bar_link:hover {
+            box-shadow: 0px 0px 0px 9px #ffffff3b, inset 0px 0px 20px 10px #ffffff3b;
+            color: var(--font-color-2);
         }
 
         .nav_bar_icon{
@@ -366,6 +374,14 @@
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;
+
+            border-radius: 100em;
+            box-shadow: 0px 0px 0px 0px #ffffff3b, inset 0px 0px 0px 0px #ffffff3b;
+            transition: box-shadow 1s;
+
+        }
+        .nav_bar_icon:hover {
+            box-shadow: 0px 0px 0px 9px #ffffff3b, inset 0px 0px 20px 10px #ffffff3b;
         }
 
         .github_icon{
@@ -558,6 +574,15 @@
             border-radius: 5em;
             
             font-size: var(--subtitle-size-0);
+
+            transition: all .5s;
+        }
+
+        #get_in_touch:hover {
+            box-shadow: inset 0px 0px 0px 2px #ffffff;
+
+            background: #000000;
+            color: white;
         }
 
     @media (max-width:760px){
@@ -818,8 +843,12 @@
         /* Note: backdrop-filter has minimal browser support */
 
         border-radius: 10px;
+        transition: background 1s;
     }
-    
+    .project_card:hover{
+        background: #000000;
+    }
+
     .project_title{
         text-align: center;
         font-size: var(--subtitle-size-0);
@@ -856,8 +885,9 @@
         padding-top: 1.5em;
         text-align: center;
     }
-
-    
+    .project_links > *:hover{
+        text-shadow: 0px 0px 0px rgb(255, 255, 255);
+    }
 
     @media (max-width:1100px){
         .project_card {  
